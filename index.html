@@ -1,0 +1,2921 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Moonlight Designs Alpha Word Maker</title>
+
+<style>
+:root{
+  --bg:#070817;
+  --panel:#12152e;
+  --panel2:#0d1025;
+  --line:#343967;
+  --text:#f8f5ff;
+  --muted:#aaa9c6;
+  --pink:#ff63c8;
+  --purple:#9d76ff;
+  --blue:#5bcaff;
+  --good:#68e0b1;
+  --bad:#ff7796;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--text);
+
+  background:
+    radial-gradient(circle at 15% 0,#33246c 0,transparent 28%),
+    radial-gradient(circle at 90% 10%,#124b6d 0,transparent 25%),
+    var(--bg);
+}
+
+header{
+  text-align:center;
+  padding:30px 14px 15px;
+}
+
+h1{
+  margin:0;
+  font-size:clamp(26px,5vw,44px);
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--pink),
+      #e8ddff,
+      var(--blue)
+    );
+
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+header p,
+.muted{
+  color:var(--muted);
+}
+
+.app{
+  max-width:1400px;
+  margin:auto;
+  padding:12px 14px 50px;
+}
+
+.nav{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  margin-bottom:12px;
+}
+
+.nav button.active{
+  outline:2px solid var(--blue);
+}
+
+.panel{
+  background:rgba(18,21,46,.92);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:15px;
+  box-shadow:0 18px 60px rgba(0,0,0,.35);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:390px 1fr;
+  gap:13px;
+}
+
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+}
+
+.toolbar{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  margin:9px 0;
+}
+
+button,
+.btn{
+  border:0;
+  border-radius:11px;
+  padding:10px 12px;
+  color:white;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7656df,
+      #d64ca8
+    );
+
+  font-weight:700;
+  cursor:pointer;
+}
+
+.secondary{
+  background:#272b50;
+}
+
+.danger{
+  background:#602a43;
+}
+
+button:disabled{
+  opacity:.4;
+}
+
+input,
+select,
+textarea{
+  font:inherit;
+}
+
+input[type="text"],
+input[type="number"],
+select,
+textarea{
+  width:100%;
+  background:var(--panel2);
+  border:1px solid var(--line);
+  color:white;
+  border-radius:9px;
+  padding:9px;
+}
+
+input[type="range"]{
+  width:100%;
+}
+
+label{
+  display:block;
+  font-size:12px;
+  color:#d9d6eb;
+  margin:9px 0 4px;
+}
+
+.drop{
+  border:2px dashed #706fa8;
+  border-radius:14px;
+  padding:17px;
+  text-align:center;
+  background:#0d1025;
+  cursor:pointer;
+}
+
+.drop.drag{
+  border-color:var(--pink);
+  box-shadow:0 0 22px rgba(255,99,200,.27);
+}
+
+.drop input{
+  display:none;
+}
+
+.map{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:5px;
+  max-height:310px;
+  overflow:auto;
+}
+
+.char{
+  aspect-ratio:1;
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:#090b1d;
+  display:grid;
+  place-items:center;
+  position:relative;
+  overflow:hidden;
+}
+
+.char img{
+  max-width:85%;
+  max-height:78%;
+}
+
+.char span{
+  position:absolute;
+  right:3px;
+  bottom:2px;
+  font-size:9px;
+  background:rgba(0,0,0,.75);
+  padding:1px 3px;
+  border-radius:4px;
+}
+
+.char.miss{
+  opacity:.5;
+}
+
+.words{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px;
+  max-height:330px;
+  overflow:auto;
+}
+
+.word-row{
+  display:flex;
+  gap:4px;
+}
+
+.word-row input{
+  flex:1;
+}
+
+.preview{
+  min-height:370px;
+  display:grid;
+  place-items:center;
+  overflow:auto;
+  border-radius:14px;
+
+  background-color:white;
+
+  background-image:
+    linear-gradient(45deg,#ddd 25%,transparent 25%),
+    linear-gradient(-45deg,#ddd 25%,transparent 25%),
+    linear-gradient(45deg,transparent 75%,#ddd 75%),
+    linear-gradient(-45deg,transparent 75%,#ddd 75%);
+
+  background-size:20px 20px;
+
+  background-position:
+    0 0,
+    0 10px,
+    10px -10px,
+    -10px 0;
+}
+
+.preview.white{
+  background:#fff;
+}
+
+.preview.black{
+  background:#000;
+}
+
+.preview.color{
+  background:var(--preview-color,#7058aa);
+}
+
+canvas{
+  max-width:100%;
+  max-height:650px;
+  touch-action:none;
+}
+
+.library{
+  display:grid;
+  grid-template-columns:
+    repeat(auto-fill,minmax(170px,1fr));
+  gap:10px;
+}
+
+.alpha-card{
+  background:#0d1025;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:10px;
+}
+
+.alpha-thumb{
+  height:105px;
+  display:grid;
+  place-items:center;
+  background:rgba(255,255,255,.05);
+  border-radius:9px;
+  overflow:hidden;
+}
+
+.alpha-thumb img{
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain;
+}
+
+.status{
+  min-height:18px;
+  font-size:12px;
+  color:var(--good);
+}
+
+.bad{
+  color:var(--bad);
+}
+
+.hidden{
+  display:none;
+}
+
+.storage-meter{
+  height:9px;
+  background:#080a19;
+  border-radius:9px;
+  overflow:hidden;
+}
+
+.storage-meter div{
+  height:100%;
+  width:0;
+  background:
+    linear-gradient(
+      90deg,
+      var(--purple),
+      var(--pink)
+    );
+}
+
+@media(max-width:850px){
+
+  .grid,
+  .row{
+    grid-template-columns:1fr;
+  }
+
+  .words{
+    grid-template-columns:1fr;
+  }
+
+  .map{
+    grid-template-columns:repeat(7,1fr);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<h1>
+☾ Moonlight Designs Alpha Word Maker ✦
+</h1>
+
+<p>
+Local Alpha Workstation • Your artwork stays on your device
+</p>
+
+</header>
+
+<div class="app">
+
+<div class="nav">
+
+<button
+class="tab active"
+data-tab="maker">
+Word Maker
+</button>
+
+<button
+class="tab secondary"
+data-tab="detector">
+Sheet Detector
+</button>
+
+<button
+class="tab secondary"
+data-tab="library">
+Alpha Library
+</button>
+
+<button
+class="tab secondary"
+data-tab="builder">
+Sheet Builder
+</button>
+
+</div>
+
+<!-- ========================================= -->
+<!-- WORD MAKER -->
+<!-- ========================================= -->
+
+<section id="maker">
+
+<div class="grid">
+
+<div>
+
+<div class="panel">
+
+<h2>
+🌙 Current Alpha
+</h2>
+
+<div
+class="drop"
+id="letterDrop">
+
+<input
+id="letterFiles"
+type="file"
+accept="image/png,image/webp"
+multiple
+>
+
+<b>
+Drop Individual Alpha Letters
+</b>
+
+<br>
+
+<span class="muted">
+Files named A.png, B.png, C.png, 1.png, etc. map automatically.
+</span>
+
+</div>
+
+<div class="toolbar">
+
+<button id="chooseLetters">
+Choose Letters
+</button>
+
+<button
+id="saveAlpha"
+class="secondary">
+Save To Library
+</button>
+
+<button
+id="clearAlpha"
+class="danger">
+Clear
+</button>
+
+</div>
+
+<label>
+Alpha Name
+</label>
+
+<input
+id="alphaName"
+type="text"
+value="My Alpha"
+>
+
+<label>
+Tags
+</label>
+
+<input
+id="alphaTags"
+type="text"
+placeholder="Christmas, western, sports..."
+>
+
+<h3>
+Character Mapper
+</h3>
+
+<div
+class="map"
+id="characterMap">
+</div>
+
+</div>
+
+<div
+class="panel"
+style="margin-top:12px">
+
+<h2>
+✨ 20 Words / Phrases
+</h2>
+
+<div
+id="wordInputs"
+class="words">
+</div>
+
+<div class="toolbar">
+
+<button id="downloadZip">
+Download All ZIP
+</button>
+
+<button
+id="makeContactSheet"
+class="secondary">
+Contact Sheet
+</button>
+
+<button
+id="saveProject"
+class="secondary">
+Save Project
+</button>
+
+</div>
+
+<div
+id="status"
+class="status">
+</div>
+
+</div>
+
+</div>
+
+<!-- PREVIEW -->
+
+<div class="panel">
+
+<h2>
+✨ Live Preview
+</h2>
+
+<div
+id="designNumber"
+class="muted">
+Design 1
+</div>
+
+<div
+id="preview"
+class="preview">
+
+<canvas id="wordCanvas">
+</canvas>
+
+</div>
+
+<div class="toolbar">
+
+<button
+class="secondary preview-bg"
+data-background="checker">
+Checker
+</button>
+
+<button
+class="secondary preview-bg"
+data-background="white">
+White
+</button>
+
+<button
+class="secondary preview-bg"
+data-background="black">
+Black
+</button>
+
+<button
+class="secondary preview-bg"
+data-background="color">
+Color
+</button>
+
+<input
+id="previewColor"
+type="color"
+value="#7058aa"
+>
+
+</div>
+
+<div class="row">
+
+<div>
+
+<label>
+Letter Height
+</label>
+
+<input
+id="letterHeight"
+type="range"
+min="50"
+max="1200"
+value="420"
+>
+
+<label>
+Spacing / Overlap
+</label>
+
+<input
+id="letterSpacing"
+type="range"
+min="-400"
+max="400"
+value="-30"
+>
+
+<label>
+Line Spacing
+</label>
+
+<input
+id="lineSpacing"
+type="range"
+min="0"
+max="500"
+value="70"
+>
+
+<label>
+Padding
+</label>
+
+<input
+id="padding"
+type="range"
+min="0"
+max="500"
+value="80"
+>
+
+</div>
+
+<div>
+
+<label>
+Alignment
+</label>
+
+<select id="alignment">
+
+<option value="center">
+Center
+</option>
+
+<option value="left">
+Left
+</option>
+
+<option value="right">
+Right
+</option>
+
+</select>
+
+<label>
+Canvas Width
+</label>
+
+<input
+id="canvasWidth"
+type="number"
+value="5000"
+>
+
+<label>
+Canvas Height
+</label>
+
+<input
+id="canvasHeight"
+type="number"
+value="5000"
+>
+
+<h3>
+Quality Check
+</h3>
+
+<div
+id="qualityCheck"
+class="status">
+Ready
+</div>
+
+</div>
+
+</div>
+
+<div class="toolbar">
+
+<button id="tightCrop">
+Auto Tight Crop
+</button>
+
+<button id="downloadCurrent">
+Download Current PNG
+</button>
+
+<button
+id="resetLetters"
+class="secondary">
+Reset Letter Positions
+</button>
+
+</div>
+
+<p class="muted">
+Drag individual letters directly on the preview to reposition them.
+The checkerboard/background is only for previewing transparency and is
+not included in the exported PNG.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ========================================= -->
+<!-- ALPHA SHEET DETECTOR -->
+<!-- ========================================= -->
+
+<section
+id="detector"
+class="hidden">
+
+<div class="panel">
+
+<h2>
+🔎 Local Alpha Sheet Detector
+</h2>
+
+<p class="muted">
+Upload one transparent alphabet sheet. Detection happens entirely
+inside your browser.
+</p>
+
+<div class="row">
+
+<div>
+
+<label>
+Upload Alpha Sheet
+</label>
+
+<input
+id="alphaSheetFile"
+type="file"
+accept="image/png,image/webp"
+>
+
+<label>
+Character Order
+</label>
+
+<select id="mappingPreset">
+
+<option value="upper">
+A–Z
+</option>
+
+<option value="upperNumbers">
+A–Z + 0–9
+</option>
+
+<option value="upperLower">
+A–Z + a–z
+</option>
+
+<option value="all">
+A–Z + a–z + 0–9
+</option>
+
+<option value="custom">
+Custom
+</option>
+
+</select>
+
+<label>
+Custom Character Order
+</label>
+
+<input
+id="customCharacters"
+type="text"
+placeholder="ABCDEFGHIJKLMNOPQRSTUVWXYZ..."
+>
+
+<label>
+Detection Sensitivity
+</label>
+
+<input
+id="minimumArea"
+type="range"
+min="5"
+max="5000"
+value="80"
+>
+
+<label>
+Merge Distance
+</label>
+
+<input
+id="mergeDistance"
+type="range"
+min="0"
+max="100"
+value="12"
+>
+
+<label>
+Transparent Padding
+</label>
+
+<input
+id="extractPadding"
+type="range"
+min="0"
+max="50"
+value="8"
+>
+
+<div class="toolbar">
+
+<button id="detectCharacters">
+Detect Characters
+</button>
+
+<button
+id="useDetectedAlpha"
+class="secondary">
+Use Detected Alpha
+</button>
+
+</div>
+
+<div
+id="detectorStatus"
+class="status">
+</div>
+
+</div>
+
+<div>
+
+<canvas
+id="detectorCanvas">
+</canvas>
+
+</div>
+
+</div>
+
+<h3>
+Detected Characters
+</h3>
+
+<div
+id="detectedCharacters"
+class="library">
+</div>
+
+</div>
+
+</section>
+
+<!-- ========================================= -->
+<!-- ALPHA LIBRARY -->
+<!-- ========================================= -->
+
+<section
+id="library"
+class="hidden">
+
+<div class="panel">
+
+<div class="row">
+
+<div>
+
+<h2>
+⭐ Alpha Library
+<span id="libraryCount">
+0 / 150
+</span>
+</h2>
+
+<input
+id="librarySearch"
+type="text"
+placeholder="Search alphas or tags..."
+>
+
+</div>
+
+<div>
+
+<label>
+Browser Storage
+</label>
+
+<div class="storage-meter">
+<div id="storageBar"></div>
+</div>
+
+<div
+id="storageText"
+class="muted">
+Checking storage...
+</div>
+
+<div class="toolbar">
+
+<button
+id="exportLibrary"
+class="secondary">
+Export Library Backup
+</button>
+
+<label
+class="btn secondary"
+style="margin:0">
+
+Import Backup
+
+<input
+id="importLibrary"
+type="file"
+accept=".json"
+hidden
+>
+
+</label>
+
+</div>
+
+</div>
+
+</div>
+
+<div
+id="alphaLibrary"
+class="library">
+</div>
+
+</div>
+
+</section>
+
+<!-- ========================================= -->
+<!-- SHEET BUILDER -->
+<!-- ========================================= -->
+
+<section
+id="builder"
+class="hidden">
+
+<div class="panel">
+
+<h2>
+🧩 Alpha Sheet Builder
+</h2>
+
+<p class="muted">
+Turn the currently loaded individual characters back into an organized
+alpha display sheet.
+</p>
+
+<div class="row">
+
+<div>
+
+<label>
+Columns
+</label>
+
+<input
+id="sheetColumns"
+type="number"
+min="2"
+max="12"
+value="6"
+>
+
+<label>
+Cell Size
+</label>
+
+<input
+id="sheetCellSize"
+type="number"
+min="100"
+max="1200"
+value="500"
+>
+
+<label>
+Background
+</label>
+
+<input
+id="sheetBackground"
+type="color"
+value="#11142e"
+>
+
+<label>
+Sheet Title
+</label>
+
+<input
+id="sheetTitle"
+type="text"
+value="Moonlight Designs Alpha"
+>
+
+<div class="toolbar">
+
+<button id="buildAlphaSheet">
+Build Sheet
+</button>
+
+<button
+id="downloadAlphaSheet"
+class="secondary">
+Download Sheet PNG
+</button>
+
+</div>
+
+</div>
+
+<div>
+
+<canvas
+id="sheetCanvas"
+style="max-width:100%">
+</canvas>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+<!-- ZIP SUPPORT -->
+
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+<script>
+
+/* ==========================================================
+   MOONLIGHT DESIGNS ALPHA WORD MAKER
+   ========================================================== */
+
+const $ = selector =>
+document.querySelector(selector);
+
+const CHARACTERS = [
+  ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+  ...'abcdefghijklmnopqrstuvwxyz',
+  ...'0123456789',
+  ...'!?&@#$%+-_().,'
+];
+
+let currentAlpha = {};
+let loadedImages = {};
+
+let words =
+Array(20).fill('');
+
+let currentDesign = 0;
+
+let letterPositions =
+Array.from(
+  {length:20},
+  ()=>({})
+);
+
+let settings = {
+  height:420,
+  spacing:-30,
+  lineSpacing:70,
+  padding:80,
+  alignment:'center',
+  width:5000,
+  heightCanvas:5000
+};
+
+const wordCanvas =
+$('#wordCanvas');
+
+let draggingLetter = null;
+
+
+/* ==========================================================
+   IMAGE HELPERS
+   ========================================================== */
+
+function readFileAsDataURL(file){
+
+  return new Promise(resolve=>{
+
+    const reader =
+    new FileReader();
+
+    reader.onload =
+    ()=>resolve(reader.result);
+
+    reader.readAsDataURL(file);
+
+  });
+
+}
+
+function createImage(source){
+
+  return new Promise(
+    (resolve,reject)=>{
+
+      const image =
+      new Image();
+
+      image.onload =
+      ()=>resolve(image);
+
+      image.onerror =
+      reject;
+
+      image.src =
+      source;
+
+    }
+  );
+
+}
+
+async function ensureImages(){
+
+  for(const character in currentAlpha){
+
+    if(!loadedImages[character]){
+
+      loadedImages[character] =
+      await createImage(
+        currentAlpha[character]
+      );
+
+    }
+
+  }
+
+}
+
+
+/* ==========================================================
+   CHARACTER MAP
+   ========================================================== */
+
+function renderCharacterMap(){
+
+  const map =
+  $('#characterMap');
+
+  map.innerHTML = '';
+
+  CHARACTERS.forEach(character=>{
+
+    const box =
+    document.createElement('div');
+
+    box.className =
+    'char ' +
+    (
+      currentAlpha[character]
+      ? ''
+      : 'miss'
+    );
+
+    if(currentAlpha[character]){
+
+      const image =
+      document.createElement('img');
+
+      image.src =
+      currentAlpha[character];
+
+      box.appendChild(image);
+
+    }
+
+    else{
+
+      box.textContent =
+      character;
+
+    }
+
+    const label =
+    document.createElement('span');
+
+    label.textContent =
+    character;
+
+    box.appendChild(label);
+
+
+    /* MANUAL CHARACTER ASSIGNMENT */
+
+    box.onclick =
+    ()=>{
+
+      const picker =
+      document.createElement('input');
+
+      picker.type =
+      'file';
+
+      picker.accept =
+      'image/png,image/webp';
+
+      picker.onchange =
+      async()=>{
+
+        if(!picker.files[0])
+          return;
+
+        currentAlpha[character] =
+        await readFileAsDataURL(
+          picker.files[0]
+        );
+
+        loadedImages[character] =
+        await createImage(
+          currentAlpha[character]
+        );
+
+        renderCharacterMap();
+
+        drawWord();
+
+      };
+
+      picker.click();
+
+    };
+
+    map.appendChild(box);
+
+  });
+
+}
+
+
+/* ==========================================================
+   20 WORD INPUTS
+   ========================================================== */
+
+function renderWordInputs(){
+
+  const holder =
+  $('#wordInputs');
+
+  holder.innerHTML = '';
+
+  for(
+    let index=0;
+    index<20;
+    index++
+  ){
+
+    const row =
+    document.createElement('div');
+
+    row.className =
+    'word-row';
+
+    const input =
+    document.createElement('input');
+
+    input.type =
+    'text';
+
+    input.value =
+    words[index];
+
+    input.placeholder =
+    `${index+1}. name or phrase`;
+
+    input.oninput =
+    ()=>{
+
+      words[index] =
+      input.value;
+
+      if(index === currentDesign)
+        drawWord();
+
+      autoSave();
+
+    };
+
+
+    const previewButton =
+    document.createElement('button');
+
+    previewButton.className =
+    'secondary';
+
+    previewButton.textContent =
+    '👁';
+
+    previewButton.onclick =
+    ()=>{
+
+      currentDesign =
+      index;
+
+      $('#designNumber')
+      .textContent =
+      `Design ${index+1}`;
+
+      drawWord();
+
+    };
+
+
+    row.append(
+      input,
+      previewButton
+    );
+
+    holder.appendChild(row);
+
+  }
+
+}
+
+
+/* ==========================================================
+   INDIVIDUAL LETTER UPLOAD
+   ========================================================== */
+
+$('#chooseLetters')
+.onclick =
+()=>$('#letterFiles').click();
+
+
+$('#letterFiles')
+.onchange =
+async event=>{
+
+  const files =
+  event.target.files;
+
+  for(const file of files){
+
+    const filename =
+    file.name
+    .replace(/\.[^.]+$/,'');
+
+    if(
+      CHARACTERS.includes(filename)
+    ){
+
+      currentAlpha[filename] =
+      await readFileAsDataURL(file);
+
+      loadedImages[filename] =
+      await createImage(
+        currentAlpha[filename]
+      );
+
+    }
+
+  }
+
+  renderCharacterMap();
+
+  drawWord();
+
+};
+
+
+/* ==========================================================
+   WORD SETTINGS
+   ========================================================== */
+
+function syncSettings(){
+
+  settings.height =
+  Number(
+    $('#letterHeight').value
+  );
+
+  settings.spacing =
+  Number(
+    $('#letterSpacing').value
+  );
+
+  settings.lineSpacing =
+  Number(
+    $('#lineSpacing').value
+  );
+
+  settings.padding =
+  Number(
+    $('#padding').value
+  );
+
+  settings.alignment =
+  $('#alignment').value;
+
+  settings.width =
+  Number(
+    $('#canvasWidth').value
+  );
+
+  settings.heightCanvas =
+  Number(
+    $('#canvasHeight').value
+  );
+
+}
+
+
+/* ==========================================================
+   DRAW WORD
+   ========================================================== */
+
+async function drawWord(
+  outputCanvas=wordCanvas,
+  designIndex=currentDesign
+){
+
+  await ensureImages();
+
+  syncSettings();
+
+  const context =
+  outputCanvas.getContext('2d');
+
+  outputCanvas.width =
+  settings.width;
+
+  outputCanvas.height =
+  settings.heightCanvas;
+
+  context.clearRect(
+    0,
+    0,
+    outputCanvas.width,
+    outputCanvas.height
+  );
+
+  const text =
+  words[designIndex] || '';
+
+  const lines =
+  text.split('\n');
+
+  const hitBoxes = [];
+
+  const missingCharacters = [];
+
+
+  lines.forEach(
+    (line,lineIndex)=>{
+
+      const pieces = [];
+
+      let totalWidth = 0;
+
+
+      [...line].forEach(
+        (character,charIndex)=>{
+
+          if(character === ' '){
+
+            const width =
+            settings.height * .4;
+
+            pieces.push({
+              space:true,
+              width,
+              charIndex
+            });
+
+            totalWidth +=
+            width +
+            settings.spacing;
+
+            return;
+
+          }
+
+
+          const image =
+          loadedImages[character];
+
+          if(!image){
+
+            missingCharacters
+            .push(character);
+
+            return;
+
+          }
+
+
+          const width =
+          settings.height *
+          (
+            image.width /
+            image.height
+          );
+
+
+          pieces.push({
+            image,
+            width,
+            charIndex
+          });
+
+
+          totalWidth +=
+          width +
+          settings.spacing;
+
+        }
+      );
+
+
+      totalWidth =
+      Math.max(
+        0,
+        totalWidth -
+        settings.spacing
+      );
+
+
+      let startX;
+
+
+      if(
+        settings.alignment ===
+        'left'
+      ){
+
+        startX =
+        settings.padding;
+
+      }
+
+      else if(
+        settings.alignment ===
+        'right'
+      ){
+
+        startX =
+        outputCanvas.width -
+        settings.padding -
+        totalWidth;
+
+      }
+
+      else{
+
+        startX =
+        (
+          outputCanvas.width -
+          totalWidth
+        ) / 2;
+
+      }
+
+
+      const y =
+      settings.padding +
+      lineIndex *
+      (
+        settings.height +
+        settings.lineSpacing
+      );
+
+
+      pieces.forEach(piece=>{
+
+        const key =
+        `${lineIndex}-${piece.charIndex}`;
+
+        const offset =
+        letterPositions[designIndex][key]
+        ||
+        {x:0,y:0};
+
+
+        if(!piece.space){
+
+          context.drawImage(
+            piece.image,
+
+            startX +
+            offset.x,
+
+            y +
+            offset.y,
+
+            piece.width,
+
+            settings.height
+          );
+
+
+          hitBoxes.push({
+
+            key,
+
+            x:
+            startX +
+            offset.x,
+
+            y:
+            y +
+            offset.y,
+
+            width:
+            piece.width,
+
+            height:
+            settings.height
+
+          });
+
+        }
+
+
+        startX +=
+        piece.width +
+        settings.spacing;
+
+      });
+
+    }
+  );
+
+
+  if(
+    outputCanvas ===
+    wordCanvas
+  ){
+
+    wordCanvas.hitBoxes =
+    hitBoxes;
+
+
+    const missing =
+    [...new Set(
+      missingCharacters
+    )];
+
+
+    if(missing.length){
+
+      $('#qualityCheck')
+      .className =
+      'status bad';
+
+      $('#qualityCheck')
+      .textContent =
+      'Missing characters: ' +
+      missing.join(' ');
+
+    }
+
+    else{
+
+      $('#qualityCheck')
+      .className =
+      'status';
+
+      $('#qualityCheck')
+      .textContent =
+      '✓ Ready';
+
+    }
+
+  }
+
+}
+
+
+/* ==========================================================
+   DRAG INDIVIDUAL LETTERS
+   ========================================================== */
+
+wordCanvas.onpointerdown =
+event=>{
+
+  const rect =
+  wordCanvas
+  .getBoundingClientRect();
+
+  const x =
+  (
+    event.clientX -
+    rect.left
+  ) *
+  wordCanvas.width /
+  rect.width;
+
+  const y =
+  (
+    event.clientY -
+    rect.top
+  ) *
+  wordCanvas.height /
+  rect.height;
+
+
+  draggingLetter =
+  (
+    wordCanvas.hitBoxes || []
+  )
+  .slice()
+  .reverse()
+  .find(box=>
+
+    x >= box.x &&
+    x <= box.x + box.width &&
+
+    y >= box.y &&
+    y <= box.y + box.height
+
+  );
+
+
+  if(draggingLetter){
+
+    draggingLetter.startX =
+    x;
+
+    draggingLetter.startY =
+    y;
+
+
+    draggingLetter.original =
+    {
+      ...(
+        letterPositions
+        [currentDesign]
+        [draggingLetter.key]
+        ||
+        {x:0,y:0}
+      )
+    };
+
+
+    wordCanvas
+    .setPointerCapture(
+      event.pointerId
+    );
+
+  }
+
+};
+
+
+wordCanvas.onpointermove =
+event=>{
+
+  if(!draggingLetter)
+    return;
+
+
+  const rect =
+  wordCanvas
+  .getBoundingClientRect();
+
+
+  const x =
+  (
+    event.clientX -
+    rect.left
+  ) *
+  wordCanvas.width /
+  rect.width;
+
+
+  const y =
+  (
+    event.clientY -
+    rect.top
+  ) *
+  wordCanvas.height /
+  rect.height;
+
+
+  letterPositions
+  [currentDesign]
+  [draggingLetter.key] =
+  {
+
+    x:
+    draggingLetter.original.x +
+    x -
+    draggingLetter.startX,
+
+    y:
+    draggingLetter.original.y +
+    y -
+    draggingLetter.startY
+
+  };
+
+
+  drawWord();
+
+};
+
+
+wordCanvas.onpointerup =
+()=>{
+
+  draggingLetter =
+  null;
+
+  autoSave();
+
+};
+
+
+/* ==========================================================
+   PNG EXPORT
+   ========================================================== */
+
+function canvasToBlob(canvas){
+
+  return new Promise(resolve=>{
+
+    canvas.toBlob(
+      resolve,
+      'image/png'
+    );
+
+  });
+
+}
+
+
+function cleanFilename(
+  text,
+  index
+){
+
+  return (
+    text ||
+    `design-${index+1}`
+  )
+  .trim()
+  .replace(
+    /[^\w-]+/g,
+    '-'
+  )
+  ||
+  `design-${index+1}`;
+
+}
+
+
+function downloadBlob(
+  blob,
+  filename
+){
+
+  const link =
+  document.createElement('a');
+
+  link.href =
+  URL.createObjectURL(blob);
+
+  link.download =
+  filename;
+
+  link.click();
+
+
+  setTimeout(
+    ()=>URL.revokeObjectURL(
+      link.href
+    ),
+    1000
+  );
+
+}
+
+
+async function createDesignBlob(
+  index
+){
+
+  const canvas =
+  document.createElement(
+    'canvas'
+  );
+
+  await drawWord(
+    canvas,
+    index
+  );
+
+  return canvasToBlob(
+    canvas
+  );
+
+}
+
+
+$('#downloadCurrent')
+.onclick =
+async()=>{
+
+  const blob =
+  await createDesignBlob(
+    currentDesign
+  );
+
+
+  downloadBlob(
+
+    blob,
+
+    cleanFilename(
+      words[currentDesign],
+      currentDesign
+    ) +
+    '.png'
+
+  );
+
+};
+
+
+/* ==========================================================
+   DOWNLOAD ALL 20 AS ZIP
+   ========================================================== */
+
+$('#downloadZip')
+.onclick =
+async()=>{
+
+  if(
+    typeof JSZip ===
+    'undefined'
+  ){
+
+    alert(
+      'ZIP library could not load.'
+    );
+
+    return;
+
+  }
+
+
+  const zip =
+  new JSZip();
+
+  const usedNames = {};
+
+
+  for(
+    let index=0;
+    index<20;
+    index++
+  ){
+
+    if(
+      !words[index].trim()
+    )
+      continue;
+
+
+    $('#status')
+    .textContent =
+    `Creating ${index+1} of 20...`;
+
+
+    let filename =
+    cleanFilename(
+      words[index],
+      index
+    );
+
+
+    usedNames[filename] =
+    (
+      usedNames[filename]
+      ||
+      0
+    ) + 1;
+
+
+    if(
+      usedNames[filename] > 1
+    ){
+
+      filename +=
+      '-' +
+      usedNames[filename];
+
+    }
+
+
+    const blob =
+    await createDesignBlob(
+      index
+    );
+
+
+    zip.file(
+      filename + '.png',
+      blob
+    );
+
+  }
+
+
+  const result =
+  await zip.generateAsync({
+    type:'blob'
+  });
+
+
+  downloadBlob(
+    result,
+    'moonlight-alpha-words.zip'
+  );
+
+
+  $('#status')
+  .textContent =
+  '✨ ZIP ready!';
+
+};
+
+
+/* ==========================================================
+   INDEXEDDB ALPHA LIBRARY — UP TO 150 SETS
+   ========================================================== */
+
+const DATABASE_NAME =
+'MoonlightAlphaLibrary';
+
+const STORE_NAME =
+'alphas';
+
+
+function openDatabase(){
+
+  return new Promise(
+    (resolve,reject)=>{
+
+      const request =
+      indexedDB.open(
+        DATABASE_NAME,
+        1
+      );
+
+
+      request.onupgradeneeded =
+      ()=>{
+
+        const database =
+        request.result;
+
+
+        if(
+          !database
+          .objectStoreNames
+          .contains(STORE_NAME)
+        ){
+
+          database
+          .createObjectStore(
+            STORE_NAME,
+            {
+              keyPath:'id'
+            }
+          );
+
+        }
+
+      };
+
+
+      request.onsuccess =
+      ()=>resolve(
+        request.result
+      );
+
+
+      request.onerror =
+      ()=>reject(
+        request.error
+      );
+
+    }
+  );
+
+}
+
+
+async function getAllAlphas(){
+
+  const database =
+  await openDatabase();
+
+
+  return new Promise(resolve=>{
+
+    const request =
+    database
+    .transaction(STORE_NAME)
+    .objectStore(STORE_NAME)
+    .getAll();
+
+
+    request.onsuccess =
+    ()=>resolve(
+      request.result || []
+    );
+
+  });
+
+}
+
+
+async function saveAlphaRecord(
+  record
+){
+
+  const database =
+  await openDatabase();
+
+
+  return new Promise(
+    (resolve,reject)=>{
+
+      const request =
+      database
+      .transaction(
+        STORE_NAME,
+        'readwrite'
+      )
+      .objectStore(STORE_NAME)
+      .put(record);
+
+
+      request.onsuccess =
+      resolve;
+
+
+      request.onerror =
+      ()=>reject(
+        request.error
+      );
+
+    }
+  );
+
+}
+
+
+async function deleteAlphaRecord(
+  id
+){
+
+  const database =
+  await openDatabase();
+
+
+  return new Promise(resolve=>{
+
+    const request =
+    database
+    .transaction(
+      STORE_NAME,
+      'readwrite'
+    )
+    .objectStore(STORE_NAME)
+    .delete(id);
+
+
+    request.onsuccess =
+    resolve;
+
+  });
+
+}
+
+
+/* SAVE CURRENT ALPHA */
+
+$('#saveAlpha')
+.onclick =
+async()=>{
+
+  const saved =
+  await getAllAlphas();
+
+
+  const alphaName =
+  $('#alphaName')
+  .value
+  .trim();
+
+
+  if(!alphaName){
+
+    alert(
+      'Give the alpha a name first.'
+    );
+
+    return;
+
+  }
+
+
+  const alreadyExists =
+  saved.some(
+    alpha =>
+    alpha.id === alphaName
+  );
+
+
+  if(
+    saved.length >= 150 &&
+    !alreadyExists
+  ){
+
+    alert(
+      'Your Alpha Library already contains 150 alphas. Delete one before adding another.'
+    );
+
+    return;
+
+  }
+
+
+  if(
+    !Object.keys(
+      currentAlpha
+    ).length
+  ){
+
+    alert(
+      'Load an alpha first.'
+    );
+
+    return;
+
+  }
+
+
+  const thumbnail =
+  currentAlpha.A ||
+  Object.values(
+    currentAlpha
+  )[0];
+
+
+  await saveAlphaRecord({
+
+    id:
+    alphaName,
+
+    tags:
+    $('#alphaTags').value,
+
+    favorite:
+    false,
+
+    lastUsed:
+    Date.now(),
+
+    alpha:
+    currentAlpha,
+
+    thumbnail
+
+  });
+
+
+  $('#status')
+  .textContent =
+  '✓ Saved to Alpha Library';
+
+};
+
+
+/* ==========================================================
+   RENDER ALPHA LIBRARY
+   ========================================================== */
+
+async function renderAlphaLibrary(){
+
+  let alphas =
+  await getAllAlphas();
+
+
+  const search =
+  $('#librarySearch')
+  .value
+  .toLowerCase();
+
+
+  alphas =
+  alphas
+  .filter(alpha=>
+
+    (
+      alpha.id +
+      ' ' +
+      (
+        alpha.tags || ''
+      )
+    )
+    .toLowerCase()
+    .includes(search)
+
+  )
+  .sort(
+    (a,b)=>
+
+    (
+      Number(b.favorite) -
+      Number(a.favorite)
+    )
+
+    ||
+
+    (
+      b.lastUsed -
+      a.lastUsed
+    )
+  );
+
+
+  $('#libraryCount')
+  .textContent =
+  `${alphas.length} / 150`;
+
+
+  const holder =
+  $('#alphaLibrary');
+
+  holder.innerHTML = '';
+
+
+  for(const alpha of alphas){
+
+    const card =
+    document.createElement(
+      'div'
+    );
+
+    card.className =
+    'alpha-card';
+
+
+    const thumbnail =
+    document.createElement(
+      'div'
+    );
+
+    thumbnail.className =
+    'alpha-thumb';
+
+
+    if(alpha.thumbnail){
+
+      const image =
+      document.createElement(
+        'img'
+      );
+
+      image.src =
+      alpha.thumbnail;
+
+      thumbnail
+      .appendChild(image);
+
+    }
+
+
+    const title =
+    document.createElement(
+      'strong'
+    );
+
+    title.textContent =
+    alpha.id;
+
+
+    const tags =
+    document.createElement(
+      'div'
+    );
+
+    tags.className =
+    'muted';
+
+    tags.textContent =
+    alpha.tags || '';
+
+
+    const controls =
+    document.createElement(
+      'div'
+    );
+
+    controls.className =
+    'toolbar';
+
+
+    const favorite =
+    document.createElement(
+      'button'
+    );
+
+    favorite.className =
+    'secondary';
+
+    favorite.textContent =
+    alpha.favorite
+    ? '⭐'
+    : '☆';
+
+
+    favorite.onclick =
+    async()=>{
+
+      alpha.favorite =
+      !alpha.favorite;
+
+      await saveAlphaRecord(
+        alpha
+      );
+
+      renderAlphaLibrary();
+
+    };
+
+
+    const use =
+    document.createElement(
+      'button'
+    );
+
+    use.textContent =
+    'Use Alpha';
+
+
+    use.onclick =
+    async()=>{
+
+      currentAlpha =
+      alpha.alpha;
+
+      loadedImages = {};
+
+
+      $('#alphaName')
+      .value =
+      alpha.id;
+
+
+      $('#alphaTags')
+      .value =
+      alpha.tags || '';
+
+
+      alpha.lastUsed =
+      Date.now();
+
+
+      await saveAlphaRecord(
+        alpha
+      );
+
+
+      renderCharacterMap();
+
+      showTab('maker');
+
+      drawWord();
+
+    };
+
+
+    const remove =
+    document.createElement(
+      'button'
+    );
+
+    remove.className =
+    'danger';
+
+    remove.textContent =
+    'Delete';
+
+
+    remove.onclick =
+    async()=>{
+
+      if(
+        confirm(
+          `Delete ${alpha.id}?`
+        )
+      ){
+
+        await deleteAlphaRecord(
+          alpha.id
+        );
+
+        renderAlphaLibrary();
+
+      }
+
+    };
+
+
+    controls.append(
+      favorite,
+      use,
+      remove
+    );
+
+
+    card.append(
+      thumbnail,
+      title,
+      tags,
+      controls
+    );
+
+
+    holder.appendChild(
+      card
+    );
+
+  }
+
+
+  updateStorageMeter();
+
+}
+
+
+/* SEARCH */
+
+$('#librarySearch')
+.oninput =
+renderAlphaLibrary;
+
+
+/* ==========================================================
+   STORAGE METER
+   ========================================================== */
+
+async function updateStorageMeter(){
+
+  if(
+    !navigator.storage ||
+    !navigator.storage.estimate
+  )
+    return;
+
+
+  const estimate =
+  await navigator.storage
+  .estimate();
+
+
+  const usage =
+  estimate.usage || 0;
+
+
+  const quota =
+  estimate.quota || 1;
+
+
+  const percent =
+  Math.min(
+    100,
+    usage / quota * 100
+  );
+
+
+  $('#storageBar')
+  .style.width =
+  percent + '%';
+
+
+  $('#storageText')
+  .textContent =
+
+  `${(
+    usage /
+    1024 /
+    1024
+  ).toFixed(1)} MB used of approximately ${(
+    quota /
+    1024 /
+    1024
+  ).toFixed(0)} MB`;
+
+}
+
+
+/* ==========================================================
+   TABS
+   ========================================================== */
+
+function showTab(name){
+
+  [
+    'maker',
+    'detector',
+    'library',
+    'builder'
+  ]
+  .forEach(tab=>{
+
+    $('#'+tab)
+    .classList.toggle(
+      'hidden',
+      tab !== name
+    );
+
+  });
+
+
+  document
+  .querySelectorAll('.tab')
+  .forEach(button=>{
+
+    button.classList.toggle(
+      'active',
+      button.dataset.tab === name
+    );
+
+  });
+
+
+  if(name === 'library'){
+
+    renderAlphaLibrary();
+
+  }
+
+}
+
+
+document
+.querySelectorAll('.tab')
+.forEach(button=>{
+
+  button.onclick =
+  ()=>showTab(
+    button.dataset.tab
+  );
+
+});
+
+
+/* ==========================================================
+   PREVIEW BACKGROUND
+   ========================================================== */
+
+document
+.querySelectorAll(
+  '.preview-bg'
+)
+.forEach(button=>{
+
+  button.onclick =
+  ()=>{
+
+    const type =
+    button.dataset.background;
+
+    const preview =
+    $('#preview');
+
+
+    preview.className =
+    'preview';
+
+
+    if(
+      type !== 'checker'
+    ){
+
+      preview
+      .classList
+      .add(type);
+
+    }
+
+  };
+
+});
+
+
+$('#previewColor')
+.oninput =
+event=>{
+
+  $('#preview')
+  .style
+  .setProperty(
+    '--preview-color',
+    event.target.value
+  );
+
+};
+
+
+/* ==========================================================
+   RESET LETTER POSITIONS
+   ========================================================== */
+
+$('#resetLetters')
+.onclick =
+()=>{
+
+  letterPositions
+  [currentDesign] = {};
+
+  drawWord();
+
+};
+
+
+/* ==========================================================
+   CLEAR ALPHA
+   ========================================================== */
+
+$('#clearAlpha')
+.onclick =
+()=>{
+
+  currentAlpha = {};
+
+  loadedImages = {};
+
+  renderCharacterMap();
+
+  drawWord();
+
+};
+
+
+/* ==========================================================
+   LIVE SETTING CHANGES
+   ========================================================== */
+
+[
+  'letterHeight',
+  'letterSpacing',
+  'lineSpacing',
+  'padding',
+  'alignment',
+  'canvasWidth',
+  'canvasHeight'
+]
+.forEach(id=>{
+
+  $('#'+id)
+  .oninput =
+  ()=>{
+
+    drawWord();
+
+    autoSave();
+
+  };
+
+});
+
+
+/* ==========================================================
+   AUTOSAVE / CRASH RECOVERY
+   ========================================================== */
+
+function autoSave(){
+
+  try{
+
+    localStorage.setItem(
+
+      'moonlight-word-maker-recovery',
+
+      JSON.stringify({
+
+        words,
+
+        letterPositions,
+
+        settings
+
+      })
+
+    );
+
+  }
+
+  catch(error){}
+
+}
+
+
+function restoreRecovery(){
+
+  try{
+
+    const saved =
+    JSON.parse(
+
+      localStorage.getItem(
+        'moonlight-word-maker-recovery'
+      )
+
+    );
+
+
+    if(!saved)
+      return;
+
+
+    if(saved.words){
+
+      words =
+      saved.words
+      .slice(0,20);
+
+      while(
+        words.length < 20
+      ){
+
+        words.push('');
+
+      }
+
+    }
+
+
+    if(saved.letterPositions){
+
+      letterPositions =
+      saved.letterPositions;
+
+    }
+
+
+    if(saved.settings){
+
+      settings =
+      saved.settings;
+
+    }
+
+  }
+
+  catch(error){}
+
+}
+
+
+/* ==========================================================
+   INITIALIZE
+   ========================================================== */
+
+restoreRecovery();
+
+renderCharacterMap();
+
+renderWordInputs();
+
+drawWord();
+
+</script>
+
+</body>
+</html>
