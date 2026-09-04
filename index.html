@@ -1,16 +1,3957 @@
-<script>
-const tools=[
-  ['home','🏠 Home'],
-  ['alpha','🔤 Alpha Maker'],
-  ['detector','✂️ Detector/Splitter'],
-  ['library','⭐ Alpha Library'],
-  ['sheet','🧩 Sheet Builder'],
-  ['seamless','🌀 Seamless Maker'],
-  ['checker','🔍 Seamless Checker'],
-  ['paper','🖼️ Digital Paper'],
-  ['brain','🧠 Brain Stuck'],
-  ['lister','🛍️ Product Lister'],
-  ['image','🎨 Image Studio'],
-  ['proof','📸 Proof Maker'],
-  ['batch','📦 Batch']
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+
+<title>Moonlight Designs Workshop</title>
+
+<style>
+:root{
+ --bg:#060716;
+ --panel:#11152d;
+ --line:#343a68;
+ --text:#f7f4ff;
+ --muted:#aaa9c7;
+ --pink:#ff62c7;
+ --purple:#9d78ff;
+ --blue:#59cfff;
+ --green:#65e2b0;
+ --red:#ff6f91;
+}
+
+*{box-sizing:border-box}
+
+html,body{
+ margin:0;
+ min-height:100%;
+ background:var(--bg);
+ color:var(--text);
+ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+body{
+ background:
+ radial-gradient(circle at 10% 0,#392271 0,transparent 27%),
+ radial-gradient(circle at 100% 5%,#0c526d 0,transparent 25%),
+ var(--bg);
+}
+
+button,input,select,textarea{
+ font:inherit;
+}
+
+button{
+ touch-action:manipulation;
+ cursor:pointer;
+}
+
+header{
+ padding:28px 15px 18px;
+ text-align:center;
+}
+
+h1{
+ margin:0;
+ font-size:clamp(30px,7vw,50px);
+ background:linear-gradient(90deg,var(--pink),#e8d9ff,var(--blue));
+ -webkit-background-clip:text;
+ background-clip:text;
+ color:transparent;
+}
+
+.subtitle{
+ margin-top:10px;
+ color:#ddd9ef;
+}
+
+#app{
+ width:min(1250px,96%);
+ margin:auto;
+ padding-bottom:80px;
+}
+
+.nav{
+ display:flex;
+ overflow-x:auto;
+ gap:8px;
+ padding:10px 2px 18px;
+ scrollbar-width:none;
+}
+
+.nav::-webkit-scrollbar{display:none}
+
+.nav button{
+ flex:0 0 auto;
+ border:1px solid var(--line);
+ background:#151936;
+ color:white;
+ padding:11px 14px;
+ border-radius:12px;
+ font-weight:700;
+}
+
+.nav button.active{
+ background:linear-gradient(135deg,#754cff,#df4faf);
+ border-color:transparent;
+}
+
+.tool{display:none}
+.tool.active{display:block}
+
+.hero{
+ background:linear-gradient(135deg,#151936dd,#0b1029dd);
+ border:1px solid var(--line);
+ border-radius:22px;
+ padding:22px;
+ margin-bottom:16px;
+}
+
+.hero h2{margin:0 0 7px}
+
+.muted{color:var(--muted)}
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+ gap:12px;
+}
+
+.card{
+ background:rgba(17,21,45,.94);
+ border:1px solid var(--line);
+ border-radius:18px;
+ padding:18px;
+}
+
+.card h3{margin:0 0 8px}
+
+.toolCard{
+ cursor:pointer;
+ min-height:145px;
+}
+
+.toolCard:hover{
+ border-color:#8b73ff;
+}
+
+.toolCard:active{
+ transform:scale(.98);
+}
+
+label{
+ display:block;
+ margin:13px 0 6px;
+ font-size:13px;
+ font-weight:800;
+}
+
+input,select,textarea{
+ width:100%;
+ border:1px solid var(--line);
+ background:#080b1d;
+ color:white;
+ border-radius:11px;
+ padding:11px;
+}
+
+textarea{resize:vertical}
+
+.btn{
+ border:0;
+ color:white;
+ background:linear-gradient(135deg,#7653ff,#df4eae);
+ border-radius:11px;
+ padding:11px 14px;
+ font-weight:800;
+ margin:8px 5px 0 0;
+}
+
+.btn.secondary{background:#252a50}
+.btn.danger{background:#61243c}
+
+.row{
+ display:flex;
+ flex-wrap:wrap;
+ gap:8px;
+}
+
+.two{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:14px;
+}
+
+.uploadBox{
+ border:2px dashed #4a5080;
+ background:#090c20;
+ border-radius:16px;
+ padding:18px;
+ text-align:center;
+}
+
+.preview{
+ display:block;
+ max-width:100%;
+ max-height:400px;
+ margin:14px auto;
+ border-radius:12px;
+}
+
+.status{
+ min-height:22px;
+ margin-top:8px;
+ color:var(--green);
+ font-size:13px;
+}
+
+.canvasWrap{
+ overflow:auto;
+ background-color:#151515;
+ background-image:
+ linear-gradient(45deg,#292929 25%,transparent 25%),
+ linear-gradient(-45deg,#292929 25%,transparent 25%),
+ linear-gradient(45deg,transparent 75%,#292929 75%),
+ linear-gradient(-45deg,transparent 75%,#292929 75%);
+ background-size:24px 24px;
+ background-position:0 0,0 12px,12px -12px,-12px 0;
+ border:1px solid var(--line);
+ border-radius:14px;
+ padding:8px;
+ margin-top:12px;
+}
+
+canvas{
+ max-width:100%;
+ height:auto;
+ display:block;
+ margin:auto;
+}
+
+.tags{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:7px;
+}
+
+.tagRow{
+ display:flex;
+ align-items:center;
+ gap:5px;
+}
+
+.tagNum{
+ width:24px;
+ color:var(--muted);
+ font-size:11px;
+}
+
+.idea{
+ padding:12px;
+ margin-top:8px;
+ background:#090d22;
+ border:1px solid var(--line);
+ border-radius:12px;
+}
+
+.good{color:var(--green)}
+.bad{color:var(--red)}
+
+.infoBox{
+ margin-top:14px;
+ line-height:1.7;
+}
+
+@media(max-width:700px){
+ #app{width:94%}
+ .two{grid-template-columns:1fr}
+ .tags{grid-template-columns:1fr}
+ header{padding-top:25px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>☾ Moonlight Designs Workshop ✦</h1>
+<div class="subtitle">
+Local creative toolbox • mobile friendly • no AI key required
+</div>
+</header>
+
+<div id="app">
+
+<nav class="nav" id="nav">
+<button class="active" data-tool="home">🏠 Home</button>
+<button data-tool="upload">🖼️ Upload</button>
+<button data-tool="brain">🧠 Brain Stuck</button>
+<button data-tool="listing">🛍️ Product Lister</button>
+<button data-tool="seamless">🌀 Seamless Checker</button>
+<button data-tool="splitter">✂️ PNG Splitter</button>
+<button data-tool="image">🎨 Image Studio</button>
+<button data-tool="ideas">❤️ Idea Jar</button>
+</nav>
+
+
+<!-- HOME -->
+
+<section id="home" class="tool active">
+
+<div class="hero">
+<h2>🌙 Welcome to Your Workshop</h2>
+<div class="muted">
+Upload, brainstorm, list, inspect, split and edit your digital designs.
+</div>
+</div>
+
+<div class="grid">
+
+<div class="card toolCard" onclick="openTool('upload')">
+<h3>🖼️ Upload Center</h3>
+<p class="muted">
+Check PNG, JPG and WEBP files, dimensions and file size.
+</p>
+<button class="btn">Open Tool →</button>
+</div>
+
+<div class="card toolCard" onclick="openTool('brain')">
+<h3>🧠 Brain Stuck</h3>
+<p class="muted">
+Generate creative design ideas and detailed prompts.
+</p>
+<button class="btn">Open Tool →</button>
+</div>
+
+<div class="card toolCard" onclick="openTool('listing')">
+<h3>🛍️ Product Lister</h3>
+<p class="muted">
+Generate a title, descriptions, SEO keywords and exactly 13 tags.
+</p>
+<button class="btn">Open Tool →</button>
+</div>
+
+<div class="card toolCard" onclick="openTool('seamless')">
+<h3>🌀 Seamless Checker</h3>
+<p class="muted">
+Repeat a finished pattern tile to inspect your seamless design.
+</p>
+<button class="btn">Open Tool →</button>
+</div>
+
+<div class="card toolCard" onclick="openTool('splitter')">
+<h3>✂️ PNG Splitter</h3>
+<p class="muted">
+Detect and save separate objects from transparent PNG sheets.
+</p>
+<button class="btn">Open Tool →</button>
+</div>
+
+<div class="card toolCard" onclick="openTool('image')">
+<h3>🎨 Image Studio</h3>
+<p class="muted">
+Resize, rotate, flip and crop transparent space.
+</p>
+<button class="btn">Open Tool →</button>
+</div>
+
+<div class="card toolCard" onclick="openTool('ideas')">
+<h3>❤️ Idea Jar</h3>
+<p class="muted">
+Keep your favorite Brain Stuck ideas on your device.
+</p>
+<button class="btn">Open Tool →</button>
+</div>
+
+</div>
+</section>
+
+
+<!-- UPLOAD -->
+
+<section id="upload" class="tool">
+
+<div class="hero">
+<h2>🖼️ Universal Upload Center</h2>
+<p class="muted">
+Upload PNG, JPG or WEBP and check the file before working with it.
+</p>
+</div>
+
+<div class="card">
+
+<div class="uploadBox">
+
+<input
+ type="file"
+ id="universalFile"
+ accept="image/png,image/jpeg,image/webp"
+>
+
+<div id="uploadStatus" class="status">
+Choose an image.
+</div>
+
+</div>
+
+<img id="universalPreview" class="preview" alt="">
+
+<div id="fileInfo"></div>
+
+</div>
+</section>
+
+
+<!-- BRAIN STUCK -->
+
+<section id="brain" class="tool">
+
+<div class="hero">
+<h2>🧠 Brain Stuck</h2>
+<p class="muted">
+Stuck on what to create? Let the Workshop build an idea.
+</p>
+</div>
+
+<div class="two">
+
+<div class="card">
+
+<label>Product Type</label>
+
+<select id="brainType">
+<option>Seamless Pattern</option>
+<option>PNG Clipart</option>
+<option>Clipart Set</option>
+<option>Digital Paper</option>
+<option>Alpha</option>
+<option>Coloring Page</option>
+<option>Social Graphic</option>
+</select>
+
+<label>Theme</label>
+
+<select id="brainTheme">
+<option value="">🎲 Random</option>
+<option>Halloween</option>
+<option>Christmas</option>
+<option>Valentine</option>
+<option>Anti Valentine</option>
+<option>Western</option>
+<option>Celestial</option>
+<option>Gothic</option>
+<option>Cottagecore</option>
+<option>Retro</option>
+<option>Spring</option>
+<option>Summer</option>
+<option>Fall</option>
+<option>Winter</option>
+</select>
+
+<button class="btn" onclick="brainOne()">
+🎲 Give Me An Idea
+</button>
+
+<button class="btn secondary" onclick="brain25()">
+🔥 Give Me 25
+</button>
+
+<button class="btn secondary" onclick="brainWeird()">
+🤪 Make It Weirder
+</button>
+
+</div>
+
+<div class="card">
+
+<h3>✨ Your Idea</h3>
+
+<textarea
+ id="brainOutput"
+ rows="14"
+ placeholder="Your idea or prompt will appear here..."
+></textarea>
+
+<div class="row">
+
+<button class="btn" onclick="saveIdea()">
+❤️ Save to Idea Jar
+</button>
+
+<button class="btn secondary" onclick="copyText('brainOutput')">
+📋 Copy
+</button>
+
+</div>
+
+</div>
+</div>
+</section>
+
+
+<!-- PRODUCT LISTER -->
+
+<section id="listing" class="tool">
+
+<div class="hero">
+<h2>🛍️ Product Listing Builder</h2>
+<p class="muted">
+Build your listing locally with exactly 13 editable tags.
+</p>
+</div>
+
+<div class="two">
+
+<div class="card">
+
+<label>Product Type</label>
+
+<select id="pType">
+<option>PNG Clipart</option>
+<option>Seamless Pattern</option>
+<option>Digital Paper</option>
+<option>Alpha</option>
+<option>Clipart Bundle</option>
+<option>SVG</option>
+<option>Coloring Page</option>
+<option>Digital Download</option>
+</select>
+
+<label>Main Subject</label>
+<input id="pSubject" placeholder="Example: Highland cow">
+
+<label>Theme</label>
+<input id="pTheme" placeholder="Example: Christmas">
+
+<label>Style</label>
+<input id="pStyle" placeholder="Example: cute whimsical">
+
+<label>Colors</label>
+<input id="pColors" placeholder="Example: pink purple blue">
+
+<label>Extra Details</label>
+<textarea
+ id="pDetails"
+ rows="5"
+ placeholder="Example: bows, snowflakes, flowers..."
+></textarea>
+
+<button class="btn" onclick="makeListing()">
+✨ Generate Listing
+</button>
+
+<button class="btn secondary" onclick="surpriseListing()">
+🎲 Surprise Me
+</button>
+
+</div>
+
+
+<div class="card">
+
+<label>Product Title</label>
+<textarea id="pTitle" rows="3"></textarea>
+
+<label>Short Description</label>
+<textarea id="pShort" rows="3"></textarea>
+
+<label>Full Description</label>
+<textarea id="pDescription" rows="11"></textarea>
+
+<label>SEO Keywords</label>
+<textarea id="pKeywords" rows="4"></textarea>
+
+<label>
+Exactly 13 Tags
+<span id="tagCount" class="good"></span>
+</label>
+
+<div id="tagHolder" class="tags"></div>
+
+<div class="row">
+
+<button class="btn" onclick="copyListing()">
+📋 Copy Entire Listing
+</button>
+
+<button class="btn secondary" onclick="copyTags()">
+🏷️ Copy Tags
+</button>
+
+<button class="btn secondary" onclick="makeTags()">
+🔄 New Tags
+</button>
+
+</div>
+
+<div id="listingStatus" class="status"></div>
+
+</div>
+</div>
+</section>
+
+
+<!-- SEAMLESS CHECKER -->
+
+<section id="seamless" class="tool">
+
+<div class="hero">
+<h2>🌀 Seamless Checker</h2>
+<p class="muted">
+Upload a finished tile and see it repeated instantly.
+</p>
+</div>
+
+<div class="card">
+
+<input
+ type="file"
+ id="seamFile"
+ accept="image/png,image/jpeg,image/webp"
+>
+
+<div id="seamStatus" class="status">
+Choose your pattern tile.
+</div>
+
+<label>Repeat Grid</label>
+
+<select id="repeatCount">
+<option value="2">2 × 2</option>
+<option value="3" selected>3 × 3</option>
+<option value="4">4 × 4</option>
+<option value="5">5 × 5</option>
+<option value="6">6 × 6</option>
+</select>
+
+<label>Pattern Scale</label>
+
+<input
+ id="repeatScale"
+ type="range"
+ min="25"
+ max="100"
+ value="100"
+>
+
+<button class="btn" onclick="drawRepeat()">
+🔍 Refresh Preview
+</button>
+
+<div class="canvasWrap">
+<canvas
+ id="repeatCanvas"
+ width="700"
+ height="700"
+></canvas>
+</div>
+
+</div>
+</section>
+
+
+<!-- PNG SPLITTER -->
+
+<section id="splitter" class="tool">
+
+<div class="hero">
+<h2>✂️ PNG Object Splitter</h2>
+<p class="muted">
+Upload a transparent PNG sheet and detect separated objects locally.
+</p>
+</div>
+
+<div class="card">
+
+<input
+ type="file"
+ id="splitFile"
+ accept="image/png"
+>
+
+<div id="splitStatus" class="status">
+Choose a transparent PNG.
+</div>
+
+<label>Minimum Object Area</label>
+
+<input
+ id="splitMin"
+ type="number"
+ value="150"
+ min="1"
+>
+
+<button class="btn" onclick="detectObjects()">
+🔎 Detect Objects
+</button>
+
+<div class="canvasWrap">
+<canvas id="splitCanvas"></canvas>
+</div>
+
+<h3>Detected Objects</h3>
+
+<div id="splitDownloads" class="grid"></div>
+
+</div>
+</section>
+
+
+<!-- IMAGE STUDIO -->
+
+<section id="image" class="tool">
+
+<div class="hero">
+<h2>🎨 Image Studio</h2>
+<p class="muted">
+Resize, rotate, flip, crop transparent space and export PNG.
+</p>
+</div>
+
+<div class="two">
+
+<div class="card">
+
+<input
+ type="file"
+ id="studioFile"
+ accept="image/png,image/jpeg,image/webp"
+>
+
+<div id="studioStatus" class="status">
+Choose an image.
+</div>
+
+<label>Width</label>
+<input id="studioW" type="number" value="5000" min="1">
+
+<label>Height</label>
+<input id="studioH" type="number" value="5000" min="1">
+
+<div class="row">
+
+<button class="btn" onclick="studioResize()">
+📐 Resize
+</button>
+
+<button class="btn secondary" onclick="studioRotate()">
+↻ Rotate 90°
+</button>
+
+<button class="btn secondary" onclick="studioFlip()">
+↔ Flip
+</button>
+
+<button class="btn secondary" onclick="studioCrop()">
+✂️ Crop Transparency
+</button>
+
+</div>
+
+<button class="btn" onclick="downloadStudio()">
+⬇️ Download PNG
+</button>
+
+</div>
+
+<div class="card">
+
+<h3>Preview</h3>
+
+<div class="canvasWrap">
+<canvas id="studioCanvas"></canvas>
+</div>
+
+</div>
+</div>
+</section>
+
+
+<!-- IDEA JAR -->
+
+<section id="ideas" class="tool">
+
+<div class="hero">
+<h2>❤️ Idea Jar</h2>
+<p class="muted">
+Ideas saved here remain on this browser/device.
+</p>
+</div>
+
+<div class="card">
+
+<button class="btn danger" onclick="clearIdeas()">
+🗑 Clear Idea Jar
+</button>
+
+<div id="ideaList"></div>
+
+</div>
+</section>
+
+</div>
+
+<!-- PART 2 GOES DIRECTLY BELOW THIS LINE-->
+  <script>
+"use strict";
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+const toolSections =
+document.querySelectorAll(".tool");
+
+const navButtons =
+document.querySelectorAll("#nav button");
+
+function openTool(id){
+
+  toolSections.forEach(section=>{
+    section.classList.toggle(
+      "active",
+      section.id === id
+    );
+  });
+
+  navButtons.forEach(button=>{
+    button.classList.toggle(
+      "active",
+      button.dataset.tool === id
+    );
+  });
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+  if(id === "ideas"){
+    renderIdeas();
+  }
+}
+
+navButtons.forEach(button=>{
+  button.addEventListener("click",()=>{
+    openTool(button.dataset.tool);
+  });
+});
+
+
+/* =========================================
+   GENERAL HELPERS
+========================================= */
+
+function rand(array){
+  return array[
+    Math.floor(Math.random() * array.length)
+  ];
+}
+
+function escapeHTML(value){
+
+  return String(value).replace(
+    /[&<>"']/g,
+    char=>({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#39;"
+    }[char])
+  );
+}
+
+function formatBytes(bytes){
+
+  if(bytes === 0){
+    return "0 Bytes";
+  }
+
+  const units=[
+    "Bytes",
+    "KB",
+    "MB",
+    "GB"
+  ];
+
+  const index=
+  Math.floor(
+    Math.log(bytes) /
+    Math.log(1024)
+  );
+
+  return (
+    bytes /
+    Math.pow(1024,index)
+  ).toFixed(index ? 2 : 0)
+  + " " +
+  units[index];
+}
+
+async function copyText(id){
+
+  const element=
+  document.getElementById(id);
+
+  const text=
+  element.value ||
+  element.textContent ||
+  "";
+
+  try{
+
+    await navigator.clipboard.writeText(text);
+
+  }catch(error){
+
+    if(element.select){
+
+      element.select();
+
+      document.execCommand("copy");
+    }
+  }
+}
+
+function loadImageFile(file){
+
+  return new Promise((resolve,reject)=>{
+
+    if(!file){
+
+      reject(
+        new Error(
+          "No file selected."
+        )
+      );
+
+      return;
+    }
+
+    if(
+      !file.type.startsWith("image/")
+    ){
+
+      reject(
+        new Error(
+          "Please choose an image file."
+        )
+      );
+
+      return;
+    }
+
+    const url=
+    URL.createObjectURL(file);
+
+    const image=
+    new Image();
+
+    image.onload=()=>{
+
+      URL.revokeObjectURL(url);
+
+      resolve(image);
+    };
+
+    image.onerror=()=>{
+
+      URL.revokeObjectURL(url);
+
+      reject(
+        new Error(
+          "This image could not be loaded."
+        )
+      );
+    };
+
+    image.src=url;
+  });
+}
+
+function downloadCanvas(
+  canvas,
+  filename
+){
+
+  canvas.toBlob(blob=>{
+
+    if(!blob){
+      alert("Could not create PNG.");
+      return;
+    }
+
+    const url=
+    URL.createObjectURL(blob);
+
+    const link=
+    document.createElement("a");
+
+    link.href=url;
+    link.download=filename;
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    link.remove();
+
+    setTimeout(()=>{
+      URL.revokeObjectURL(url);
+    },1000);
+
+  },"image/png");
+}
+
+
+/* =========================================
+   UNIVERSAL UPLOAD CENTER
+========================================= */
+
+const universalFile=
+document.getElementById(
+  "universalFile"
+);
+
+let universalPreviewURL=null;
+
+universalFile.addEventListener(
+  "change",
+  async event=>{
+
+    const file=
+    event.target.files?.[0];
+
+    const status=
+    document.getElementById(
+      "uploadStatus"
+    );
+
+    const preview=
+    document.getElementById(
+      "universalPreview"
+    );
+
+    const info=
+    document.getElementById(
+      "fileInfo"
+    );
+
+    if(!file){
+      return;
+    }
+
+    status.textContent=
+    "Loading image…";
+
+    info.innerHTML="";
+
+    try{
+
+      const image=
+      await loadImageFile(file);
+
+      if(universalPreviewURL){
+        URL.revokeObjectURL(
+          universalPreviewURL
+        );
+      }
+
+      universalPreviewURL=
+      URL.createObjectURL(file);
+
+      preview.src=
+      universalPreviewURL;
+
+      status.textContent=
+      "Loaded ✓";
+
+      info.innerHTML=`
+        <div class="card infoBox">
+
+          <div class="good">
+            <strong>Loaded ✓</strong>
+          </div>
+
+          <strong>Filename:</strong>
+          ${escapeHTML(file.name)}
+          <br>
+
+          <strong>Dimensions:</strong>
+          ${image.naturalWidth}
+          ×
+          ${image.naturalHeight}
+          px
+          <br>
+
+          <strong>File Size:</strong>
+          ${formatBytes(file.size)}
+          <br>
+
+          <strong>File Type:</strong>
+          ${escapeHTML(
+            file.type || "Unknown"
+          )}
+
+        </div>
+      `;
+
+    }catch(error){
+
+      preview.removeAttribute("src");
+
+      status.textContent=
+      "❌ " + error.message;
+
+      info.innerHTML="";
+    }
+  }
+);
+
+
+/* =========================================
+   BRAIN STUCK DATABASE
+========================================= */
+
+const brainSubjects=[
+
+  "highland cow",
+  "black cat",
+  "ghost",
+  "skeleton",
+  "alien",
+  "raven",
+  "owl",
+  "moth",
+  "butterfly",
+  "dragonfly",
+  "bee",
+  "frog",
+  "possum",
+  "raccoon",
+  "fox",
+  "bunny",
+  "bear",
+  "deer",
+  "horse",
+  "cow",
+  "pig",
+  "goat",
+  "chicken",
+  "snake",
+  "dragon",
+  "mermaid",
+  "jellyfish",
+  "octopus",
+  "witch",
+  "fairy",
+  "cute monster",
+  "gingerbread man",
+  "snowman",
+  "reindeer",
+  "nutcracker",
+  "pumpkin",
+  "skull",
+  "mushroom",
+  "sunflower",
+  "wildflower bouquet",
+  "rose",
+  "crescent moon",
+  "sun",
+  "crystal ball",
+  "tarot card",
+  "potion bottle",
+  "coffee cup",
+  "cowboy boot",
+  "cowboy hat",
+  "cactus",
+  "strawberry",
+  "cherries",
+  "retro television",
+  "cassette tape",
+  "roller skate",
+  "spooky house",
+  "witchy bookshelf",
+  "crystal cluster",
+  "flower pot",
+  "heart-shaped cake",
+  "broken heart",
+  "anatomical heart",
+  "retro smiley face",
+  "cute bat",
+  "moon phase collection",
+  "western longhorn",
+  "floral skull",
+  "celestial mushroom",
+  "Christmas cocoa cup",
+  "ornament",
+  "candy cane",
+  "snow globe",
+  "haunted pumpkin",
+  "disco ghost",
+  "cowgirl skeleton",
+  "alien cow",
+  "flower-covered cow",
+  "gothic butterfly"
+
 ];
+
+const brainStyles=[
+
+  "whimsical hand-drawn",
+  "cute spooky",
+  "retro groovy",
+  "gothic vintage",
+  "western boho",
+  "celestial dreamy",
+  "bold preppy",
+  "cottagecore",
+  "storybook",
+  "psychedelic",
+  "rustic",
+  "kawaii",
+  "dark romantic",
+  "90s colorful",
+  "folk art",
+  "tattoo inspired",
+  "playful doodle",
+  "watercolor inspired",
+  "vintage storybook",
+  "soft bohemian",
+  "maximalist",
+  "minimal cute",
+  "witchy celestial",
+  "retro western",
+  "girly gothic",
+  "hand-painted",
+  "marker-drawn",
+  "vintage distressed",
+  "cute cartoon",
+  "dreamy fantasy",
+  "funky 70s",
+  "bright Y2K",
+  "moody botanical",
+  "country western",
+  "sweet pastel",
+  "bold graphic",
+  "storybook Christmas"
+
+];
+
+const brainPalettes=[
+
+  "hot pink, purple and electric blue",
+  "burgundy, black and dusty rose",
+  "pastel pink, mint and lavender",
+  "orange, black and violet",
+  "turquoise, coral and cream",
+  "earthy brown, sage and rust",
+  "rainbow tie-dye colors",
+  "midnight blue, silver and violet",
+  "pink, purple and blue Christmas colors",
+  "traditional red, green and gold",
+  "neon cosmic colors",
+  "peach, teal and mustard",
+  "black, hot pink and white",
+  "sage, cream and terracotta",
+  "lavender, turquoise and navy",
+  "bright rainbow colors",
+  "soft pastel rainbow colors",
+  "red, pink and black",
+  "rust, sunflower yellow and teal",
+  "black, burgundy and antique gold",
+  "pink, orange and turquoise",
+  "navy, magenta and lavender",
+  "cream, dusty blue and rose",
+  "forest green, copper and cream",
+  "electric pink, lime and purple",
+  "soft peach, lilac and baby blue",
+  "black, silver and icy blue",
+  "burnt orange, plum and charcoal"
+
+];
+
+const brainActions=[
+
+  "wearing oversized heart sunglasses",
+  "surrounded by tiny stars",
+  "holding a coffee cup",
+  "wearing a flower crown",
+  "floating through a cosmic sky",
+  "covered in bows",
+  "surrounded by wildflowers",
+  "wearing a cowboy hat",
+  "having a hilariously bad day",
+  "wrapped in Christmas lights",
+  "posing dramatically",
+  "holding tiny mushrooms",
+  "surrounded by butterflies",
+  "wearing roller skates",
+  "under a crescent moon",
+  "holding a bouquet",
+  "wearing a witch hat",
+  "covered in tiny hearts",
+  "sitting inside a flower pot",
+  "holding a crystal ball",
+  "wearing retro sunglasses",
+  "surrounded by sparkles",
+  "peeking through flowers",
+  "holding a tiny sign",
+  "dancing under the stars",
+  "wearing a giant bow",
+  "holding a candy cane",
+  "wrapped in vines",
+  "sitting on a crescent moon",
+  "wearing a western bandana",
+  "holding a tiny pumpkin",
+  "surrounded by floating moons",
+  "drinking hot cocoa",
+  "wearing a Santa hat",
+  "covered in colorful flowers",
+  "sitting among mushrooms",
+  "wearing a crown",
+  "holding a heart-shaped balloon",
+  "riding through a cosmic tornado",
+  "surrounded by tiny ghosts"
+
+];
+
+const brainSettings=[
+
+  "moonlit meadow",
+  "retro motel",
+  "wildflower field",
+  "cosmic desert",
+  "haunted garden",
+  "snowy Christmas village",
+  "western desert",
+  "mushroom forest",
+  "celestial sky",
+  "cozy craft room",
+  "spooky graveyard",
+  "spring garden",
+  "magical greenhouse",
+  "retro roller rink",
+  "witchy cottage",
+  "flower shop",
+  "haunted library",
+  "cosmic garden",
+  "western ghost town",
+  "enchanted forest",
+  "neon desert",
+  "country farmhouse",
+  "moon garden",
+  "retro diner",
+  "pumpkin patch",
+  "Christmas tree farm",
+  "dreamy cloudscape",
+  "dark botanical garden",
+  "wild western prairie",
+  "magical crystal cave"
+
+];
+
+const brainExtras=[
+
+  "tiny disco cowboy ghosts",
+  "a sarcastic frog sidekick",
+  "floating heart-shaped planets",
+  "miniature alien abductors",
+  "dramatic tattoo-style flames",
+  "an unreasonable amount of bows",
+  "tiny skeleton backup dancers",
+  "a confused possum holding coffee",
+  "mini mushrooms wearing cowboy hats",
+  "floating retro smiley faces",
+  "tiny ghosts carrying shopping bags",
+  "a miniature alien rodeo",
+  "a skeleton drinking iced coffee",
+  "cowboy boots growing flowers",
+  "a moon wearing heart sunglasses",
+  "a grumpy frog in a flower crown",
+  "tiny bats wearing bows",
+  "a raccoon stealing Christmas cookies",
+  "floating celestial cherries",
+  "a ghost riding a roller skate"
+
+];
+
+const randomThemes=[
+
+  "Halloween",
+  "Christmas",
+  "Valentine",
+  "Anti Valentine",
+  "Western",
+  "Celestial",
+  "Gothic",
+  "Cottagecore",
+  "Retro",
+  "Spring",
+  "Summer",
+  "Fall",
+  "Winter",
+  "Spooky Cute",
+  "Wildflower",
+  "Cosmic",
+  "Boho",
+  "Funny",
+  "Whimsical"
+
+];
+
+
+/* =========================================
+   BRAIN STUCK GENERATOR
+========================================= */
+
+function brainPrompt(
+  weird=false
+){
+
+  const type=
+  document.getElementById(
+    "brainType"
+  ).value;
+
+  const chosenTheme=
+  document.getElementById(
+    "brainTheme"
+  ).value;
+
+  const theme=
+  chosenTheme ||
+  rand(randomThemes);
+
+  const subject=
+  rand(brainSubjects);
+
+  const style=
+  rand(brainStyles);
+
+  const palette=
+  rand(brainPalettes);
+
+  const action=
+  rand(brainActions);
+
+  const setting=
+  rand(brainSettings);
+
+  const weirdPart=
+  weird
+  ?
+  ` Add an unexpected detail: ${rand(brainExtras)}.`
+  :
+  "";
+
+  if(
+    type ===
+    "Seamless Pattern"
+  ){
+
+    return (
+      `Create a true seamless repeating ${theme} pattern featuring ` +
+      `${subject}, ${action}, in a ${style} style. ` +
+      `Use ${palette}. Add coordinating elements inspired by a ${setting}. ` +
+      `Keep the composition balanced with varied scale and rotation, ` +
+      `avoid awkward empty areas, preserve edge continuity, and make sure ` +
+      `elements crossing one edge continue naturally on the opposite edge.` +
+      weirdPart
+    );
+  }
+
+  if(
+    type ===
+    "PNG Clipart"
+  ){
+
+    return (
+      `Create isolated ${theme} PNG clipart featuring a ${subject} ${action}. ` +
+      `Use a ${style} style with ${palette}. ` +
+      `Keep the full subject centered with no cutoffs, crisp readable details, ` +
+      `clean outer edges, and a composition suitable for a transparent background.` +
+      weirdPart
+    );
+  }
+
+  if(
+    type ===
+    "Clipart Set"
+  ){
+
+    return (
+      `Create a coordinated ${theme} clipart collection centered around ${subject}. ` +
+      `Use a ${style} style and ${palette}. Include the main subject ${action}, ` +
+      `plus coordinating decorative objects inspired by a ${setting}. ` +
+      `Each piece should be separate, complete, uncropped, and suitable for transparent PNG export.` +
+      weirdPart
+    );
+  }
+
+  if(
+    type ===
+    "Digital Paper"
+  ){
+
+    return (
+      `Create a full digital paper background inspired by ${theme}, featuring ${subject} ` +
+      `in a ${style} style. Use ${palette}. Build a rich background inspired by a ${setting}, ` +
+      `with balanced decorative details filling the canvas without looking overcrowded.` +
+      weirdPart
+    );
+  }
+
+  if(
+    type ===
+    "Alpha"
+  ){
+
+    return (
+      `Create a cohesive A–Z alphabet inspired by ${theme} and ${subject}. ` +
+      `Use a ${style} style with ${palette}. Keep every letter highly readable ` +
+      `while using consistent decorative elements throughout the entire alphabet. ` +
+      `Make each character visually coordinated but individually recognizable.` +
+      weirdPart
+    );
+  }
+
+  if(
+    type ===
+    "Coloring Page"
+  ){
+
+    return (
+      `Create a black-line coloring page featuring ${subject} ${action} in a ${theme} ${setting}. ` +
+      `Use clean bold outlines, white background only, no color or grayscale, ` +
+      `clear enclosed shapes, and comfortable open areas for coloring.` +
+      weirdPart
+    );
+  }
+
+  if(
+    type ===
+    "Social Graphic"
+  ){
+
+    return (
+      `Create a ${theme} social media graphic featuring ${subject} in a ${style} style. ` +
+      `Use ${palette}. Leave intentional open space for promotional text, ` +
+      `keep the focal subject easy to see on a phone screen, and use visual inspiration from a ${setting}.` +
+      weirdPart
+    );
+  }
+
+  return (
+    `Create a ${type} featuring ${subject} ${action}. ` +
+    `Theme: ${theme}. Style: ${style}. Palette: ${palette}. ` +
+    `Setting inspiration: ${setting}.` +
+    weirdPart
+  );
+}
+
+function brainOne(){
+
+  document.getElementById(
+    "brainOutput"
+  ).value=
+  brainPrompt(false);
+}
+
+function brainWeird(){
+
+  document.getElementById(
+    "brainOutput"
+  ).value=
+  brainPrompt(true);
+}
+
+function brain25(){
+
+  const results=[];
+
+  for(
+    let i=1;
+    i<=25;
+    i++
+  ){
+
+    results.push(
+      `${i}. ${brainPrompt(false)}`
+    );
+  }
+
+  document.getElementById(
+    "brainOutput"
+  ).value=
+  results.join("\n\n");
+}
+
+
+/* =========================================
+   IDEA JAR
+========================================= */
+
+function getIdeas(){
+
+  try{
+
+    return JSON.parse(
+      localStorage.getItem(
+        "moonlightIdeaJar"
+      ) || "[]"
+    );
+
+  }catch(error){
+
+    return [];
+  }
+}
+
+function saveIdea(){
+
+  const output=
+  document.getElementById(
+    "brainOutput"
+  );
+
+  const text=
+  output.value.trim();
+
+  if(!text){
+
+    alert(
+      "Generate an idea first."
+    );
+
+    return;
+  }
+
+  const ideas=
+  getIdeas();
+
+  ideas.unshift({
+
+    text:text,
+
+    date:
+    new Date().toLocaleString()
+
+  });
+
+  localStorage.setItem(
+    "moonlightIdeaJar",
+    JSON.stringify(
+      ideas.slice(0,250)
+    )
+  );
+
+  renderIdeas();
+
+  alert(
+    "Saved to your Idea Jar ❤️"
+  );
+}
+
+function renderIdeas(){
+
+  const holder=
+  document.getElementById(
+    "ideaList"
+  );
+
+  const ideas=
+  getIdeas();
+
+  if(!ideas.length){
+
+    holder.innerHTML=
+    `<p class="muted">
+      Your Idea Jar is empty.
+      Save ideas from Brain Stuck and they will appear here.
+    </p>`;
+
+    return;
+  }
+
+  holder.innerHTML=
+  ideas.map(
+    (idea,index)=>`
+
+      <div class="idea">
+
+        <strong>
+          ✨ Idea ${index+1}
+        </strong>
+
+        <div class="muted">
+          ${escapeHTML(idea.date)}
+        </div>
+
+        <p>
+          ${escapeHTML(idea.text)}
+        </p>
+
+        <button
+          class="btn secondary"
+          onclick="copyIdea(${index})"
+        >
+          📋 Copy
+        </button>
+
+        <button
+          class="btn danger"
+          onclick="removeIdea(${index})"
+        >
+          🗑 Delete
+        </button>
+
+      </div>
+
+    `
+  ).join("");
+}
+
+async function copyIdea(index){
+
+  const ideas=
+  getIdeas();
+
+  const idea=
+  ideas[index];
+
+  if(!idea){
+    return;
+  }
+
+  try{
+
+    await navigator.clipboard.writeText(
+      idea.text
+    );
+
+  }catch(error){
+
+    alert(
+      "Copy failed. Press and hold the idea text to copy it."
+    );
+  }
+}
+
+function removeIdea(index){
+
+  const ideas=
+  getIdeas();
+
+  ideas.splice(index,1);
+
+  localStorage.setItem(
+    "moonlightIdeaJar",
+    JSON.stringify(ideas)
+  );
+
+  renderIdeas();
+}
+
+function clearIdeas(){
+
+  if(
+    !confirm(
+      "Clear your entire Idea Jar?"
+    )
+  ){
+    return;
+  }
+
+  localStorage.removeItem(
+    "moonlightIdeaJar"
+  );
+
+  renderIdeas();
+}
+
+renderIdeas();
+
+
+/* =========================================
+   PART 3 CONTINUES BELOW
+========================================= */
+    /* =========================================
+   PRODUCT LISTING BUILDER
+========================================= */
+
+function uniqueList(array){
+
+  return [
+    ...new Set(
+      array
+      .map(item=>item.trim())
+      .filter(Boolean)
+    )
+  ];
+}
+
+
+function listingValues(){
+
+  return {
+
+    type:
+    document.getElementById("pType").value,
+
+    subject:
+    document.getElementById("pSubject")
+    .value.trim() || "digital design",
+
+    theme:
+    document.getElementById("pTheme")
+    .value.trim() || "creative",
+
+    style:
+    document.getElementById("pStyle")
+    .value.trim() || "whimsical",
+
+    colors:
+    document.getElementById("pColors")
+    .value.trim() || "colorful",
+
+    details:
+    document.getElementById("pDetails")
+    .value.trim()
+
+  };
+}
+
+
+/* =========================================
+   SURPRISE LISTING
+========================================= */
+
+function surpriseListing(){
+
+  document.getElementById("pSubject").value=
+  rand(brainSubjects);
+
+  document.getElementById("pTheme").value=
+  rand(randomThemes);
+
+  document.getElementById("pStyle").value=
+  rand(brainStyles);
+
+  document.getElementById("pColors").value=
+  rand(brainPalettes);
+
+  document.getElementById("pDetails").value=
+  `${rand(brainActions)}, inspired by a ${rand(brainSettings)}`;
+
+  makeListing();
+}
+
+
+/* =========================================
+   TAG GENERATOR
+========================================= */
+
+function generateTagArray(){
+
+  const value=
+  listingValues();
+
+  let tags=[
+
+    value.subject,
+
+    `${value.subject} ${value.type}`,
+
+    `${value.theme} ${value.subject}`,
+
+    `${value.theme} ${value.type}`,
+
+    `${value.style} ${value.subject}`,
+
+    `${value.subject} design`,
+
+    `${value.subject} download`,
+
+    `${value.theme} design`,
+
+    `${value.type} download`,
+
+    `digital ${value.type}`,
+
+    `${value.subject} clipart`,
+
+    `${value.subject} printable`,
+
+    `${value.subject} sublimation`,
+
+    `${value.theme} clipart`,
+
+    `${value.style} design`,
+
+    `${value.theme} download`,
+
+    `${value.theme} printable`,
+
+    `${value.style} digital art`,
+
+    `${value.subject} craft file`,
+
+    `${value.subject} digital art`,
+
+    `small business design`,
+
+    `digital craft file`
+
+  ];
+
+  tags=
+  uniqueList(tags);
+
+  /*
+   Fill until there are at least 13 unique tags.
+  */
+
+  const extras=[
+
+    `cute ${value.subject}`,
+
+    `unique ${value.subject}`,
+
+    `trendy ${value.subject}`,
+
+    `${value.theme} art`,
+
+    `${value.theme} graphic`,
+
+    `${value.subject} graphic`,
+
+    `${value.style} artwork`,
+
+    `${value.subject} png`,
+
+    `${value.theme} png`,
+
+    `${value.subject} file`,
+
+    `creative ${value.subject}`,
+
+    `${value.theme} craft`,
+
+    `${value.subject} artwork`
+
+  ];
+
+  for(const extra of extras){
+
+    if(tags.length>=13){
+      break;
+    }
+
+    if(
+      !tags.includes(extra)
+    ){
+      tags.push(extra);
+    }
+  }
+
+  return tags.slice(0,13);
+}
+
+
+function displayTags(tags){
+
+  const holder=
+  document.getElementById(
+    "tagHolder"
+  );
+
+  holder.innerHTML="";
+
+  tags.forEach(
+    (tag,index)=>{
+
+      const row=
+      document.createElement(
+        "div"
+      );
+
+      row.className=
+      "tagRow";
+
+
+      const number=
+      document.createElement(
+        "span"
+      );
+
+      number.className=
+      "tagNum";
+
+      number.textContent=
+      index+1;
+
+
+      const input=
+      document.createElement(
+        "input"
+      );
+
+      input.className=
+      "productTag";
+
+      input.value=
+      tag;
+
+      input.setAttribute(
+        "aria-label",
+        `Tag ${index+1}`
+      );
+
+      input.addEventListener(
+        "input",
+        updateTagCount
+      );
+
+
+      row.append(
+        number,
+        input
+      );
+
+      holder.appendChild(
+        row
+      );
+
+    }
+  );
+
+  updateTagCount();
+}
+
+
+function updateTagCount(){
+
+  const tagInputs=[
+    ...document.querySelectorAll(
+      ".productTag"
+    )
+  ];
+
+  const filled=
+  tagInputs.filter(
+    input=>input.value.trim()
+  ).length;
+
+  const values=
+  tagInputs
+  .map(input=>
+    input.value
+    .trim()
+    .toLowerCase()
+  )
+  .filter(Boolean);
+
+  const duplicateCount=
+  values.length -
+  new Set(values).size;
+
+  const count=
+  document.getElementById(
+    "tagCount"
+  );
+
+  count.textContent=
+  `${filled} / 13`;
+
+  if(
+    filled===13 &&
+    duplicateCount===0
+  ){
+
+    count.className=
+    "good";
+
+  }else{
+
+    count.className=
+    "bad";
+  }
+
+
+  const status=
+  document.getElementById(
+    "listingStatus"
+  );
+
+  if(duplicateCount>0){
+
+    status.textContent=
+    `⚠️ ${duplicateCount} duplicate tag${duplicateCount===1 ? "" : "s"} found.`;
+
+  }else if(filled===13){
+
+    status.textContent=
+    "13 unique tags ready ✓";
+
+  }else{
+
+    status.textContent=
+    `${13-filled} tag${13-filled===1 ? "" : "s"} still needed.`;
+  }
+}
+
+
+function makeTags(){
+
+  displayTags(
+    generateTagArray()
+  );
+}
+
+
+/* =========================================
+   GENERATE PRODUCT LISTING
+========================================= */
+
+function makeListing(){
+
+  const value=
+  listingValues();
+
+
+  const cleanType=
+  value.type
+  .replace(/\s+/g," ")
+  .trim();
+
+
+  document.getElementById(
+    "pTitle"
+  ).value=
+
+  `${value.theme} ${value.subject} ${cleanType} | ${value.style} Digital Design | Instant Download`;
+
+
+  document.getElementById(
+    "pShort"
+  ).value=
+
+  `${value.style} ${value.theme} ${value.subject} ${cleanType} featuring ${value.colors}. A fun digital design for creative projects, crafts and small-business use.`;
+
+
+  let detailLine="";
+
+  if(value.details){
+
+    detailLine=
+    `• Extra details: ${value.details}\n`;
+  }
+
+
+  document.getElementById(
+    "pDescription"
+  ).value=
+
+`✨ ${value.theme} ${value.subject} ${cleanType}
+
+Add a creative touch to your next project with this ${value.style} ${value.subject} design.
+
+🎨 DESIGN DETAILS
+• Product: ${cleanType}
+• Theme: ${value.theme}
+• Subject: ${value.subject}
+• Style: ${value.style}
+• Colors: ${value.colors}
+${detailLine}
+📦 DIGITAL PRODUCT
+This listing is for a digital product. No physical item will be shipped.
+
+💡 GREAT FOR
+• Sublimation projects
+• Shirts and apparel
+• Tumblers
+• Stickers
+• Scrapbooking
+• Custom gifts
+• Small-business craft projects
+• Personal creative projects
+
+🌙 PLEASE NOTE
+Colors may vary slightly between screens, printers and materials.
+
+Please follow the seller's license and usage terms for commercial or personal use.`;
+
+
+  const keywords=
+  uniqueList([
+
+    value.subject,
+
+    value.theme,
+
+    cleanType,
+
+    value.style,
+
+    `${value.theme} ${value.subject}`,
+
+    `${value.subject} ${cleanType}`,
+
+    `${value.subject} digital download`,
+
+    `${value.theme} digital design`,
+
+    `${value.style} ${value.subject}`,
+
+    `${value.subject} craft design`,
+
+    `${value.theme} craft file`,
+
+    `${value.subject} printable`
+
+  ]);
+
+
+  document.getElementById(
+    "pKeywords"
+  ).value=
+  keywords.join(", ");
+
+
+  makeTags();
+
+
+  document.getElementById(
+    "listingStatus"
+  ).textContent=
+  "Listing generated ✓";
+}
+
+
+/* =========================================
+   COPY PRODUCT TAGS
+========================================= */
+
+async function copyTags(){
+
+  const tags=[
+    ...document.querySelectorAll(
+      ".productTag"
+    )
+  ]
+  .map(input=>
+    input.value.trim()
+  )
+  .filter(Boolean);
+
+  if(!tags.length){
+
+    document.getElementById(
+      "listingStatus"
+    ).textContent=
+    "Generate your tags first.";
+
+    return;
+  }
+
+  try{
+
+    await navigator.clipboard.writeText(
+      tags.join(", ")
+    );
+
+    document.getElementById(
+      "listingStatus"
+    ).textContent=
+    "13 tags copied ✓";
+
+  }catch(error){
+
+    document.getElementById(
+      "listingStatus"
+    ).textContent=
+    "Copy failed. Press and hold the tags to copy.";
+  }
+}
+
+
+/* =========================================
+   COPY ENTIRE LISTING
+========================================= */
+
+async function copyListing(){
+
+  const tags=[
+    ...document.querySelectorAll(
+      ".productTag"
+    )
+  ]
+  .map(input=>
+    input.value.trim()
+  )
+  .filter(Boolean);
+
+
+  const text=
+
+`TITLE
+${document.getElementById("pTitle").value}
+
+SHORT DESCRIPTION
+${document.getElementById("pShort").value}
+
+DESCRIPTION
+${document.getElementById("pDescription").value}
+
+SEO KEYWORDS
+${document.getElementById("pKeywords").value}
+
+13 TAGS
+${tags.join(", ")}`;
+
+
+  try{
+
+    await navigator.clipboard.writeText(
+      text
+    );
+
+    document.getElementById(
+      "listingStatus"
+    ).textContent=
+    "Entire listing copied ✓";
+
+  }catch(error){
+
+    document.getElementById(
+      "listingStatus"
+    ).textContent=
+    "Copy failed. Select the listing text manually.";
+  }
+}
+
+
+/* =========================================
+   INITIALIZE 13 EMPTY TAG BOXES
+========================================= */
+
+displayTags(
+  Array(13).fill("")
+);
+
+
+/* =========================================
+   SEAMLESS CHECKER
+========================================= */
+
+let seamImage=null;
+
+
+const seamFile=
+document.getElementById(
+  "seamFile"
+);
+
+
+seamFile.addEventListener(
+  "change",
+  async event=>{
+
+    const file=
+    event.target.files?.[0];
+
+    const status=
+    document.getElementById(
+      "seamStatus"
+    );
+
+    if(!file){
+      return;
+    }
+
+    status.textContent=
+    "Loading pattern…";
+
+    try{
+
+      seamImage=
+      await loadImageFile(file);
+
+      status.textContent=
+      `Loaded ✓ ${seamImage.naturalWidth} × ${seamImage.naturalHeight}px`;
+
+      drawRepeat();
+
+    }catch(error){
+
+      seamImage=null;
+
+      status.textContent=
+      "❌ " + error.message;
+    }
+  }
+);
+
+
+/* =========================================
+   LIVE SEAMLESS CONTROLS
+========================================= */
+
+document.getElementById(
+  "repeatCount"
+).addEventListener(
+  "change",
+  drawRepeat
+);
+
+
+document.getElementById(
+  "repeatScale"
+).addEventListener(
+  "input",
+  drawRepeat
+);
+
+
+/* =========================================
+   DRAW REPEATED PATTERN
+========================================= */
+
+function drawRepeat(){
+
+  const canvas=
+  document.getElementById(
+    "repeatCanvas"
+  );
+
+  const context=
+  canvas.getContext(
+    "2d"
+  );
+
+  canvas.width=700;
+  canvas.height=700;
+
+  context.clearRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+
+  if(!seamImage){
+
+    context.fillStyle=
+    "#11152d";
+
+    context.fillRect(
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+    context.fillStyle=
+    "#aaa9c7";
+
+    context.font=
+    "24px sans-serif";
+
+    context.textAlign=
+    "center";
+
+    context.textBaseline=
+    "middle";
+
+    context.fillText(
+      "Upload a pattern tile",
+      canvas.width/2,
+      canvas.height/2
+    );
+
+    return;
+  }
+
+
+  const count=
+  Math.max(
+    2,
+    Number(
+      document.getElementById(
+        "repeatCount"
+      ).value
+    )
+  );
+
+
+  const scale=
+  Number(
+    document.getElementById(
+      "repeatScale"
+    ).value
+  ) / 100;
+
+
+  /*
+   Each tile occupies one cell.
+   At 100% scale the tiles touch perfectly.
+   Lower scale intentionally creates space
+   so the user can inspect each tile.
+  */
+
+  const cellWidth=
+  canvas.width / count;
+
+  const cellHeight=
+  canvas.height / count;
+
+
+  const tileWidth=
+  cellWidth * scale;
+
+  const tileHeight=
+  cellHeight * scale;
+
+
+  for(
+    let row=0;
+    row<count;
+    row++
+  ){
+
+    for(
+      let column=0;
+      column<count;
+      column++
+    ){
+
+      const x=
+      column * cellWidth +
+      (cellWidth-tileWidth)/2;
+
+      const y=
+      row * cellHeight +
+      (cellHeight-tileHeight)/2;
+
+
+      context.drawImage(
+        seamImage,
+        x,
+        y,
+        tileWidth,
+        tileHeight
+      );
+    }
+  }
+
+
+  document.getElementById(
+    "seamStatus"
+  ).textContent=
+  `${count} × ${count} repeat preview ✓`;
+}
+
+
+/* =========================================
+   INITIAL SEAMLESS PLACEHOLDER
+========================================= */
+
+drawRepeat();
+
+
+/* =========================================
+   PART 4 CONTINUES DIRECTLY BELOW
+========================================= */
+    /* =========================================
+   PNG OBJECT SPLITTER
+========================================= */
+
+let splitImage=null;
+
+const splitFile=
+document.getElementById("splitFile");
+
+const splitCanvas=
+document.getElementById("splitCanvas");
+
+const splitContext=
+splitCanvas.getContext(
+  "2d",
+  {willReadFrequently:true}
+);
+
+
+splitFile.addEventListener(
+  "change",
+  async event=>{
+
+    const file=
+    event.target.files?.[0];
+
+    const status=
+    document.getElementById(
+      "splitStatus"
+    );
+
+    if(!file){
+      return;
+    }
+
+    status.textContent=
+    "Loading PNG…";
+
+    document.getElementById(
+      "splitDownloads"
+    ).innerHTML="";
+
+    try{
+
+      splitImage=
+      await loadImageFile(file);
+
+      splitCanvas.width=
+      splitImage.naturalWidth;
+
+      splitCanvas.height=
+      splitImage.naturalHeight;
+
+      splitContext.clearRect(
+        0,
+        0,
+        splitCanvas.width,
+        splitCanvas.height
+      );
+
+      splitContext.drawImage(
+        splitImage,
+        0,
+        0
+      );
+
+      status.textContent=
+      `Loaded ✓ ${splitCanvas.width} × ${splitCanvas.height}px`;
+
+    }catch(error){
+
+      splitImage=null;
+
+      status.textContent=
+      "❌ " + error.message;
+    }
+  }
+);
+
+
+/* =========================================
+   DETECT TRANSPARENT PNG OBJECTS
+========================================= */
+
+function detectObjects(){
+
+  const status=
+  document.getElementById(
+    "splitStatus"
+  );
+
+  const holder=
+  document.getElementById(
+    "splitDownloads"
+  );
+
+  holder.innerHTML="";
+
+  if(!splitImage){
+
+    status.textContent=
+    "Upload a transparent PNG first.";
+
+    return;
+  }
+
+  status.textContent=
+  "Detecting objects…";
+
+
+  /*
+   Analyze a smaller copy when the source is huge.
+   This makes 5000×5000 artwork much safer on phones.
+  */
+
+  const originalWidth=
+  splitCanvas.width;
+
+  const originalHeight=
+  splitCanvas.height;
+
+  const maxAnalysisSize=
+  1100;
+
+  const analysisScale=
+  Math.min(
+    1,
+    maxAnalysisSize /
+    Math.max(
+      originalWidth,
+      originalHeight
+    )
+  );
+
+  const analysisWidth=
+  Math.max(
+    1,
+    Math.round(
+      originalWidth *
+      analysisScale
+    )
+  );
+
+  const analysisHeight=
+  Math.max(
+    1,
+    Math.round(
+      originalHeight *
+      analysisScale
+    )
+  );
+
+
+  const analysisCanvas=
+  document.createElement(
+    "canvas"
+  );
+
+  analysisCanvas.width=
+  analysisWidth;
+
+  analysisCanvas.height=
+  analysisHeight;
+
+
+  const analysisContext=
+  analysisCanvas.getContext(
+    "2d",
+    {willReadFrequently:true}
+  );
+
+
+  analysisContext.drawImage(
+    splitCanvas,
+    0,
+    0,
+    analysisWidth,
+    analysisHeight
+  );
+
+
+  const pixels=
+  analysisContext.getImageData(
+    0,
+    0,
+    analysisWidth,
+    analysisHeight
+  ).data;
+
+
+  const pixelCount=
+  analysisWidth *
+  analysisHeight;
+
+
+  const visited=
+  new Uint8Array(
+    pixelCount
+  );
+
+
+  /*
+   User's minimum area is entered in original-image
+   pixels, so scale it for the analysis copy.
+  */
+
+  const enteredMinArea=
+  Math.max(
+    1,
+    Number(
+      document.getElementById(
+        "splitMin"
+      ).value
+    ) || 150
+  );
+
+
+  const minimumArea=
+  Math.max(
+    1,
+    enteredMinArea *
+    analysisScale *
+    analysisScale
+  );
+
+
+  const alphaThreshold=20;
+
+
+  function hasVisiblePixel(index){
+
+    return (
+      pixels[
+        index*4+3
+      ] >
+      alphaThreshold
+    );
+  }
+
+
+  const components=[];
+
+
+  /*
+   Four-way connected component search.
+  */
+
+  for(
+    let y=0;
+    y<analysisHeight;
+    y++
+  ){
+
+    for(
+      let x=0;
+      x<analysisWidth;
+      x++
+    ){
+
+      const startIndex=
+      y *
+      analysisWidth +
+      x;
+
+
+      if(
+        visited[startIndex] ||
+        !hasVisiblePixel(startIndex)
+      ){
+        continue;
+      }
+
+
+      const queue=[
+        startIndex
+      ];
+
+      visited[startIndex]=1;
+
+
+      let queuePosition=0;
+
+      let minX=x;
+      let maxX=x;
+
+      let minY=y;
+      let maxY=y;
+
+      let area=0;
+
+
+      while(
+        queuePosition <
+        queue.length
+      ){
+
+        const currentIndex=
+        queue[
+          queuePosition++
+        ];
+
+
+        const currentX=
+        currentIndex %
+        analysisWidth;
+
+
+        const currentY=
+        Math.floor(
+          currentIndex /
+          analysisWidth
+        );
+
+
+        area++;
+
+
+        if(currentX<minX){
+          minX=currentX;
+        }
+
+        if(currentX>maxX){
+          maxX=currentX;
+        }
+
+        if(currentY<minY){
+          minY=currentY;
+        }
+
+        if(currentY>maxY){
+          maxY=currentY;
+        }
+
+
+        /*
+         Right
+        */
+
+        if(
+          currentX+1 <
+          analysisWidth
+        ){
+
+          const rightIndex=
+          currentIndex+1;
+
+          if(
+            !visited[rightIndex] &&
+            hasVisiblePixel(rightIndex)
+          ){
+
+            visited[rightIndex]=1;
+            queue.push(rightIndex);
+          }
+        }
+
+
+        /*
+         Left
+        */
+
+        if(
+          currentX>0
+        ){
+
+          const leftIndex=
+          currentIndex-1;
+
+          if(
+            !visited[leftIndex] &&
+            hasVisiblePixel(leftIndex)
+          ){
+
+            visited[leftIndex]=1;
+            queue.push(leftIndex);
+          }
+        }
+
+
+        /*
+         Down
+        */
+
+        if(
+          currentY+1 <
+          analysisHeight
+        ){
+
+          const downIndex=
+          currentIndex +
+          analysisWidth;
+
+          if(
+            !visited[downIndex] &&
+            hasVisiblePixel(downIndex)
+          ){
+
+            visited[downIndex]=1;
+            queue.push(downIndex);
+          }
+        }
+
+
+        /*
+         Up
+        */
+
+        if(
+          currentY>0
+        ){
+
+          const upIndex=
+          currentIndex -
+          analysisWidth;
+
+          if(
+            !visited[upIndex] &&
+            hasVisiblePixel(upIndex)
+          ){
+
+            visited[upIndex]=1;
+            queue.push(upIndex);
+          }
+        }
+
+      }
+
+
+      if(
+        area >=
+        minimumArea
+      ){
+
+        components.push({
+          minX,
+          minY,
+          maxX,
+          maxY,
+          area
+        });
+      }
+
+    }
+  }
+
+
+  /*
+   Sort roughly top-to-bottom,
+   then left-to-right.
+  */
+
+  components.sort(
+    (a,b)=>{
+
+      const rowTolerance=
+      Math.max(
+        15,
+        analysisHeight *
+        .025
+      );
+
+      if(
+        Math.abs(
+          a.minY -
+          b.minY
+        ) >
+        rowTolerance
+      ){
+
+        return (
+          a.minY -
+          b.minY
+        );
+      }
+
+      return (
+        a.minX -
+        b.minX
+      );
+    }
+  );
+
+
+  showDetectedObjects(
+    components,
+    analysisScale
+  );
+}
+
+
+/* =========================================
+   CREATE INDIVIDUAL OBJECT PNGS
+========================================= */
+
+function showDetectedObjects(
+  components,
+  analysisScale
+){
+
+  const holder=
+  document.getElementById(
+    "splitDownloads"
+  );
+
+  const status=
+  document.getElementById(
+    "splitStatus"
+  );
+
+
+  holder.innerHTML="";
+
+
+  if(
+    components.length===0
+  ){
+
+    status.textContent=
+    "No separate objects found. Try lowering Minimum Object Area.";
+
+    return;
+  }
+
+
+  status.textContent=
+  `Found ${components.length} object${components.length===1 ? "" : "s"} ✓`;
+
+
+  components.forEach(
+    (component,index)=>{
+
+      /*
+       Convert detection box back to
+       full-resolution coordinates.
+      */
+
+      const padding=12;
+
+
+      let left=
+      Math.floor(
+        component.minX /
+        analysisScale
+      ) -
+      padding;
+
+
+      let top=
+      Math.floor(
+        component.minY /
+        analysisScale
+      ) -
+      padding;
+
+
+      let right=
+      Math.ceil(
+        (
+          component.maxX+1
+        ) /
+        analysisScale
+      ) +
+      padding;
+
+
+      let bottom=
+      Math.ceil(
+        (
+          component.maxY+1
+        ) /
+        analysisScale
+      ) +
+      padding;
+
+
+      left=
+      Math.max(
+        0,
+        left
+      );
+
+      top=
+      Math.max(
+        0,
+        top
+      );
+
+      right=
+      Math.min(
+        splitCanvas.width,
+        right
+      );
+
+      bottom=
+      Math.min(
+        splitCanvas.height,
+        bottom
+      );
+
+
+      const width=
+      Math.max(
+        1,
+        right-left
+      );
+
+      const height=
+      Math.max(
+        1,
+        bottom-top
+      );
+
+
+      const objectCanvas=
+      document.createElement(
+        "canvas"
+      );
+
+      objectCanvas.width=
+      width;
+
+      objectCanvas.height=
+      height;
+
+
+      const objectContext=
+      objectCanvas.getContext(
+        "2d"
+      );
+
+
+      objectContext.drawImage(
+        splitCanvas,
+
+        left,
+        top,
+        width,
+        height,
+
+        0,
+        0,
+        width,
+        height
+      );
+
+
+      const card=
+      document.createElement(
+        "div"
+      );
+
+      card.className=
+      "card";
+
+
+      const heading=
+      document.createElement(
+        "h3"
+      );
+
+      heading.textContent=
+      `Object ${index+1}`;
+
+
+      const dimensions=
+      document.createElement(
+        "div"
+      );
+
+      dimensions.className=
+      "muted";
+
+      dimensions.textContent=
+      `${width} × ${height}px`;
+
+
+      const preview=
+      document.createElement(
+        "img"
+      );
+
+      preview.className=
+      "preview";
+
+      preview.alt=
+      `Detected object ${index+1}`;
+
+      preview.src=
+      objectCanvas.toDataURL(
+        "image/png"
+      );
+
+
+      const downloadButton=
+      document.createElement(
+        "button"
+      );
+
+      downloadButton.className=
+      "btn";
+
+      downloadButton.textContent=
+      "⬇️ Download PNG";
+
+
+      downloadButton.addEventListener(
+        "click",
+        ()=>{
+
+          downloadCanvas(
+            objectCanvas,
+            `object-${index+1}.png`
+          );
+        }
+      );
+
+
+      card.appendChild(
+        heading
+      );
+
+      card.appendChild(
+        dimensions
+      );
+
+      card.appendChild(
+        preview
+      );
+
+      card.appendChild(
+        downloadButton
+      );
+
+
+      holder.appendChild(
+        card
+      );
+
+    }
+  );
+}
+
+
+/* =========================================
+   IMAGE STUDIO
+========================================= */
+
+const studioCanvas=
+document.getElementById(
+  "studioCanvas"
+);
+
+
+const studioContext=
+studioCanvas.getContext(
+  "2d",
+  {willReadFrequently:true}
+);
+
+
+let studioHasImage=false;
+
+
+/* =========================================
+   IMAGE STUDIO UPLOAD
+========================================= */
+
+document.getElementById(
+  "studioFile"
+).addEventListener(
+  "change",
+  async event=>{
+
+    const file=
+    event.target.files?.[0];
+
+    const status=
+    document.getElementById(
+      "studioStatus"
+    );
+
+
+    if(!file){
+      return;
+    }
+
+
+    status.textContent=
+    "Loading image…";
+
+
+    try{
+
+      const image=
+      await loadImageFile(file);
+
+
+      studioCanvas.width=
+      image.naturalWidth;
+
+      studioCanvas.height=
+      image.naturalHeight;
+
+
+      studioContext.clearRect(
+        0,
+        0,
+        studioCanvas.width,
+        studioCanvas.height
+      );
+
+
+      studioContext.drawImage(
+        image,
+        0,
+        0
+      );
+
+
+      studioHasImage=true;
+
+
+      document.getElementById(
+        "studioW"
+      ).value=
+      image.naturalWidth;
+
+
+      document.getElementById(
+        "studioH"
+      ).value=
+      image.naturalHeight;
+
+
+      status.textContent=
+      `Loaded ✓ ${image.naturalWidth} × ${image.naturalHeight}px`;
+
+
+    }catch(error){
+
+      studioHasImage=false;
+
+      status.textContent=
+      "❌ " + error.message;
+    }
+  }
+);
+
+
+/* =========================================
+   RESIZE IMAGE
+========================================= */
+
+function studioResize(){
+
+  if(!studioHasImage){
+
+    document.getElementById(
+      "studioStatus"
+    ).textContent=
+    "Upload an image first.";
+
+    return;
+  }
+
+
+  const width=
+  Math.max(
+    1,
+    Math.round(
+      Number(
+        document.getElementById(
+          "studioW"
+        ).value
+      )
+    )
+  );
+
+
+  const height=
+  Math.max(
+    1,
+    Math.round(
+      Number(
+        document.getElementById(
+          "studioH"
+        ).value
+      )
+    )
+  );
+
+
+  if(
+    !Number.isFinite(width) ||
+    !Number.isFinite(height)
+  ){
+
+    document.getElementById(
+      "studioStatus"
+    ).textContent=
+    "Enter valid width and height values.";
+
+    return;
+  }
+
+
+  const temp=
+  document.createElement(
+    "canvas"
+  );
+
+  temp.width=
+  studioCanvas.width;
+
+  temp.height=
+  studioCanvas.height;
+
+
+  temp.getContext(
+    "2d"
+  ).drawImage(
+    studioCanvas,
+    0,
+    0
+  );
+
+
+  studioCanvas.width=
+  width;
+
+  studioCanvas.height=
+  height;
+
+
+  const context=
+  studioCanvas.getContext(
+    "2d",
+    {willReadFrequently:true}
+  );
+
+
+  context.imageSmoothingEnabled=
+  true;
+
+  context.imageSmoothingQuality=
+  "high";
+
+
+  context.drawImage(
+    temp,
+    0,
+    0,
+    width,
+    height
+  );
+
+
+  document.getElementById(
+    "studioStatus"
+  ).textContent=
+  `Resized to ${width} × ${height}px ✓`;
+}
+
+
+/* =========================================
+   ROTATE IMAGE 90 DEGREES
+========================================= */
+
+function studioRotate(){
+
+  if(!studioHasImage){
+
+    document.getElementById(
+      "studioStatus"
+    ).textContent=
+    "Upload an image first.";
+
+    return;
+  }
+
+
+  const temp=
+  document.createElement(
+    "canvas"
+  );
+
+  temp.width=
+  studioCanvas.width;
+
+  temp.height=
+  studioCanvas.height;
+
+
+  temp.getContext(
+    "2d"
+  ).drawImage(
+    studioCanvas,
+    0,
+    0
+  );
+
+
+  const oldWidth=
+  temp.width;
+
+  const oldHeight=
+  temp.height;
+
+
+  studioCanvas.width=
+  oldHeight;
+
+  studioCanvas.height=
+  oldWidth;
+
+
+  const context=
+  studioCanvas.getContext(
+    "2d",
+    {willReadFrequently:true}
+  );
+
+
+  context.save();
+
+
+  context.translate(
+    studioCanvas.width/2,
+    studioCanvas.height/2
+  );
+
+
+  context.rotate(
+    Math.PI/2
+  );
+
+
+  context.drawImage(
+    temp,
+    -oldWidth/2,
+    -oldHeight/2
+  );
+
+
+  context.restore();
+
+
+  document.getElementById(
+    "studioW"
+  ).value=
+  studioCanvas.width;
+
+
+  document.getElementById(
+    "studioH"
+  ).value=
+  studioCanvas.height;
+
+
+  document.getElementById(
+    "studioStatus"
+  ).textContent=
+  `Rotated ✓ ${studioCanvas.width} × ${studioCanvas.height}px`;
+}
+
+
+/* =========================================
+   FLIP IMAGE HORIZONTALLY
+========================================= */
+
+function studioFlip(){
+
+  if(!studioHasImage){
+
+    document.getElementById(
+      "studioStatus"
+    ).textContent=
+    "Upload an image first.";
+
+    return;
+  }
+
+
+  const temp=
+  document.createElement(
+    "canvas"
+  );
+
+  temp.width=
+  studioCanvas.width;
+
+  temp.height=
+  studioCanvas.height;
+
+
+  temp.getContext(
+    "2d"
+  ).drawImage(
+    studioCanvas,
+    0,
+    0
+  );
+
+
+  const context=
+  studioCanvas.getContext(
+    "2d",
+    {willReadFrequently:true}
+  );
+
+
+  context.clearRect(
+    0,
+    0,
+    studioCanvas.width,
+    studioCanvas.height
+  );
+
+
+  context.save();
+
+
+  context.translate(
+    studioCanvas.width,
+    0
+  );
+
+
+  context.scale(
+    -1,
+    1
+  );
+
+
+  context.drawImage(
+    temp,
+    0,
+    0
+  );
+
+
+  context.restore();
+
+
+  document.getElementById(
+    "studioStatus"
+  ).textContent=
+  "Flipped horizontally ✓";
+}
+
+
+/* =========================================
+   CROP TRANSPARENT SPACE
+========================================= */
+
+function studioCrop(){
+
+  if(!studioHasImage){
+
+    document.getElementById(
+      "studioStatus"
+    ).textContent=
+    "Upload an image first.";
+
+    return;
+  }
+
+
+  const width=
+  studioCanvas.width;
+
+  const height=
+  studioCanvas.height;
+
+
+  const context=
+  studioCanvas.getContext(
+    "2d",
+    {willReadFrequently:true}
+  );
+
+
+  const pixels=
+  context.getImageData(
+    0,
+    0,
+    width,
+    height
+  ).data;
+
+
+  let minX=width;
+  let minY=height;
+
+  let maxX=-1;
+  let maxY=-1;
+
+
+  for(
+    let y=0;
+    y<height;
+    y++
+  ){
+
+    for(
+      let x=0;
+      x<width;
+      x++
+    ){
+
+      const alpha=
+      pixels[
+        (
+          y*width+x
+        )*4+3
+      ];
+
+
+      if(alpha>5){
+
+        if(x<minX){
+          minX=x;
+        }
+
+        if(x>maxX){
+          maxX=x;
+        }
+
+        if(y<minY){
+          minY=y;
+        }
+
+        if(y>maxY){
+          maxY=y;
+        }
+      }
+
+    }
+  }
+
+
+  if(maxX<0){
+
+    document.getElementById(
+      "studioStatus"
+    ).textContent=
+    "No visible pixels found.";
+
+    return;
+  }
+
+
+  /*
+   Already tight.
+  */
+
+  if(
+    minX===0 &&
+    minY===0 &&
+    maxX===width-1 &&
+    maxY===height-1
+  ){
+
+    document.getElementById(
+      "studioStatus"
+    ).textContent=
+    "Image is already tightly cropped ✓";
+
+    return;
+  }
+
+
+  const croppedWidth=
+  maxX-minX+1;
+
+  const croppedHeight=
+  maxY-minY+1;
+
+
+  const cropped=
+  document.createElement(
+    "canvas"
+  );
+
+  cropped.width=
+  croppedWidth;
+
+  cropped.height=
+  croppedHeight;
+
+
+  cropped.getContext(
+    "2d"
+  ).drawImage(
+    studioCanvas,
+
+    minX,
+    minY,
+    croppedWidth,
+    croppedHeight,
+
+    0,
+    0,
+    croppedWidth,
+    croppedHeight
+  );
+
+
+  studioCanvas.width=
+  croppedWidth;
+
+  studioCanvas.height=
+  croppedHeight;
+
+
+  studioCanvas.getContext(
+    "2d",
+    {willReadFrequently:true}
+  ).drawImage(
+    cropped,
+    0,
+    0
+  );
+
+
+  document.getElementById(
+    "studioW"
+  ).value=
+  croppedWidth;
+
+
+  document.getElementById(
+    "studioH"
+  ).value=
+  croppedHeight;
+
+
+  document.getElementById(
+    "studioStatus"
+  ).textContent=
+  `Transparent space cropped ✓ ${croppedWidth} × ${croppedHeight}px`;
+}
+
+
+/* =========================================
+   DOWNLOAD IMAGE STUDIO PNG
+========================================= */
+
+function downloadStudio(){
+
+  if(!studioHasImage){
+
+    document.getElementById(
+      "studioStatus"
+    ).textContent=
+    "Upload an image first.";
+
+    return;
+  }
+
+
+  downloadCanvas(
+    studioCanvas,
+    "moonlight-design.png"
+  );
+
+
+  document.getElementById(
+    "studioStatus"
+  ).textContent=
+  "PNG prepared for download ✓";
+}
+
+
+/* =========================================
+   FINAL STARTUP
+========================================= */
+
+renderIdeas();
+
+console.log(
+  "Moonlight Designs Workshop loaded ✓"
+);
+
+</script>
+
+</body>
+</html>
