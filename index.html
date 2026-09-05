@@ -38,9 +38,7 @@ body{
  var(--bg);
 }
 
-button,input,select,textarea{
- font:inherit;
-}
+button,input,select,textarea{font:inherit}
 
 button{
  touch-action:manipulation;
@@ -132,13 +130,8 @@ h1{
  min-height:145px;
 }
 
-.toolCard:hover{
- border-color:#8b73ff;
-}
-
-.toolCard:active{
- transform:scale(.98);
-}
+.toolCard:hover{border-color:#8b73ff}
+.toolCard:active{transform:scale(.98)}
 
 label{
  display:block;
@@ -154,6 +147,11 @@ input,select,textarea{
  color:white;
  border-radius:11px;
  padding:11px;
+}
+
+input[type="range"]{
+ padding:5px 0;
+ accent-color:var(--pink);
 }
 
 textarea{resize:vertical}
@@ -227,6 +225,7 @@ canvas{
  height:auto;
  display:block;
  margin:auto;
+ touch-action:none;
 }
 
 .tags{
@@ -263,11 +262,142 @@ canvas{
  line-height:1.7;
 }
 
+/* Seamless Maker */
+
+.elementTray{
+ display:grid;
+ grid-template-columns:repeat(auto-fill,minmax(90px,1fr));
+ gap:9px;
+ margin-top:12px;
+}
+
+.elementThumb{
+ border:2px solid transparent;
+ border-radius:12px;
+ background:#090c20;
+ padding:7px;
+ text-align:center;
+ cursor:pointer;
+}
+
+.elementThumb.selected{
+ border-color:var(--pink);
+ box-shadow:0 0 0 2px #ff62c733;
+}
+
+.elementThumb img{
+ width:100%;
+ aspect-ratio:1;
+ object-fit:contain;
+ background:
+ linear-gradient(45deg,#222 25%,transparent 25%),
+ linear-gradient(-45deg,#222 25%,transparent 25%),
+ linear-gradient(45deg,transparent 75%,#222 75%),
+ linear-gradient(-45deg,transparent 75%,#222 75%);
+ background-size:12px 12px;
+ border-radius:8px;
+}
+
+.smallText{
+ font-size:11px;
+ color:var(--muted);
+ margin-top:4px;
+ overflow:hidden;
+ text-overflow:ellipsis;
+ white-space:nowrap;
+}
+
+/* Seamless Mockup */
+
+.templateStrip{
+ display:grid;
+ grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
+ gap:10px;
+ margin-top:12px;
+}
+
+.templateChoice{
+ background:#090d22;
+ border:2px solid var(--line);
+ border-radius:13px;
+ padding:8px;
+ cursor:pointer;
+}
+
+.templateChoice.active{
+ border-color:var(--pink);
+}
+
+.templateMini{
+ width:100%;
+ aspect-ratio:4/5;
+ background:white;
+ border-radius:7px;
+ position:relative;
+ overflow:hidden;
+}
+
+.templateMini div{
+ position:absolute;
+ background:linear-gradient(135deg,#754cff,#59cfff);
+ border:1px solid white;
+}
+
+.mockupFiles{
+ display:grid;
+ grid-template-columns:repeat(auto-fill,minmax(110px,1fr));
+ gap:9px;
+ margin-top:12px;
+}
+
+.mockupFile{
+ background:#090d22;
+ border:1px solid var(--line);
+ border-radius:12px;
+ padding:7px;
+ text-align:center;
+}
+
+.mockupFile img{
+ width:100%;
+ aspect-ratio:1;
+ object-fit:cover;
+ border-radius:8px;
+}
+
+.sectionTitle{
+ margin:20px 0 6px;
+}
+
+.rangeLine{
+ display:grid;
+ grid-template-columns:1fr 65px;
+ gap:10px;
+ align-items:center;
+}
+
+.rangeValue{
+ text-align:center;
+ padding:7px;
+ background:#090d22;
+ border:1px solid var(--line);
+ border-radius:9px;
+ font-size:12px;
+}
+
 @media(max-width:700px){
  #app{width:94%}
  .two{grid-template-columns:1fr}
  .tags{grid-template-columns:1fr}
  header{padding-top:25px}
+
+ .btn{
+   flex:1 1 auto;
+ }
+
+ .templateStrip{
+   grid-template-columns:repeat(2,1fr);
+ }
 }
 </style>
 </head>
@@ -284,96 +414,223 @@ Local creative toolbox • mobile friendly • no AI key required
 <div id="app">
 
 <nav class="nav" id="nav">
+
 <button class="active" data-tool="home">🏠 Home</button>
-<button data-tool="upload">🖼️ Upload</button>
-<button data-tool="brain">🧠 Brain Stuck</button>
-<button data-tool="listing">🛍️ Product Lister</button>
-<button data-tool="seamless">🌀 Seamless Checker</button>
-<button data-tool="splitter">✂️ PNG Splitter</button>
-<button data-tool="image">🎨 Image Studio</button>
-<button data-tool="ideas">❤️ Idea Jar</button>
+
+<button data-tool="upload">
+🖼️ Upload
+</button>
+
+<button data-tool="brain">
+🧠 Brain Stuck
+</button>
+
+<button data-tool="listing">
+🛍️ Product Lister
+</button>
+
+<button data-tool="seamlessMaker">
+🌀 Seamless Maker
+</button>
+
+<button data-tool="seamless">
+🔍 Seamless Checker
+</button>
+
+<button data-tool="seamlessMockup">
+🧵 Seamless Mockup
+</button>
+
+<button data-tool="splitter">
+✂️ PNG Splitter
+</button>
+
+<button data-tool="image">
+🎨 Image Studio
+</button>
+
+<button data-tool="ideas">
+❤️ Idea Jar
+</button>
+
 </nav>
 
 
-<!-- HOME -->
+<!-- ==============================
+HOME
+============================== -->
 
 <section id="home" class="tool active">
 
 <div class="hero">
+
 <h2>🌙 Welcome to Your Workshop</h2>
+
 <div class="muted">
-Upload, brainstorm, list, inspect, split and edit your digital designs.
+Create, check, mock up, brainstorm, split and edit your digital designs.
 </div>
+
 </div>
 
 <div class="grid">
 
-<div class="card toolCard" onclick="openTool('upload')">
+
+<div class="card toolCard"
+onclick="openTool('upload')">
+
 <h3>🖼️ Upload Center</h3>
+
 <p class="muted">
 Check PNG, JPG and WEBP files, dimensions and file size.
 </p>
-<button class="btn">Open Tool →</button>
+
+<button class="btn">
+Open Tool →
+</button>
+
 </div>
 
-<div class="card toolCard" onclick="openTool('brain')">
+
+<div class="card toolCard"
+onclick="openTool('brain')">
+
 <h3>🧠 Brain Stuck</h3>
+
 <p class="muted">
 Generate creative design ideas and detailed prompts.
 </p>
-<button class="btn">Open Tool →</button>
+
+<button class="btn">
+Open Tool →
+</button>
+
 </div>
 
-<div class="card toolCard" onclick="openTool('listing')">
+
+<div class="card toolCard"
+onclick="openTool('listing')">
+
 <h3>🛍️ Product Lister</h3>
+
 <p class="muted">
-Generate a title, descriptions, SEO keywords and exactly 13 tags.
+Generate titles, descriptions, SEO keywords and exactly 13 tags.
 </p>
-<button class="btn">Open Tool →</button>
+
+<button class="btn">
+Open Tool →
+</button>
+
 </div>
 
-<div class="card toolCard" onclick="openTool('seamless')">
-<h3>🌀 Seamless Checker</h3>
+
+<div class="card toolCard"
+onclick="openTool('seamlessMaker')">
+
+<h3>🌀 Seamless Maker</h3>
+
 <p class="muted">
-Repeat a finished pattern tile to inspect your seamless design.
+Build a real repeating seamless tile from multiple PNG elements.
 </p>
-<button class="btn">Open Tool →</button>
+
+<button class="btn">
+Make a Seamless →
+</button>
+
 </div>
 
-<div class="card toolCard" onclick="openTool('splitter')">
+
+<div class="card toolCard"
+onclick="openTool('seamless')">
+
+<h3>🔍 Seamless Checker</h3>
+
+<p class="muted">
+Repeat your finished tile to check the edges and overall pattern.
+</p>
+
+<button class="btn">
+Check Seamless →
+</button>
+
+</div>
+
+
+<div class="card toolCard"
+onclick="openTool('seamlessMockup')">
+
+<h3>🧵 Seamless Mockup</h3>
+
+<p class="muted">
+Put multiple seamless designs into beautiful We Choose-style cards.
+</p>
+
+<button class="btn">
+Create Mockup →
+</button>
+
+</div>
+
+
+<div class="card toolCard"
+onclick="openTool('splitter')">
+
 <h3>✂️ PNG Splitter</h3>
+
 <p class="muted">
 Detect and save separate objects from transparent PNG sheets.
 </p>
-<button class="btn">Open Tool →</button>
+
+<button class="btn">
+Open Tool →
+</button>
+
 </div>
 
-<div class="card toolCard" onclick="openTool('image')">
+
+<div class="card toolCard"
+onclick="openTool('image')">
+
 <h3>🎨 Image Studio</h3>
+
 <p class="muted">
 Resize, rotate, flip and crop transparent space.
 </p>
-<button class="btn">Open Tool →</button>
+
+<button class="btn">
+Open Tool →
+</button>
+
 </div>
 
-<div class="card toolCard" onclick="openTool('ideas')">
+
+<div class="card toolCard"
+onclick="openTool('ideas')">
+
 <h3>❤️ Idea Jar</h3>
+
 <p class="muted">
 Keep your favorite Brain Stuck ideas on your device.
 </p>
-<button class="btn">Open Tool →</button>
+
+<button class="btn">
+Open Tool →
+</button>
+
 </div>
 
 </div>
 </section>
 
 
-<!-- UPLOAD -->
+<!-- ==============================
+UPLOAD
+============================== -->
 
 <section id="upload" class="tool">
 
 <div class="hero">
 <h2>🖼️ Universal Upload Center</h2>
+
 <p class="muted">
 Upload PNG, JPG or WEBP and check the file before working with it.
 </p>
@@ -384,10 +641,9 @@ Upload PNG, JPG or WEBP and check the file before working with it.
 <div class="uploadBox">
 
 <input
- type="file"
- id="universalFile"
- accept="image/png,image/jpeg,image/webp"
->
+type="file"
+id="universalFile"
+accept="image/png,image/jpeg,image/webp">
 
 <div id="uploadStatus" class="status">
 Choose an image.
@@ -395,7 +651,9 @@ Choose an image.
 
 </div>
 
-<img id="universalPreview" class="preview" alt="">
+<img id="universalPreview"
+class="preview"
+alt="">
 
 <div id="fileInfo"></div>
 
@@ -403,15 +661,20 @@ Choose an image.
 </section>
 
 
-<!-- BRAIN STUCK -->
+<!-- ==============================
+BRAIN STUCK
+============================== -->
 
 <section id="brain" class="tool">
 
 <div class="hero">
+
 <h2>🧠 Brain Stuck</h2>
+
 <p class="muted">
 Stuck on what to create? Let the Workshop build an idea.
 </p>
+
 </div>
 
 <div class="two">
@@ -449,37 +712,42 @@ Stuck on what to create? Let the Workshop build an idea.
 <option>Winter</option>
 </select>
 
-<button class="btn" onclick="brainOne()">
+<button class="btn"
+onclick="brainOne()">
 🎲 Give Me An Idea
 </button>
 
-<button class="btn secondary" onclick="brain25()">
+<button class="btn secondary"
+onclick="brain25()">
 🔥 Give Me 25
 </button>
 
-<button class="btn secondary" onclick="brainWeird()">
+<button class="btn secondary"
+onclick="brainWeird()">
 🤪 Make It Weirder
 </button>
 
 </div>
+
 
 <div class="card">
 
 <h3>✨ Your Idea</h3>
 
 <textarea
- id="brainOutput"
- rows="14"
- placeholder="Your idea or prompt will appear here..."
-></textarea>
+id="brainOutput"
+rows="14"
+placeholder="Your idea or prompt will appear here..."></textarea>
 
 <div class="row">
 
-<button class="btn" onclick="saveIdea()">
+<button class="btn"
+onclick="saveIdea()">
 ❤️ Save to Idea Jar
 </button>
 
-<button class="btn secondary" onclick="copyText('brainOutput')">
+<button class="btn secondary"
+onclick="copyText('brainOutput')">
 📋 Copy
 </button>
 
@@ -490,15 +758,20 @@ Stuck on what to create? Let the Workshop build an idea.
 </section>
 
 
-<!-- PRODUCT LISTER -->
+<!-- ==============================
+PRODUCT LISTER
+============================== -->
 
 <section id="listing" class="tool">
 
 <div class="hero">
+
 <h2>🛍️ Product Listing Builder</h2>
+
 <p class="muted">
 Build your listing locally with exactly 13 editable tags.
 </p>
+
 </div>
 
 <div class="two">
@@ -519,29 +792,35 @@ Build your listing locally with exactly 13 editable tags.
 </select>
 
 <label>Main Subject</label>
-<input id="pSubject" placeholder="Example: Highland cow">
+<input id="pSubject"
+placeholder="Example: Highland cow">
 
 <label>Theme</label>
-<input id="pTheme" placeholder="Example: Christmas">
+<input id="pTheme"
+placeholder="Example: Christmas">
 
 <label>Style</label>
-<input id="pStyle" placeholder="Example: cute whimsical">
+<input id="pStyle"
+placeholder="Example: cute whimsical">
 
 <label>Colors</label>
-<input id="pColors" placeholder="Example: pink purple blue">
+<input id="pColors"
+placeholder="Example: pink purple blue">
 
 <label>Extra Details</label>
-<textarea
- id="pDetails"
- rows="5"
- placeholder="Example: bows, snowflakes, flowers..."
-></textarea>
 
-<button class="btn" onclick="makeListing()">
+<textarea
+id="pDetails"
+rows="5"
+placeholder="Example: bows, snowflakes, flowers..."></textarea>
+
+<button class="btn"
+onclick="makeListing()">
 ✨ Generate Listing
 </button>
 
-<button class="btn secondary" onclick="surpriseListing()">
+<button class="btn secondary"
+onclick="surpriseListing()">
 🎲 Surprise Me
 </button>
 
@@ -571,47 +850,279 @@ Exactly 13 Tags
 
 <div class="row">
 
-<button class="btn" onclick="copyListing()">
+<button class="btn"
+onclick="copyListing()">
 📋 Copy Entire Listing
 </button>
 
-<button class="btn secondary" onclick="copyTags()">
+<button class="btn secondary"
+onclick="copyTags()">
 🏷️ Copy Tags
 </button>
 
-<button class="btn secondary" onclick="makeTags()">
+<button class="btn secondary"
+onclick="makeTags()">
 🔄 New Tags
 </button>
 
 </div>
 
-<div id="listingStatus" class="status"></div>
+<div id="listingStatus"
+class="status"></div>
 
 </div>
 </div>
 </section>
 
 
-<!-- SEAMLESS CHECKER -->
+<!-- ==============================
+NEW: SEAMLESS MAKER
+============================== -->
+
+<section id="seamlessMaker" class="tool">
+
+<div class="hero">
+
+<h2>🌀 Seamless Maker</h2>
+
+<p class="muted">
+Upload transparent PNG elements and build a true repeating seamless tile.
+Anything crossing an edge is automatically wrapped to the opposite side.
+</p>
+
+</div>
+
+<div class="two">
+
+<div class="card">
+
+<h3>1. Add Your Elements</h3>
+
+<div class="uploadBox">
+
+<input
+id="makerFiles"
+type="file"
+multiple
+accept="image/png,image/webp">
+
+<div id="makerStatus"
+class="status">
+Upload one or more PNG elements.
+</div>
+
+</div>
+
+<div id="makerTray"
+class="elementTray"></div>
+
+
+<h3 class="sectionTitle">
+2. Tile Settings
+</h3>
+
+<label>Canvas Size</label>
+
+<select id="makerSize">
+<option value="1500">1500 × 1500</option>
+<option value="2500">2500 × 2500</option>
+<option value="3000">3000 × 3000</option>
+<option value="4000">4000 × 4000</option>
+<option value="5000" selected>5000 × 5000</option>
+</select>
+
+
+<label>Background</label>
+
+<select id="makerBackground">
+<option value="transparent">Transparent</option>
+<option value="white">White</option>
+<option value="custom">Custom Color</option>
+</select>
+
+<input
+id="makerBgColor"
+type="color"
+value="#ffffff">
+
+
+<h3 class="sectionTitle">
+3. Selected Element
+</h3>
+
+<label>Size</label>
+
+<div class="rangeLine">
+
+<input
+id="makerScale"
+type="range"
+min="5"
+max="150"
+value="35">
+
+<div id="makerScaleValue"
+class="rangeValue">
+35%
+</div>
+
+</div>
+
+
+<label>Rotation</label>
+
+<div class="rangeLine">
+
+<input
+id="makerRotation"
+type="range"
+min="-180"
+max="180"
+value="0">
+
+<div id="makerRotationValue"
+class="rangeValue">
+0°
+</div>
+
+</div>
+
+
+<div class="row">
+
+<button class="btn"
+onclick="makerAddSelected()">
+➕ Add Selected
+</button>
+
+<button class="btn secondary"
+onclick="makerDuplicate()">
+⧉ Duplicate
+</button>
+
+<button class="btn danger"
+onclick="makerDelete()">
+🗑 Delete
+</button>
+
+</div>
+
+
+<h3 class="sectionTitle">
+4. Automatic Layout
+</h3>
+
+<label>Number of Elements</label>
+
+<input
+id="makerAutoCount"
+type="number"
+min="4"
+max="100"
+value="24">
+
+
+<div class="row">
+
+<button class="btn"
+onclick="makerAutoArrange()">
+✨ Auto Arrange
+</button>
+
+<button class="btn secondary"
+onclick="makerShuffle()">
+🎲 Shuffle
+</button>
+
+<button class="btn secondary"
+onclick="makerClearCanvas()">
+🧹 Clear
+</button>
+
+</div>
+
+
+<div class="row">
+
+<button class="btn"
+onclick="downloadMaker()">
+⬇️ Export Seamless PNG
+</button>
+
+<button class="btn secondary"
+onclick="makerSendToChecker()">
+🔍 Preview Repeat
+</button>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>Seamless Tile</h3>
+
+<p class="muted">
+Tap an element to select it. Drag it around the canvas.
+Edge-crossing copies are created automatically.
+</p>
+
+<div class="canvasWrap">
+
+<canvas
+id="makerCanvas"
+width="800"
+height="800">
+</canvas>
+
+</div>
+
+
+<h3 class="sectionTitle">
+Repeat Preview
+</h3>
+
+<div class="canvasWrap">
+
+<canvas
+id="makerRepeatCanvas"
+width="800"
+height="800">
+</canvas>
+
+</div>
+
+</div>
+</div>
+</section>
+
+
+<!-- ==============================
+SEAMLESS CHECKER
+============================== -->
 
 <section id="seamless" class="tool">
 
 <div class="hero">
-<h2>🌀 Seamless Checker</h2>
+
+<h2>🔍 Seamless Checker</h2>
+
 <p class="muted">
 Upload a finished tile and see it repeated instantly.
 </p>
+
 </div>
 
 <div class="card">
 
 <input
- type="file"
- id="seamFile"
- accept="image/png,image/jpeg,image/webp"
->
+type="file"
+id="seamFile"
+accept="image/png,image/jpeg,image/webp">
 
-<div id="seamStatus" class="status">
+<div id="seamStatus"
+class="status">
 Choose your pattern tile.
 </div>
 
@@ -628,62 +1139,313 @@ Choose your pattern tile.
 <label>Pattern Scale</label>
 
 <input
- id="repeatScale"
- type="range"
- min="25"
- max="100"
- value="100"
->
+id="repeatScale"
+type="range"
+min="25"
+max="100"
+value="100">
 
-<button class="btn" onclick="drawRepeat()">
+<button class="btn"
+onclick="drawRepeat()">
 🔍 Refresh Preview
 </button>
 
 <div class="canvasWrap">
+
 <canvas
- id="repeatCanvas"
- width="700"
- height="700"
-></canvas>
+id="repeatCanvas"
+width="700"
+height="700">
+</canvas>
+
 </div>
 
 </div>
 </section>
 
 
-<!-- PNG SPLITTER -->
+<!-- ==============================
+NEW: SEAMLESS MOCKUP
+============================== -->
+
+<section id="seamlessMockup" class="tool">
+
+<div class="hero">
+
+<h2>🧵 Seamless Mockup</h2>
+
+<p class="muted">
+Upload several seamless designs and automatically place a different
+pattern inside each box of a We Choose-style presentation card.
+</p>
+
+</div>
+
+<div class="two">
+
+<div class="card">
+
+<h3>1. Upload Seamless Designs</h3>
+
+<div class="uploadBox">
+
+<input
+id="mockupFilesInput"
+type="file"
+multiple
+accept="image/png,image/jpeg,image/webp">
+
+<div id="mockupStatus"
+class="status">
+Choose multiple seamless patterns.
+</div>
+
+</div>
+
+<div id="mockupFiles"
+class="mockupFiles"></div>
+
+
+<h3 class="sectionTitle">
+2. Card Settings
+</h3>
+
+<label>Card Shape</label>
+
+<select id="mockupOrientation"
+onchange="mockupOrientationChanged()">
+
+<option value="portrait">
+Portrait
+</option>
+
+<option value="square">
+Square
+</option>
+
+<option value="landscape">
+Landscape
+</option>
+
+</select>
+
+
+<label>Number of Pattern Boxes</label>
+
+<select id="mockupBoxCount"
+onchange="mockupBoxCountChanged()">
+
+<option value="4">4 boxes</option>
+<option value="5">5 boxes</option>
+<option value="6">6 boxes</option>
+<option value="7" selected>7 boxes</option>
+<option value="8">8 boxes</option>
+<option value="9">9 boxes</option>
+<option value="10">10 boxes</option>
+<option value="11">11 boxes</option>
+<option value="12">12 boxes</option>
+
+</select>
+
+
+<label>White Gap</label>
+
+<div class="rangeLine">
+
+<input
+id="mockupGap"
+type="range"
+min="4"
+max="80"
+value="22">
+
+<div id="mockupGapValue"
+class="rangeValue">
+22
+</div>
+
+</div>
+
+
+<label>Outer Margin</label>
+
+<div class="rangeLine">
+
+<input
+id="mockupMargin"
+type="range"
+min="0"
+max="120"
+value="28">
+
+<div id="mockupMarginValue"
+class="rangeValue">
+28
+</div>
+
+</div>
+
+
+<label>Selected Pattern Zoom</label>
+
+<div class="rangeLine">
+
+<input
+id="mockupZoom"
+type="range"
+min="50"
+max="250"
+value="100">
+
+<div id="mockupZoomValue"
+class="rangeValue">
+100%
+</div>
+
+</div>
+
+
+<h3 class="sectionTitle">
+3. Patterns
+</h3>
+
+<div class="row">
+
+<button class="btn"
+onclick="mockupAutoFill()">
+✨ Auto Fill
+</button>
+
+<button class="btn secondary"
+onclick="mockupShufflePatterns()">
+🔀 Shuffle Patterns
+</button>
+
+<button class="btn secondary"
+onclick="mockupClearPatterns()">
+🧹 Clear
+</button>
+
+</div>
+
+
+<h3 class="sectionTitle">
+4. Templates
+</h3>
+
+<div class="row">
+
+<button class="btn"
+onclick="mockupGenerateOne()">
+✨ Generate More Templates
+</button>
+
+<button class="btn secondary"
+onclick="mockupGenerateTen()">
+✨ Generate 10
+</button>
+
+<button class="btn secondary"
+onclick="mockupShuffleLayout()">
+🎲 Shuffle Layout
+</button>
+
+</div>
+
+<div class="row">
+
+<button class="btn secondary"
+onclick="mockupSaveTemplate()">
+⭐ Save Template
+</button>
+
+<button class="btn secondary"
+onclick="mockupLoadSavedTemplates()">
+💜 My Templates
+</button>
+
+</div>
+
+
+<div id="templateStrip"
+class="templateStrip"></div>
+
+
+<button class="btn"
+onclick="downloadMockup()">
+⬇️ Export High-Resolution PNG
+</button>
+
+</div>
+
+
+<div class="card">
+
+<h3>Mockup Preview</h3>
+
+<p class="muted">
+Tap a box to select it. Drag the pattern inside the selected box
+to reposition it. Use Pattern Zoom to make that pattern larger or smaller.
+</p>
+
+<div class="canvasWrap">
+
+<canvas
+id="mockupCanvas"
+width="800"
+height="1000">
+</canvas>
+
+</div>
+
+<div id="mockupSelectedStatus"
+class="status">
+No box selected.
+</div>
+
+</div>
+</div>
+</section>
+
+
+<!-- ==============================
+PNG SPLITTER
+============================== -->
 
 <section id="splitter" class="tool">
 
 <div class="hero">
+
 <h2>✂️ PNG Object Splitter</h2>
+
 <p class="muted">
 Upload a transparent PNG sheet and detect separated objects locally.
 </p>
+
 </div>
 
 <div class="card">
 
 <input
- type="file"
- id="splitFile"
- accept="image/png"
->
+type="file"
+id="splitFile"
+accept="image/png">
 
-<div id="splitStatus" class="status">
+<div id="splitStatus"
+class="status">
 Choose a transparent PNG.
 </div>
 
 <label>Minimum Object Area</label>
 
 <input
- id="splitMin"
- type="number"
- value="150"
- min="1"
->
+id="splitMin"
+type="number"
+value="150"
+min="1">
 
-<button class="btn" onclick="detectObjects()">
+<button class="btn"
+onclick="detectObjects()">
 🔎 Detect Objects
 </button>
 
@@ -693,21 +1455,27 @@ Choose a transparent PNG.
 
 <h3>Detected Objects</h3>
 
-<div id="splitDownloads" class="grid"></div>
+<div id="splitDownloads"
+class="grid"></div>
 
 </div>
 </section>
 
 
-<!-- IMAGE STUDIO -->
+<!-- ==============================
+IMAGE STUDIO
+============================== -->
 
 <section id="image" class="tool">
 
 <div class="hero">
+
 <h2>🎨 Image Studio</h2>
+
 <p class="muted">
 Resize, rotate, flip, crop transparent space and export PNG.
 </p>
+
 </div>
 
 <div class="two">
@@ -715,46 +1483,58 @@ Resize, rotate, flip, crop transparent space and export PNG.
 <div class="card">
 
 <input
- type="file"
- id="studioFile"
- accept="image/png,image/jpeg,image/webp"
->
+type="file"
+id="studioFile"
+accept="image/png,image/jpeg,image/webp">
 
-<div id="studioStatus" class="status">
+<div id="studioStatus"
+class="status">
 Choose an image.
 </div>
 
 <label>Width</label>
-<input id="studioW" type="number" value="5000" min="1">
+<input id="studioW"
+type="number"
+value="5000"
+min="1">
 
 <label>Height</label>
-<input id="studioH" type="number" value="5000" min="1">
+<input id="studioH"
+type="number"
+value="5000"
+min="1">
 
 <div class="row">
 
-<button class="btn" onclick="studioResize()">
+<button class="btn"
+onclick="studioResize()">
 📐 Resize
 </button>
 
-<button class="btn secondary" onclick="studioRotate()">
+<button class="btn secondary"
+onclick="studioRotate()">
 ↻ Rotate 90°
 </button>
 
-<button class="btn secondary" onclick="studioFlip()">
+<button class="btn secondary"
+onclick="studioFlip()">
 ↔ Flip
 </button>
 
-<button class="btn secondary" onclick="studioCrop()">
+<button class="btn secondary"
+onclick="studioCrop()">
 ✂️ Crop Transparency
 </button>
 
 </div>
 
-<button class="btn" onclick="downloadStudio()">
+<button class="btn"
+onclick="downloadStudio()">
 ⬇️ Download PNG
 </button>
 
 </div>
+
 
 <div class="card">
 
@@ -769,20 +1549,26 @@ Choose an image.
 </section>
 
 
-<!-- IDEA JAR -->
+<!-- ==============================
+IDEA JAR
+============================== -->
 
 <section id="ideas" class="tool">
 
 <div class="hero">
+
 <h2>❤️ Idea Jar</h2>
+
 <p class="muted">
 Ideas saved here remain on this browser/device.
 </p>
+
 </div>
 
 <div class="card">
 
-<button class="btn danger" onclick="clearIdeas()">
+<button class="btn danger"
+onclick="clearIdeas()">
 🗑 Clear Idea Jar
 </button>
 
@@ -793,13 +1579,23 @@ Ideas saved here remain on this browser/device.
 
 </div>
 
-<!-- PART 2 GOES DIRECTLY BELOW THIS LINE-->
-  <script>
+<!--
+PART 2 GOES DIRECTLY BELOW THIS LINE.
+DO NOT ADD </body> OR </html> YET.
+-->
+ <script>
 "use strict";
 
-/* =========================================
+/* =========================================================
+   MOONLIGHT DESIGNS WORKSHOP
+   PART 2
+   Navigation + Helpers + Seamless Maker
+========================================================= */
+
+
+/* =========================================================
    NAVIGATION
-========================================= */
+========================================================= */
 
 const toolSections =
 document.querySelectorAll(".tool");
@@ -828,27 +1624,110 @@ function openTool(id){
     behavior:"smooth"
   });
 
-  if(id === "ideas"){
+  if(id==="ideas" &&
+     typeof renderIdeas==="function"){
     renderIdeas();
+  }
+
+  if(id==="seamlessMaker"){
+    makerDraw();
+  }
+
+  if(id==="seamlessMockup" &&
+     typeof drawMockup==="function"){
+    drawMockup();
   }
 }
 
+
 navButtons.forEach(button=>{
-  button.addEventListener("click",()=>{
-    openTool(button.dataset.tool);
-  });
+
+  button.addEventListener(
+    "click",
+    ()=>openTool(
+      button.dataset.tool
+    )
+  );
+
 });
 
 
-/* =========================================
+/* =========================================================
    GENERAL HELPERS
-========================================= */
+========================================================= */
 
 function rand(array){
+
   return array[
-    Math.floor(Math.random() * array.length)
+    Math.floor(
+      Math.random() *
+      array.length
+    )
   ];
 }
+
+
+function randomNumber(min,max){
+
+  return (
+    Math.random() *
+    (max-min) +
+    min
+  );
+}
+
+
+function randomInteger(min,max){
+
+  return Math.floor(
+    Math.random() *
+    (max-min+1)
+  ) + min;
+}
+
+
+function clamp(value,min,max){
+
+  return Math.min(
+    max,
+    Math.max(
+      min,
+      value
+    )
+  );
+}
+
+
+function shuffleArray(array){
+
+  const copy=[
+    ...array
+  ];
+
+  for(
+    let i=copy.length-1;
+    i>0;
+    i--
+  ){
+
+    const j=
+    Math.floor(
+      Math.random() *
+      (i+1)
+    );
+
+    [
+      copy[i],
+      copy[j]
+    ]=[
+      copy[j],
+      copy[i]
+    ];
+  }
+
+  return copy;
+}
+
 
 function escapeHTML(value){
 
@@ -864,9 +1743,10 @@ function escapeHTML(value){
   );
 }
 
+
 function formatBytes(bytes){
 
-  if(bytes === 0){
+  if(bytes===0){
     return "0 Bytes";
   }
 
@@ -886,10 +1766,13 @@ function formatBytes(bytes){
   return (
     bytes /
     Math.pow(1024,index)
-  ).toFixed(index ? 2 : 0)
-  + " " +
+  ).toFixed(
+    index ? 2 : 0
+  ) +
+  " " +
   units[index];
 }
+
 
 async function copyText(id){
 
@@ -903,7 +1786,9 @@ async function copyText(id){
 
   try{
 
-    await navigator.clipboard.writeText(text);
+    await navigator.clipboard.writeText(
+      text
+    );
 
   }catch(error){
 
@@ -911,66 +1796,79 @@ async function copyText(id){
 
       element.select();
 
-      document.execCommand("copy");
+      document.execCommand(
+        "copy"
+      );
     }
   }
 }
 
+
 function loadImageFile(file){
 
-  return new Promise((resolve,reject)=>{
+  return new Promise(
+    (resolve,reject)=>{
 
-    if(!file){
+      if(!file){
 
-      reject(
-        new Error(
-          "No file selected."
+        reject(
+          new Error(
+            "No file selected."
+          )
+        );
+
+        return;
+      }
+
+      if(
+        !file.type.startsWith(
+          "image/"
         )
-      );
+      ){
 
-      return;
+        reject(
+          new Error(
+            "Please choose an image file."
+          )
+        );
+
+        return;
+      }
+
+      const url=
+      URL.createObjectURL(file);
+
+      const image=
+      new Image();
+
+      image.onload=()=>{
+
+        URL.revokeObjectURL(
+          url
+        );
+
+        resolve(image);
+      };
+
+      image.onerror=()=>{
+
+        URL.revokeObjectURL(
+          url
+        );
+
+        reject(
+          new Error(
+            "This image could not be loaded."
+          )
+        );
+      };
+
+      image.src=url;
+
     }
-
-    if(
-      !file.type.startsWith("image/")
-    ){
-
-      reject(
-        new Error(
-          "Please choose an image file."
-        )
-      );
-
-      return;
-    }
-
-    const url=
-    URL.createObjectURL(file);
-
-    const image=
-    new Image();
-
-    image.onload=()=>{
-
-      URL.revokeObjectURL(url);
-
-      resolve(image);
-    };
-
-    image.onerror=()=>{
-
-      URL.revokeObjectURL(url);
-
-      reject(
-        new Error(
-          "This image could not be loaded."
-        )
-      );
-    };
-
-    image.src=url;
-  });
+  );
 }
+
 
 function downloadCanvas(
   canvas,
@@ -980,7 +1878,11 @@ function downloadCanvas(
   canvas.toBlob(blob=>{
 
     if(!blob){
-      alert("Could not create PNG.");
+
+      alert(
+        "Could not create PNG."
+      );
+
       return;
     }
 
@@ -988,1316 +1890,3775 @@ function downloadCanvas(
     URL.createObjectURL(blob);
 
     const link=
-    document.createElement("a");
+    document.createElement(
+      "a"
+    );
 
     link.href=url;
     link.download=filename;
 
-    document.body.appendChild(link);
+    document.body.appendChild(
+      link
+    );
 
     link.click();
-
     link.remove();
 
-    setTimeout(()=>{
-      URL.revokeObjectURL(url);
-    },1000);
+    setTimeout(
+      ()=>{
+        URL.revokeObjectURL(
+          url
+        );
+      },
+      1000
+    );
 
   },"image/png");
 }
 
 
-/* =========================================
-   UNIVERSAL UPLOAD CENTER
-========================================= */
+/* =========================================================
+   SEAMLESS MAKER STATE
+========================================================= */
 
-const universalFile=
+const makerCanvas=
 document.getElementById(
-  "universalFile"
+  "makerCanvas"
 );
 
-let universalPreviewURL=null;
+const makerContext=
+makerCanvas.getContext(
+  "2d"
+);
 
-universalFile.addEventListener(
+const makerRepeatCanvas=
+document.getElementById(
+  "makerRepeatCanvas"
+);
+
+const makerRepeatContext=
+makerRepeatCanvas.getContext(
+  "2d"
+);
+
+
+/*
+Uploaded source images.
+
+These are the PNG elements
+available in the tray.
+*/
+
+let makerSources=[];
+
+
+/*
+Objects currently placed
+on the seamless canvas.
+*/
+
+let makerObjects=[];
+
+
+/*
+Selected uploaded source.
+*/
+
+let makerSelectedSource=-1;
+
+
+/*
+Selected object already
+placed on the canvas.
+*/
+
+let makerSelectedObject=-1;
+
+
+/*
+Dragging state.
+*/
+
+let makerDragging=false;
+
+let makerDragOffsetX=0;
+let makerDragOffsetY=0;
+
+
+/*
+The editor preview stays
+reasonably small for phones.
+
+The actual export is rendered
+at the selected full resolution.
+*/
+
+const MAKER_PREVIEW_SIZE=800;
+
+
+/* =========================================================
+   SEAMLESS MAKER UPLOAD
+========================================================= */
+
+document.getElementById(
+  "makerFiles"
+).addEventListener(
   "change",
   async event=>{
 
-    const file=
-    event.target.files?.[0];
+    const files=[
+      ...event.target.files
+    ];
 
     const status=
     document.getElementById(
-      "uploadStatus"
+      "makerStatus"
     );
 
-    const preview=
-    document.getElementById(
-      "universalPreview"
-    );
-
-    const info=
-    document.getElementById(
-      "fileInfo"
-    );
-
-    if(!file){
+    if(!files.length){
       return;
     }
 
     status.textContent=
-    "Loading image…";
+    `Loading ${files.length} element${files.length===1 ? "" : "s"}…`;
 
-    info.innerHTML="";
 
-    try{
+    for(const file of files){
 
-      const image=
-      await loadImageFile(file);
+      try{
 
-      if(universalPreviewURL){
-        URL.revokeObjectURL(
-          universalPreviewURL
+        const image=
+        await loadImageFile(file);
+
+        makerSources.push({
+
+          id:
+          Date.now() +
+          Math.random(),
+
+          name:
+          file.name,
+
+          image:
+          image,
+
+          width:
+          image.naturalWidth,
+
+          height:
+          image.naturalHeight
+
+        });
+
+      }catch(error){
+
+        console.warn(
+          file.name,
+          error
         );
       }
 
-      universalPreviewURL=
-      URL.createObjectURL(file);
-
-      preview.src=
-      universalPreviewURL;
-
-      status.textContent=
-      "Loaded ✓";
-
-      info.innerHTML=`
-        <div class="card infoBox">
-
-          <div class="good">
-            <strong>Loaded ✓</strong>
-          </div>
-
-          <strong>Filename:</strong>
-          ${escapeHTML(file.name)}
-          <br>
-
-          <strong>Dimensions:</strong>
-          ${image.naturalWidth}
-          ×
-          ${image.naturalHeight}
-          px
-          <br>
-
-          <strong>File Size:</strong>
-          ${formatBytes(file.size)}
-          <br>
-
-          <strong>File Type:</strong>
-          ${escapeHTML(
-            file.type || "Unknown"
-          )}
-
-        </div>
-      `;
-
-    }catch(error){
-
-      preview.removeAttribute("src");
-
-      status.textContent=
-      "❌ " + error.message;
-
-      info.innerHTML="";
     }
+
+
+    if(
+      makerSelectedSource<0 &&
+      makerSources.length
+    ){
+
+      makerSelectedSource=0;
+    }
+
+
+    makerRenderTray();
+
+    status.textContent=
+    `${makerSources.length} element${makerSources.length===1 ? "" : "s"} ready ✓`;
+
+    /*
+    Allows choosing the same file
+    again later if desired.
+    */
+
+    event.target.value="";
+
   }
 );
 
 
-/* =========================================
-   BRAIN STUCK DATABASE
-========================================= */
+/* =========================================================
+   ELEMENT TRAY
+========================================================= */
 
-const brainSubjects=[
+function makerRenderTray(){
 
-  "highland cow",
-  "black cat",
-  "ghost",
-  "skeleton",
-  "alien",
-  "raven",
-  "owl",
-  "moth",
-  "butterfly",
-  "dragonfly",
-  "bee",
-  "frog",
-  "possum",
-  "raccoon",
-  "fox",
-  "bunny",
-  "bear",
-  "deer",
-  "horse",
-  "cow",
-  "pig",
-  "goat",
-  "chicken",
-  "snake",
-  "dragon",
-  "mermaid",
-  "jellyfish",
-  "octopus",
-  "witch",
-  "fairy",
-  "cute monster",
-  "gingerbread man",
-  "snowman",
-  "reindeer",
-  "nutcracker",
-  "pumpkin",
-  "skull",
-  "mushroom",
-  "sunflower",
-  "wildflower bouquet",
-  "rose",
-  "crescent moon",
-  "sun",
-  "crystal ball",
-  "tarot card",
-  "potion bottle",
-  "coffee cup",
-  "cowboy boot",
-  "cowboy hat",
-  "cactus",
-  "strawberry",
-  "cherries",
-  "retro television",
-  "cassette tape",
-  "roller skate",
-  "spooky house",
-  "witchy bookshelf",
-  "crystal cluster",
-  "flower pot",
-  "heart-shaped cake",
-  "broken heart",
-  "anatomical heart",
-  "retro smiley face",
-  "cute bat",
-  "moon phase collection",
-  "western longhorn",
-  "floral skull",
-  "celestial mushroom",
-  "Christmas cocoa cup",
-  "ornament",
-  "candy cane",
-  "snow globe",
-  "haunted pumpkin",
-  "disco ghost",
-  "cowgirl skeleton",
-  "alien cow",
-  "flower-covered cow",
-  "gothic butterfly"
-
-];
-
-const brainStyles=[
-
-  "whimsical hand-drawn",
-  "cute spooky",
-  "retro groovy",
-  "gothic vintage",
-  "western boho",
-  "celestial dreamy",
-  "bold preppy",
-  "cottagecore",
-  "storybook",
-  "psychedelic",
-  "rustic",
-  "kawaii",
-  "dark romantic",
-  "90s colorful",
-  "folk art",
-  "tattoo inspired",
-  "playful doodle",
-  "watercolor inspired",
-  "vintage storybook",
-  "soft bohemian",
-  "maximalist",
-  "minimal cute",
-  "witchy celestial",
-  "retro western",
-  "girly gothic",
-  "hand-painted",
-  "marker-drawn",
-  "vintage distressed",
-  "cute cartoon",
-  "dreamy fantasy",
-  "funky 70s",
-  "bright Y2K",
-  "moody botanical",
-  "country western",
-  "sweet pastel",
-  "bold graphic",
-  "storybook Christmas"
-
-];
-
-const brainPalettes=[
-
-  "hot pink, purple and electric blue",
-  "burgundy, black and dusty rose",
-  "pastel pink, mint and lavender",
-  "orange, black and violet",
-  "turquoise, coral and cream",
-  "earthy brown, sage and rust",
-  "rainbow tie-dye colors",
-  "midnight blue, silver and violet",
-  "pink, purple and blue Christmas colors",
-  "traditional red, green and gold",
-  "neon cosmic colors",
-  "peach, teal and mustard",
-  "black, hot pink and white",
-  "sage, cream and terracotta",
-  "lavender, turquoise and navy",
-  "bright rainbow colors",
-  "soft pastel rainbow colors",
-  "red, pink and black",
-  "rust, sunflower yellow and teal",
-  "black, burgundy and antique gold",
-  "pink, orange and turquoise",
-  "navy, magenta and lavender",
-  "cream, dusty blue and rose",
-  "forest green, copper and cream",
-  "electric pink, lime and purple",
-  "soft peach, lilac and baby blue",
-  "black, silver and icy blue",
-  "burnt orange, plum and charcoal"
-
-];
-
-const brainActions=[
-
-  "wearing oversized heart sunglasses",
-  "surrounded by tiny stars",
-  "holding a coffee cup",
-  "wearing a flower crown",
-  "floating through a cosmic sky",
-  "covered in bows",
-  "surrounded by wildflowers",
-  "wearing a cowboy hat",
-  "having a hilariously bad day",
-  "wrapped in Christmas lights",
-  "posing dramatically",
-  "holding tiny mushrooms",
-  "surrounded by butterflies",
-  "wearing roller skates",
-  "under a crescent moon",
-  "holding a bouquet",
-  "wearing a witch hat",
-  "covered in tiny hearts",
-  "sitting inside a flower pot",
-  "holding a crystal ball",
-  "wearing retro sunglasses",
-  "surrounded by sparkles",
-  "peeking through flowers",
-  "holding a tiny sign",
-  "dancing under the stars",
-  "wearing a giant bow",
-  "holding a candy cane",
-  "wrapped in vines",
-  "sitting on a crescent moon",
-  "wearing a western bandana",
-  "holding a tiny pumpkin",
-  "surrounded by floating moons",
-  "drinking hot cocoa",
-  "wearing a Santa hat",
-  "covered in colorful flowers",
-  "sitting among mushrooms",
-  "wearing a crown",
-  "holding a heart-shaped balloon",
-  "riding through a cosmic tornado",
-  "surrounded by tiny ghosts"
-
-];
-
-const brainSettings=[
-
-  "moonlit meadow",
-  "retro motel",
-  "wildflower field",
-  "cosmic desert",
-  "haunted garden",
-  "snowy Christmas village",
-  "western desert",
-  "mushroom forest",
-  "celestial sky",
-  "cozy craft room",
-  "spooky graveyard",
-  "spring garden",
-  "magical greenhouse",
-  "retro roller rink",
-  "witchy cottage",
-  "flower shop",
-  "haunted library",
-  "cosmic garden",
-  "western ghost town",
-  "enchanted forest",
-  "neon desert",
-  "country farmhouse",
-  "moon garden",
-  "retro diner",
-  "pumpkin patch",
-  "Christmas tree farm",
-  "dreamy cloudscape",
-  "dark botanical garden",
-  "wild western prairie",
-  "magical crystal cave"
-
-];
-
-const brainExtras=[
-
-  "tiny disco cowboy ghosts",
-  "a sarcastic frog sidekick",
-  "floating heart-shaped planets",
-  "miniature alien abductors",
-  "dramatic tattoo-style flames",
-  "an unreasonable amount of bows",
-  "tiny skeleton backup dancers",
-  "a confused possum holding coffee",
-  "mini mushrooms wearing cowboy hats",
-  "floating retro smiley faces",
-  "tiny ghosts carrying shopping bags",
-  "a miniature alien rodeo",
-  "a skeleton drinking iced coffee",
-  "cowboy boots growing flowers",
-  "a moon wearing heart sunglasses",
-  "a grumpy frog in a flower crown",
-  "tiny bats wearing bows",
-  "a raccoon stealing Christmas cookies",
-  "floating celestial cherries",
-  "a ghost riding a roller skate"
-
-];
-
-const randomThemes=[
-
-  "Halloween",
-  "Christmas",
-  "Valentine",
-  "Anti Valentine",
-  "Western",
-  "Celestial",
-  "Gothic",
-  "Cottagecore",
-  "Retro",
-  "Spring",
-  "Summer",
-  "Fall",
-  "Winter",
-  "Spooky Cute",
-  "Wildflower",
-  "Cosmic",
-  "Boho",
-  "Funny",
-  "Whimsical"
-
-];
-
-
-/* =========================================
-   BRAIN STUCK GENERATOR
-========================================= */
-
-function brainPrompt(
-  weird=false
-){
-
-  const type=
+  const tray=
   document.getElementById(
-    "brainType"
-  ).value;
-
-  const chosenTheme=
-  document.getElementById(
-    "brainTheme"
-  ).value;
-
-  const theme=
-  chosenTheme ||
-  rand(randomThemes);
-
-  const subject=
-  rand(brainSubjects);
-
-  const style=
-  rand(brainStyles);
-
-  const palette=
-  rand(brainPalettes);
-
-  const action=
-  rand(brainActions);
-
-  const setting=
-  rand(brainSettings);
-
-  const weirdPart=
-  weird
-  ?
-  ` Add an unexpected detail: ${rand(brainExtras)}.`
-  :
-  "";
-
-  if(
-    type ===
-    "Seamless Pattern"
-  ){
-
-    return (
-      `Create a true seamless repeating ${theme} pattern featuring ` +
-      `${subject}, ${action}, in a ${style} style. ` +
-      `Use ${palette}. Add coordinating elements inspired by a ${setting}. ` +
-      `Keep the composition balanced with varied scale and rotation, ` +
-      `avoid awkward empty areas, preserve edge continuity, and make sure ` +
-      `elements crossing one edge continue naturally on the opposite edge.` +
-      weirdPart
-    );
-  }
-
-  if(
-    type ===
-    "PNG Clipart"
-  ){
-
-    return (
-      `Create isolated ${theme} PNG clipart featuring a ${subject} ${action}. ` +
-      `Use a ${style} style with ${palette}. ` +
-      `Keep the full subject centered with no cutoffs, crisp readable details, ` +
-      `clean outer edges, and a composition suitable for a transparent background.` +
-      weirdPart
-    );
-  }
-
-  if(
-    type ===
-    "Clipart Set"
-  ){
-
-    return (
-      `Create a coordinated ${theme} clipart collection centered around ${subject}. ` +
-      `Use a ${style} style and ${palette}. Include the main subject ${action}, ` +
-      `plus coordinating decorative objects inspired by a ${setting}. ` +
-      `Each piece should be separate, complete, uncropped, and suitable for transparent PNG export.` +
-      weirdPart
-    );
-  }
-
-  if(
-    type ===
-    "Digital Paper"
-  ){
-
-    return (
-      `Create a full digital paper background inspired by ${theme}, featuring ${subject} ` +
-      `in a ${style} style. Use ${palette}. Build a rich background inspired by a ${setting}, ` +
-      `with balanced decorative details filling the canvas without looking overcrowded.` +
-      weirdPart
-    );
-  }
-
-  if(
-    type ===
-    "Alpha"
-  ){
-
-    return (
-      `Create a cohesive A–Z alphabet inspired by ${theme} and ${subject}. ` +
-      `Use a ${style} style with ${palette}. Keep every letter highly readable ` +
-      `while using consistent decorative elements throughout the entire alphabet. ` +
-      `Make each character visually coordinated but individually recognizable.` +
-      weirdPart
-    );
-  }
-
-  if(
-    type ===
-    "Coloring Page"
-  ){
-
-    return (
-      `Create a black-line coloring page featuring ${subject} ${action} in a ${theme} ${setting}. ` +
-      `Use clean bold outlines, white background only, no color or grayscale, ` +
-      `clear enclosed shapes, and comfortable open areas for coloring.` +
-      weirdPart
-    );
-  }
-
-  if(
-    type ===
-    "Social Graphic"
-  ){
-
-    return (
-      `Create a ${theme} social media graphic featuring ${subject} in a ${style} style. ` +
-      `Use ${palette}. Leave intentional open space for promotional text, ` +
-      `keep the focal subject easy to see on a phone screen, and use visual inspiration from a ${setting}.` +
-      weirdPart
-    );
-  }
-
-  return (
-    `Create a ${type} featuring ${subject} ${action}. ` +
-    `Theme: ${theme}. Style: ${style}. Palette: ${palette}. ` +
-    `Setting inspiration: ${setting}.` +
-    weirdPart
-  );
-}
-
-function brainOne(){
-
-  document.getElementById(
-    "brainOutput"
-  ).value=
-  brainPrompt(false);
-}
-
-function brainWeird(){
-
-  document.getElementById(
-    "brainOutput"
-  ).value=
-  brainPrompt(true);
-}
-
-function brain25(){
-
-  const results=[];
-
-  for(
-    let i=1;
-    i<=25;
-    i++
-  ){
-
-    results.push(
-      `${i}. ${brainPrompt(false)}`
-    );
-  }
-
-  document.getElementById(
-    "brainOutput"
-  ).value=
-  results.join("\n\n");
-}
-
-
-/* =========================================
-   IDEA JAR
-========================================= */
-
-function getIdeas(){
-
-  try{
-
-    return JSON.parse(
-      localStorage.getItem(
-        "moonlightIdeaJar"
-      ) || "[]"
-    );
-
-  }catch(error){
-
-    return [];
-  }
-}
-
-function saveIdea(){
-
-  const output=
-  document.getElementById(
-    "brainOutput"
+    "makerTray"
   );
 
-  const text=
-  output.value.trim();
+  tray.innerHTML="";
 
-  if(!text){
 
-    alert(
-      "Generate an idea first."
-    );
+  if(!makerSources.length){
 
-    return;
-  }
-
-  const ideas=
-  getIdeas();
-
-  ideas.unshift({
-
-    text:text,
-
-    date:
-    new Date().toLocaleString()
-
-  });
-
-  localStorage.setItem(
-    "moonlightIdeaJar",
-    JSON.stringify(
-      ideas.slice(0,250)
-    )
-  );
-
-  renderIdeas();
-
-  alert(
-    "Saved to your Idea Jar ❤️"
-  );
-}
-
-function renderIdeas(){
-
-  const holder=
-  document.getElementById(
-    "ideaList"
-  );
-
-  const ideas=
-  getIdeas();
-
-  if(!ideas.length){
-
-    holder.innerHTML=
-    `<p class="muted">
-      Your Idea Jar is empty.
-      Save ideas from Brain Stuck and they will appear here.
-    </p>`;
-
-    return;
-  }
-
-  holder.innerHTML=
-  ideas.map(
-    (idea,index)=>`
-
-      <div class="idea">
-
-        <strong>
-          ✨ Idea ${index+1}
-        </strong>
-
-        <div class="muted">
-          ${escapeHTML(idea.date)}
-        </div>
-
-        <p>
-          ${escapeHTML(idea.text)}
-        </p>
-
-        <button
-          class="btn secondary"
-          onclick="copyIdea(${index})"
-        >
-          📋 Copy
-        </button>
-
-        <button
-          class="btn danger"
-          onclick="removeIdea(${index})"
-        >
-          🗑 Delete
-        </button>
-
+    tray.innerHTML=`
+      <div class="muted">
+        Your uploaded elements will appear here.
       </div>
+    `;
 
-    `
-  ).join("");
-}
-
-async function copyIdea(index){
-
-  const ideas=
-  getIdeas();
-
-  const idea=
-  ideas[index];
-
-  if(!idea){
     return;
   }
 
-  try{
 
-    await navigator.clipboard.writeText(
-      idea.text
-    );
+  makerSources.forEach(
+    (source,index)=>{
 
-  }catch(error){
+      const card=
+      document.createElement(
+        "div"
+      );
 
-    alert(
-      "Copy failed. Press and hold the idea text to copy it."
-    );
-  }
+      card.className=
+      "elementThumb";
+
+      if(
+        index===
+        makerSelectedSource
+      ){
+
+        card.classList.add(
+          "selected"
+        );
+      }
+
+
+      const image=
+      document.createElement(
+        "img"
+      );
+
+      image.src=
+      source.image.src;
+
+      image.alt=
+      source.name;
+
+
+      const name=
+      document.createElement(
+        "div"
+      );
+
+      name.className=
+      "smallText";
+
+      name.textContent=
+      source.name;
+
+
+      card.append(
+        image,
+        name
+      );
+
+
+      card.addEventListener(
+        "click",
+        ()=>{
+
+          makerSelectedSource=
+          index;
+
+          makerRenderTray();
+
+          document.getElementById(
+            "makerStatus"
+          ).textContent=
+          `${source.name} selected ✓`;
+
+        }
+      );
+
+
+      tray.appendChild(
+        card
+      );
+
+    }
+  );
 }
 
-function removeIdea(index){
 
-  const ideas=
-  getIdeas();
+makerRenderTray();
 
-  ideas.splice(index,1);
 
-  localStorage.setItem(
-    "moonlightIdeaJar",
-    JSON.stringify(ideas)
+/* =========================================================
+   SELECTED OBJECT CONTROLS
+========================================================= */
+
+const makerScale=
+document.getElementById(
+  "makerScale"
+);
+
+const makerRotation=
+document.getElementById(
+  "makerRotation"
+);
+
+
+makerScale.addEventListener(
+  "input",
+  ()=>{
+
+    document.getElementById(
+      "makerScaleValue"
+    ).textContent=
+    `${makerScale.value}%`;
+
+
+    if(
+      makerSelectedObject>=0 &&
+      makerObjects[
+        makerSelectedObject
+      ]
+    ){
+
+      makerObjects[
+        makerSelectedObject
+      ].scale=
+      Number(
+        makerScale.value
+      ) / 100;
+
+      makerDraw();
+    }
+
+  }
+);
+
+
+makerRotation.addEventListener(
+  "input",
+  ()=>{
+
+    document.getElementById(
+      "makerRotationValue"
+    ).textContent=
+    `${makerRotation.value}°`;
+
+
+    if(
+      makerSelectedObject>=0 &&
+      makerObjects[
+        makerSelectedObject
+      ]
+    ){
+
+      makerObjects[
+        makerSelectedObject
+      ].rotation=
+      Number(
+        makerRotation.value
+      );
+
+      makerDraw();
+    }
+
+  }
+);
+
+
+/* =========================================================
+   ADD ELEMENT
+========================================================= */
+
+function makerAddSelected(){
+
+  if(
+    makerSelectedSource<0 ||
+    !makerSources[
+      makerSelectedSource
+    ]
+  ){
+
+    document.getElementById(
+      "makerStatus"
+    ).textContent=
+    "Upload and select an element first.";
+
+    return;
+  }
+
+
+  const source=
+  makerSources[
+    makerSelectedSource
+  ];
+
+
+  const object={
+
+    sourceIndex:
+    makerSelectedSource,
+
+    x:
+    .5,
+
+    y:
+    .5,
+
+    scale:
+    Number(
+      makerScale.value
+    ) / 100,
+
+    rotation:
+    Number(
+      makerRotation.value
+    ),
+
+    flipX:false,
+
+    flipY:false
+
+  };
+
+
+  makerObjects.push(
+    object
   );
 
-  renderIdeas();
+
+  makerSelectedObject=
+  makerObjects.length-1;
+
+
+  makerSyncControls();
+
+  makerDraw();
+
+
+  document.getElementById(
+    "makerStatus"
+  ).textContent=
+  `${source.name} added ✓`;
 }
 
-function clearIdeas(){
+
+/* =========================================================
+   DUPLICATE ELEMENT
+========================================================= */
+
+function makerDuplicate(){
+
+  if(
+    makerSelectedObject<0 ||
+    !makerObjects[
+      makerSelectedObject
+    ]
+  ){
+
+    document.getElementById(
+      "makerStatus"
+    ).textContent=
+    "Select an element on the canvas first.";
+
+    return;
+  }
+
+
+  const original=
+  makerObjects[
+    makerSelectedObject
+  ];
+
+
+  const copy={
+    ...original,
+
+    x:
+    (original.x+.08)%1,
+
+    y:
+    (original.y+.08)%1
+  };
+
+
+  makerObjects.push(
+    copy
+  );
+
+
+  makerSelectedObject=
+  makerObjects.length-1;
+
+  makerSyncControls();
+  makerDraw();
+
+
+  document.getElementById(
+    "makerStatus"
+  ).textContent=
+  "Element duplicated ✓";
+}
+
+
+/* =========================================================
+   DELETE SELECTED OBJECT
+========================================================= */
+
+function makerDelete(){
+
+  if(
+    makerSelectedObject<0 ||
+    !makerObjects[
+      makerSelectedObject
+    ]
+  ){
+
+    document.getElementById(
+      "makerStatus"
+    ).textContent=
+    "Select an element to delete.";
+
+    return;
+  }
+
+
+  makerObjects.splice(
+    makerSelectedObject,
+    1
+  );
+
+
+  makerSelectedObject=-1;
+
+  makerDraw();
+
+
+  document.getElementById(
+    "makerStatus"
+  ).textContent=
+  "Element deleted ✓";
+}
+
+
+/* =========================================================
+   CLEAR MAKER
+========================================================= */
+
+function makerClearCanvas(){
+
+  if(!makerObjects.length){
+    return;
+  }
+
 
   if(
     !confirm(
-      "Clear your entire Idea Jar?"
+      "Clear all elements from this seamless tile?"
     )
   ){
     return;
   }
 
-  localStorage.removeItem(
-    "moonlightIdeaJar"
+
+  makerObjects=[];
+
+  makerSelectedObject=-1;
+
+  makerDraw();
+
+
+  document.getElementById(
+    "makerStatus"
+  ).textContent=
+  "Canvas cleared.";
+}
+
+
+/* =========================================================
+   SYNC CONTROLS TO SELECTED OBJECT
+========================================================= */
+
+function makerSyncControls(){
+
+  const object=
+  makerObjects[
+    makerSelectedObject
+  ];
+
+
+  if(!object){
+    return;
+  }
+
+
+  makerScale.value=
+  Math.round(
+    object.scale*100
   );
 
-  renderIdeas();
+
+  makerRotation.value=
+  Math.round(
+    object.rotation
+  );
+
+
+  document.getElementById(
+    "makerScaleValue"
+  ).textContent=
+  `${makerScale.value}%`;
+
+
+  document.getElementById(
+    "makerRotationValue"
+  ).textContent=
+  `${makerRotation.value}°`;
 }
 
-renderIdeas();
 
+/* =========================================================
+   DRAW ONE OBJECT
+========================================================= */
 
-/* =========================================
-   PART 3 CONTINUES BELOW
-========================================= */
-    /* =========================================
-   PRODUCT LISTING BUILDER
-========================================= */
+function makerDrawObject(
+  context,
+  object,
+  canvasSize,
+  selected=false
+){
 
-function uniqueList(array){
-
-  return [
-    ...new Set(
-      array
-      .map(item=>item.trim())
-      .filter(Boolean)
-    )
+  const source=
+  makerSources[
+    object.sourceIndex
   ];
+
+
+  if(!source){
+    return;
+  }
+
+
+  const image=
+  source.image;
+
+
+  /*
+  Scale is relative to the
+  overall seamless canvas size.
+  */
+
+  const maxOriginal=
+  Math.max(
+    image.naturalWidth,
+    image.naturalHeight
+  );
+
+
+  const targetMax=
+  canvasSize *
+  object.scale;
+
+
+  const imageScale=
+  targetMax /
+  maxOriginal;
+
+
+  const width=
+  image.naturalWidth *
+  imageScale;
+
+
+  const height=
+  image.naturalHeight *
+  imageScale;
+
+
+  const centerX=
+  object.x *
+  canvasSize;
+
+
+  const centerY=
+  object.y *
+  canvasSize;
+
+
+  /*
+  The copies at +/- canvasSize
+  are what make anything crossing
+  an edge appear on the opposite side.
+  */
+
+  const offsets=[
+    -canvasSize,
+    0,
+    canvasSize
+  ];
+
+
+  for(const offsetX of offsets){
+
+    for(const offsetY of offsets){
+
+      const x=
+      centerX +
+      offsetX;
+
+      const y=
+      centerY +
+      offsetY;
+
+
+      context.save();
+
+
+      context.translate(
+        x,
+        y
+      );
+
+
+      context.rotate(
+        object.rotation *
+        Math.PI /
+        180
+      );
+
+
+      context.scale(
+        object.flipX ? -1 : 1,
+        object.flipY ? -1 : 1
+      );
+
+
+      context.drawImage(
+        image,
+        -width/2,
+        -height/2,
+        width,
+        height
+      );
+
+
+      context.restore();
+
+    }
+
+  }
+
+
+  /*
+  Selection outline is only drawn
+  on the main center copy.
+  */
+
+  if(selected){
+
+    context.save();
+
+    context.translate(
+      centerX,
+      centerY
+    );
+
+    context.rotate(
+      object.rotation *
+      Math.PI /
+      180
+    );
+
+    context.strokeStyle=
+    "#ff62c7";
+
+    context.lineWidth=
+    Math.max(
+      2,
+      canvasSize/300
+    );
+
+    context.setLineDash([
+      canvasSize/100,
+      canvasSize/140
+    ]);
+
+    context.strokeRect(
+      -width/2,
+      -height/2,
+      width,
+      height
+    );
+
+    context.restore();
+
+  }
+
 }
 
 
-function listingValues(){
+/* =========================================================
+   MAKER BACKGROUND
+========================================================= */
+
+function makerPaintBackground(
+  context,
+  width,
+  height
+){
+
+  const mode=
+  document.getElementById(
+    "makerBackground"
+  ).value;
+
+
+  if(mode==="transparent"){
+
+    context.clearRect(
+      0,
+      0,
+      width,
+      height
+    );
+
+    return;
+  }
+
+
+  if(mode==="white"){
+
+    context.fillStyle=
+    "#ffffff";
+
+  }else{
+
+    context.fillStyle=
+    document.getElementById(
+      "makerBgColor"
+    ).value;
+  }
+
+
+  context.fillRect(
+    0,
+    0,
+    width,
+    height
+  );
+}
+
+
+/* =========================================================
+   DRAW EDITOR
+========================================================= */
+
+function makerDraw(){
+
+  makerCanvas.width=
+  MAKER_PREVIEW_SIZE;
+
+  makerCanvas.height=
+  MAKER_PREVIEW_SIZE;
+
+
+  makerPaintBackground(
+    makerContext,
+    makerCanvas.width,
+    makerCanvas.height
+  );
+
+
+  /*
+  Helpful editor background when
+  the exported tile is transparent.
+  */
+
+  if(
+    document.getElementById(
+      "makerBackground"
+    ).value===
+    "transparent"
+  ){
+
+    makerContext.save();
+
+    makerContext.fillStyle=
+    "#ffffff";
+
+    makerContext.fillRect(
+      0,
+      0,
+      makerCanvas.width,
+      makerCanvas.height
+    );
+
+    makerContext.restore();
+  }
+
+
+  makerObjects.forEach(
+    (object,index)=>{
+
+      makerDrawObject(
+        makerContext,
+        object,
+        makerCanvas.width,
+        index===makerSelectedObject
+      );
+
+    }
+  );
+
+
+  makerDrawRepeatPreview();
+}
+
+
+/* =========================================================
+   REPEAT PREVIEW
+========================================================= */
+
+function makerDrawRepeatPreview(){
+
+  const previewSize=800;
+
+  makerRepeatCanvas.width=
+  previewSize;
+
+  makerRepeatCanvas.height=
+  previewSize;
+
+
+  makerRepeatContext.clearRect(
+    0,
+    0,
+    previewSize,
+    previewSize
+  );
+
+
+  /*
+  First render a clean tile without
+  selection handles.
+  */
+
+  const tile=
+  document.createElement(
+    "canvas"
+  );
+
+  tile.width=400;
+  tile.height=400;
+
+
+  const context=
+  tile.getContext(
+    "2d"
+  );
+
+
+  makerPaintBackground(
+    context,
+    tile.width,
+    tile.height
+  );
+
+
+  if(
+    document.getElementById(
+      "makerBackground"
+    ).value===
+    "transparent"
+  ){
+
+    context.fillStyle=
+    "#ffffff";
+
+    context.fillRect(
+      0,
+      0,
+      tile.width,
+      tile.height
+    );
+  }
+
+
+  makerObjects.forEach(
+    object=>{
+
+      makerDrawObject(
+        context,
+        object,
+        tile.width,
+        false
+      );
+
+    }
+  );
+
+
+  /*
+  Four by four repeat.
+  */
+
+  const repeat=4;
+
+  const cell=
+  previewSize /
+  repeat;
+
+
+  for(
+    let y=0;
+    y<repeat;
+    y++
+  ){
+
+    for(
+      let x=0;
+      x<repeat;
+      x++
+    ){
+
+      makerRepeatContext.drawImage(
+        tile,
+        x*cell,
+        y*cell,
+        cell,
+        cell
+      );
+
+    }
+
+  }
+
+}
+
+
+/* =========================================================
+   HIT TESTING
+========================================================= */
+
+function makerHitTest(
+  canvasX,
+  canvasY
+){
+
+  /*
+  Search backwards because the
+  last object is visually on top.
+  */
+
+  for(
+    let i=
+    makerObjects.length-1;
+    i>=0;
+    i--
+  ){
+
+    const object=
+    makerObjects[i];
+
+    const source=
+    makerSources[
+      object.sourceIndex
+    ];
+
+
+    if(!source){
+      continue;
+    }
+
+
+    const maxOriginal=
+    Math.max(
+      source.image.naturalWidth,
+      source.image.naturalHeight
+    );
+
+
+    const targetMax=
+    makerCanvas.width *
+    object.scale;
+
+
+    const scale=
+    targetMax /
+    maxOriginal;
+
+
+    const width=
+    source.image.naturalWidth *
+    scale;
+
+
+    const height=
+    source.image.naturalHeight *
+    scale;
+
+
+    const centerX=
+    object.x *
+    makerCanvas.width;
+
+
+    const centerY=
+    object.y *
+    makerCanvas.height;
+
+
+    /*
+    Slightly generous hit box is easier
+    to use with fingers on a phone.
+    */
+
+    const padding=15;
+
+
+    if(
+      canvasX>=
+      centerX-width/2-padding &&
+
+      canvasX<=
+      centerX+width/2+padding &&
+
+      canvasY>=
+      centerY-height/2-padding &&
+
+      canvasY<=
+      centerY+height/2+padding
+    ){
+
+      return i;
+    }
+
+  }
+
+
+  return -1;
+}
+
+
+/* =========================================================
+   POINTER COORDINATES
+========================================================= */
+
+function makerPointerPosition(
+  event
+){
+
+  const rect=
+  makerCanvas.getBoundingClientRect();
+
 
   return {
 
-    type:
-    document.getElementById("pType").value,
+    x:
+    (
+      event.clientX -
+      rect.left
+    ) *
+    (
+      makerCanvas.width /
+      rect.width
+    ),
 
-    subject:
-    document.getElementById("pSubject")
-    .value.trim() || "digital design",
-
-    theme:
-    document.getElementById("pTheme")
-    .value.trim() || "creative",
-
-    style:
-    document.getElementById("pStyle")
-    .value.trim() || "whimsical",
-
-    colors:
-    document.getElementById("pColors")
-    .value.trim() || "colorful",
-
-    details:
-    document.getElementById("pDetails")
-    .value.trim()
+    y:
+    (
+      event.clientY -
+      rect.top
+    ) *
+    (
+      makerCanvas.height /
+      rect.height
+    )
 
   };
 }
 
 
-/* =========================================
+/* =========================================================
+   DRAGGING
+========================================================= */
+
+makerCanvas.addEventListener(
+  "pointerdown",
+  event=>{
+
+    const point=
+    makerPointerPosition(
+      event
+    );
+
+
+    const hit=
+    makerHitTest(
+      point.x,
+      point.y
+    );
+
+
+    if(hit<0){
+
+      makerSelectedObject=-1;
+
+      makerDraw();
+
+      return;
+    }
+
+
+    makerSelectedObject=
+    hit;
+
+
+    const object=
+    makerObjects[hit];
+
+
+    makerDragOffsetX=
+    point.x -
+    object.x *
+    makerCanvas.width;
+
+
+    makerDragOffsetY=
+    point.y -
+    object.y *
+    makerCanvas.height;
+
+
+    makerDragging=true;
+
+
+    makerCanvas.setPointerCapture(
+      event.pointerId
+    );
+
+
+    makerSyncControls();
+
+    makerDraw();
+
+
+    document.getElementById(
+      "makerStatus"
+    ).textContent=
+    "Element selected — drag to move.";
+
+  }
+);
+
+
+makerCanvas.addEventListener(
+  "pointermove",
+  event=>{
+
+    if(
+      !makerDragging ||
+      makerSelectedObject<0
+    ){
+      return;
+    }
+
+
+    const point=
+    makerPointerPosition(
+      event
+    );
+
+
+    const object=
+    makerObjects[
+      makerSelectedObject
+    ];
+
+
+    /*
+    Allow the center to wrap around
+    the canvas continuously.
+    */
+
+    let x=
+    (
+      point.x -
+      makerDragOffsetX
+    ) /
+    makerCanvas.width;
+
+
+    let y=
+    (
+      point.y -
+      makerDragOffsetY
+    ) /
+    makerCanvas.height;
+
+
+    x=
+    ((x%1)+1)%1;
+
+    y=
+    ((y%1)+1)%1;
+
+
+    object.x=x;
+    object.y=y;
+
+
+    makerDraw();
+
+  }
+);
+
+
+function makerStopDragging(
+  event
+){
+
+  makerDragging=false;
+
+
+  try{
+
+    makerCanvas.releasePointerCapture(
+      event.pointerId
+    );
+
+  }catch(error){
+    /* harmless */
+  }
+}
+
+
+makerCanvas.addEventListener(
+  "pointerup",
+  makerStopDragging
+);
+
+
+makerCanvas.addEventListener(
+  "pointercancel",
+  makerStopDragging
+);
+
+
+/* =========================================================
+   AUTO ARRANGE
+========================================================= */
+
+function makerAutoArrange(){
+
+  if(!makerSources.length){
+
+    document.getElementById(
+      "makerStatus"
+    ).textContent=
+    "Upload PNG elements first.";
+
+    return;
+  }
+
+
+  const count=
+  clamp(
+    Number(
+      document.getElementById(
+        "makerAutoCount"
+      ).value
+    ) || 24,
+    4,
+    100
+  );
+
+
+  makerObjects=[];
+
+
+  /*
+  Use an offset grid so objects don't
+  pile on top of each other.
+
+  Some are intentionally placed near
+  edges so wrapping is visible.
+  */
+
+  const columns=
+  Math.ceil(
+    Math.sqrt(count)
+  );
+
+
+  const rows=
+  Math.ceil(
+    count /
+    columns
+  );
+
+
+  for(
+    let i=0;
+    i<count;
+    i++
+  ){
+
+    const column=
+    i%columns;
+
+    const row=
+    Math.floor(
+      i/columns
+    );
+
+
+    let x=
+    (
+      column+.5
+    ) /
+    columns;
+
+
+    let y=
+    (
+      row+.5
+    ) /
+    rows;
+
+
+    /*
+    Stagger every second row.
+    */
+
+    if(row%2===1){
+
+      x+=
+      .5 /
+      columns;
+    }
+
+
+    /*
+    Small random variation keeps the
+    automatic pattern from looking rigid.
+    */
+
+    x+=
+    randomNumber(
+      -.035,
+      .035
+    );
+
+    y+=
+    randomNumber(
+      -.035,
+      .035
+    );
+
+
+    x=
+    ((x%1)+1)%1;
+
+    y=
+    ((y%1)+1)%1;
+
+
+    const sourceIndex=
+    i %
+    makerSources.length;
+
+
+    makerObjects.push({
+
+      sourceIndex:
+      sourceIndex,
+
+      x:x,
+
+      y:y,
+
+      scale:
+      randomNumber(
+        .16,
+        .31
+      ),
+
+      rotation:
+      randomInteger(
+        -35,
+        35
+      ),
+
+      flipX:
+      Math.random()<.25,
+
+      flipY:false
+
+    });
+
+  }
+
+
+  /*
+  Add a few deliberate edge placements.
+  These demonstrate the seamless wrapping.
+  */
+
+  if(
+    makerObjects.length>=4
+  ){
+
+    makerObjects[0].x=.02;
+    makerObjects[1].x=.98;
+    makerObjects[2].y=.02;
+    makerObjects[3].y=.98;
+
+  }
+
+
+  makerSelectedObject=-1;
+
+  makerDraw();
+
+
+  document.getElementById(
+    "makerStatus"
+  ).textContent=
+  `${makerObjects.length} elements automatically arranged ✓`;
+}
+
+
+/* =========================================================
+   SHUFFLE EXISTING LAYOUT
+========================================================= */
+
+function makerShuffle(){
+
+  if(!makerObjects.length){
+
+    document.getElementById(
+      "makerStatus"
+    ).textContent=
+    "Add or auto-arrange some elements first.";
+
+    return;
+  }
+
+
+  makerObjects.forEach(
+    object=>{
+
+      object.x=
+      Math.random();
+
+      object.y=
+      Math.random();
+
+      object.rotation=
+      randomInteger(
+        -180,
+        180
+      );
+
+
+      object.scale=
+      randomNumber(
+        .14,
+        .34
+      );
+
+
+      object.flipX=
+      Math.random()<.35;
+
+    }
+  );
+
+
+  makerSelectedObject=-1;
+
+  makerDraw();
+
+
+  document.getElementById(
+    "makerStatus"
+  ).textContent=
+  "Layout shuffled ✓";
+}
+
+
+/* =========================================================
+   BACKGROUND CONTROLS
+========================================================= */
+
+document.getElementById(
+  "makerBackground"
+).addEventListener(
+  "change",
+  makerDraw
+);
+
+
+document.getElementById(
+  "makerBgColor"
+).addEventListener(
+  "input",
+  makerDraw
+);
+
+
+/* =========================================================
+   FULL RESOLUTION RENDER
+========================================================= */
+
+function makerRenderFullResolution(){
+
+  const size=
+  Number(
+    document.getElementById(
+      "makerSize"
+    ).value
+  );
+
+
+  const output=
+  document.createElement(
+    "canvas"
+  );
+
+
+  output.width=size;
+  output.height=size;
+
+
+  const context=
+  output.getContext(
+    "2d"
+  );
+
+
+  context.imageSmoothingEnabled=
+  true;
+
+  context.imageSmoothingQuality=
+  "high";
+
+
+  makerPaintBackground(
+    context,
+    size,
+    size
+  );
+
+
+  makerObjects.forEach(
+    object=>{
+
+      makerDrawObject(
+        context,
+        object,
+        size,
+        false
+      );
+
+    }
+  );
+
+
+  return output;
+}
+
+
+/* =========================================================
+   EXPORT SEAMLESS PNG
+========================================================= */
+
+function downloadMaker(){
+
+  if(!makerObjects.length){
+
+    document.getElementById(
+      "makerStatus"
+    ).textContent=
+    "Add elements to the seamless first.";
+
+    return;
+  }
+
+
+  document.getElementById(
+    "makerStatus"
+  ).textContent=
+  "Rendering full-resolution seamless…";
+
+
+  /*
+  Give the browser one frame to
+  update the status before rendering.
+  */
+
+  requestAnimationFrame(()=>{
+
+    try{
+
+      const output=
+      makerRenderFullResolution();
+
+
+      downloadCanvas(
+        output,
+        "moonlight-seamless-pattern.png"
+      );
+
+
+      document.getElementById(
+        "makerStatus"
+      ).textContent=
+      `${output.width} × ${output.height}px seamless PNG ready ✓`;
+
+    }catch(error){
+
+      console.error(error);
+
+      document.getElementById(
+        "makerStatus"
+      ).textContent=
+      "Could not render the full-resolution image. Try a smaller canvas size.";
+
+    }
+
+  });
+
+}
+
+
+/* =========================================================
+   SEND MAKER TO REPEAT PREVIEW
+========================================================= */
+
+function makerSendToChecker(){
+
+  if(!makerObjects.length){
+
+    document.getElementById(
+      "makerStatus"
+    ).textContent=
+    "Create a seamless first.";
+
+    return;
+  }
+
+
+  /*
+  A medium resolution transfer is enough
+  for the checker preview and saves memory.
+  */
+
+  const transfer=
+  document.createElement(
+    "canvas"
+  );
+
+  transfer.width=1000;
+  transfer.height=1000;
+
+
+  const context=
+  transfer.getContext(
+    "2d"
+  );
+
+
+  makerPaintBackground(
+    context,
+    transfer.width,
+    transfer.height
+  );
+
+
+  makerObjects.forEach(
+    object=>{
+
+      makerDrawObject(
+        context,
+        object,
+        transfer.width,
+        false
+      );
+
+    }
+  );
+
+
+  const image=
+  new Image();
+
+
+  image.onload=()=>{
+
+    /*
+    seamImage is declared later in
+    the existing Seamless Checker code.
+    We assign it once that code is loaded.
+    */
+
+    if(
+      typeof seamImage!=="undefined"
+    ){
+
+      seamImage=image;
+
+      openTool(
+        "seamless"
+      );
+
+      drawRepeat();
+
+
+      document.getElementById(
+        "seamStatus"
+      ).textContent=
+      "Previewing your Seamless Maker tile ✓";
+
+    }else{
+
+      document.getElementById(
+        "makerStatus"
+      ).textContent=
+      "Seamless Checker is still loading.";
+
+    }
+
+  };
+
+
+  image.src=
+  transfer.toDataURL(
+    "image/png"
+  );
+
+}
+
+
+/* =========================================================
+   INITIAL MAKER CANVAS
+========================================================= */
+
+makerDraw();
+
+
+/* =========================================================
+   END PART 2
+
+   PART 3 GOES DIRECTLY BELOW THIS LINE.
+
+   PART 3 WILL ADD:
+   🧵 SEAMLESS MOCKUP ENGINE
+   • Multiple seamless uploads
+   • Different pattern per box
+   • Built-in templates
+   • Generate More Templates
+   • Generate 10
+   • 4–12 boxes
+   • Portrait / square / landscape
+   • Auto Fill
+   • Shuffle patterns
+   • Drag pattern inside individual boxes
+   • Individual zoom
+   • Save favorite templates
+   • High-resolution PNG export
+========================================================= */
+  /* =========================================================
+   PART 3 — SEAMLESS MOCKUP ENGINE
+========================================================= */
+
+const mockupCanvas = document.getElementById("mockupCanvas");
+const mockupContext = mockupCanvas.getContext("2d");
+
+let mockupImages = [];
+let mockupBoxes = [];
+let mockupSelectedBox = -1;
+let mockupDragging = false;
+let mockupDragStartX = 0;
+let mockupDragStartY = 0;
+let mockupStartOffsetX = 0;
+let mockupStartOffsetY = 0;
+let generatedTemplates = [];
+
+
+/* =========================================================
+   CARD SIZE
+========================================================= */
+
+function getMockupDimensions() {
+  const orientation = document.getElementById("mockupOrientation").value;
+
+  if (orientation === "square") {
+    return { width: 900, height: 900 };
+  }
+
+  if (orientation === "landscape") {
+    return { width: 1100, height: 750 };
+  }
+
+  return { width: 800, height: 1000 };
+}
+
+
+/* =========================================================
+   CREATE BOX
+========================================================= */
+
+function makeMockupBox(x, y, w, h) {
+  return {
+    x,
+    y,
+    w,
+    h,
+    imageIndex: -1,
+    zoom: 1,
+    offsetX: 0,
+    offsetY: 0
+  };
+}
+
+
+/* =========================================================
+   ORIGINAL 7-BOX STYLE
+========================================================= */
+
+function mockupClassicSeven() {
+  return [
+    makeMockupBox(0, 0, .62, .27),
+    makeMockupBox(.62, 0, .38, .27),
+
+    makeMockupBox(0, .27, .36, .35),
+    makeMockupBox(.36, .27, .64, .35),
+
+    makeMockupBox(0, .62, .52, .38),
+
+    makeMockupBox(.52, .62, .48, .19),
+    makeMockupBox(.52, .81, .48, .19)
+  ];
+}
+
+
+/* =========================================================
+   MULTIPLE IMAGE UPLOAD
+========================================================= */
+
+document.getElementById("mockupFilesInput").addEventListener(
+  "change",
+  async event => {
+
+    const files = [...event.target.files];
+
+    if (!files.length) return;
+
+    const status = document.getElementById("mockupStatus");
+
+    status.textContent = `Loading ${files.length} patterns...`;
+
+    for (const file of files) {
+      try {
+        const image = await loadImageFile(file);
+
+        mockupImages.push({
+          name: file.name,
+          image
+        });
+
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    renderMockupFiles();
+
+    if (!mockupBoxes.length) {
+      mockupBoxes = mockupClassicSeven();
+    }
+
+    mockupAutoFill();
+
+    status.textContent =
+      `${mockupImages.length} seamless patterns loaded ✓`;
+
+    event.target.value = "";
+  }
+);
+
+
+/* =========================================================
+   IMAGE THUMBNAILS
+========================================================= */
+
+function renderMockupFiles() {
+  const holder = document.getElementById("mockupFiles");
+
+  holder.innerHTML = "";
+
+  mockupImages.forEach((item, index) => {
+    const card = document.createElement("div");
+    card.className = "mockupFile";
+
+    const image = document.createElement("img");
+    image.src = item.image.src;
+
+    const name = document.createElement("div");
+    name.className = "smallText";
+    name.textContent = item.name;
+
+    const button = document.createElement("button");
+    button.className = "btn secondary";
+    button.textContent = "Use";
+    button.style.width = "100%";
+
+    button.onclick = () => {
+      if (mockupSelectedBox < 0) {
+        document.getElementById("mockupStatus").textContent =
+          "Tap a box first.";
+        return;
+      }
+
+      const box = mockupBoxes[mockupSelectedBox];
+
+      box.imageIndex = index;
+      box.zoom = 1;
+      box.offsetX = 0;
+      box.offsetY = 0;
+
+      mockupSyncSelectedControls();
+      drawMockup();
+    };
+
+    card.append(image, name, button);
+    holder.appendChild(card);
+  });
+}
+
+
+/* =========================================================
+   BALANCED TEMPLATE GENERATOR
+========================================================= */
+
+function generateMosaicTemplate(count) {
+  let rectangles = [
+    { x: 0, y: 0, w: 1, h: 1 }
+  ];
+
+  while (rectangles.length < count) {
+
+    rectangles.sort(
+      (a, b) => (b.w * b.h) - (a.w * a.h)
+    );
+
+    const pool = rectangles.slice(
+      0,
+      Math.min(3, rectangles.length)
+    );
+
+    const chosen = rand(pool);
+    const index = rectangles.indexOf(chosen);
+
+    rectangles.splice(index, 1);
+
+    let vertical;
+
+    if (chosen.w > chosen.h * 1.25) {
+      vertical = true;
+    } else if (chosen.h > chosen.w * 1.25) {
+      vertical = false;
+    } else {
+      vertical = Math.random() > .5;
+    }
+
+    const ratio = randomNumber(.38, .62);
+
+    if (vertical) {
+      rectangles.push(
+        {
+          x: chosen.x,
+          y: chosen.y,
+          w: chosen.w * ratio,
+          h: chosen.h
+        },
+        {
+          x: chosen.x + chosen.w * ratio,
+          y: chosen.y,
+          w: chosen.w * (1 - ratio),
+          h: chosen.h
+        }
+      );
+    } else {
+      rectangles.push(
+        {
+          x: chosen.x,
+          y: chosen.y,
+          w: chosen.w,
+          h: chosen.h * ratio
+        },
+        {
+          x: chosen.x,
+          y: chosen.y + chosen.h * ratio,
+          w: chosen.w,
+          h: chosen.h * (1 - ratio)
+        }
+      );
+    }
+  }
+
+  return rectangles.map(box =>
+    makeMockupBox(box.x, box.y, box.w, box.h)
+  );
+}
+
+
+/* =========================================================
+   APPLY TEMPLATE
+========================================================= */
+
+function mockupApplyTemplate(template) {
+  const previous = mockupBoxes;
+
+  mockupBoxes = template.map((box, index) => {
+    const old = previous[index];
+
+    return {
+      ...box,
+
+      imageIndex:
+        old
+          ? old.imageIndex
+          : mockupImages.length
+            ? index % mockupImages.length
+            : -1,
+
+      zoom: old ? old.zoom : 1,
+      offsetX: old ? old.offsetX : 0,
+      offsetY: old ? old.offsetY : 0
+    };
+  });
+
+  mockupSelectedBox = -1;
+
+  drawMockup();
+}
+
+
+/* =========================================================
+   BOX COUNT
+========================================================= */
+
+function mockupBoxCountChanged() {
+  const count =
+    Number(document.getElementById("mockupBoxCount").value);
+
+  if (count === 7) {
+    mockupApplyTemplate(mockupClassicSeven());
+  } else {
+    mockupApplyTemplate(generateMosaicTemplate(count));
+  }
+
+  mockupRenderTemplateStrip();
+}
+
+
+/* =========================================================
+   ORIENTATION
+========================================================= */
+
+function mockupOrientationChanged() {
+  drawMockup();
+  mockupRenderTemplateStrip();
+}
+
+
+/* =========================================================
+   AUTO FILL
+========================================================= */
+
+function mockupAutoFill() {
+  if (!mockupImages.length) return;
+
+  mockupBoxes.forEach((box, index) => {
+    box.imageIndex = index % mockupImages.length;
+    box.zoom = 1;
+    box.offsetX = 0;
+    box.offsetY = 0;
+  });
+
+  drawMockup();
+
+  document.getElementById("mockupStatus").textContent =
+    "Patterns automatically filled ✓";
+}
+
+
+/* =========================================================
+   SHUFFLE PATTERNS
+========================================================= */
+
+function mockupShufflePatterns() {
+  if (!mockupImages.length) return;
+
+  let order =
+    shuffleArray(
+      mockupImages.map((_, i) => i)
+    );
+
+  mockupBoxes.forEach((box, index) => {
+    if (index > 0 && index % order.length === 0) {
+      order = shuffleArray(order);
+    }
+
+    box.imageIndex =
+      order[index % order.length];
+  });
+
+  drawMockup();
+}
+
+
+/* =========================================================
+   CLEAR PATTERNS
+========================================================= */
+
+function mockupClearPatterns() {
+  mockupBoxes.forEach(box => {
+    box.imageIndex = -1;
+    box.zoom = 1;
+    box.offsetX = 0;
+    box.offsetY = 0;
+  });
+
+  mockupSelectedBox = -1;
+
+  drawMockup();
+  mockupSyncSelectedControls();
+}
+
+
+/* =========================================================
+   GENERATE ONE TEMPLATE
+========================================================= */
+
+function mockupGenerateOne() {
+  const count =
+    Number(document.getElementById("mockupBoxCount").value);
+
+  const template =
+    generateMosaicTemplate(count);
+
+  generatedTemplates.unshift(template);
+
+  if (generatedTemplates.length > 30) {
+    generatedTemplates.length = 30;
+  }
+
+  mockupApplyTemplate(template);
+  mockupRenderTemplateStrip();
+}
+
+
+/* =========================================================
+   GENERATE 10
+========================================================= */
+
+function mockupGenerateTen() {
+  const count =
+    Number(document.getElementById("mockupBoxCount").value);
+
+  generatedTemplates = [];
+
+  for (let i = 0; i < 10; i++) {
+    generatedTemplates.push(
+      generateMosaicTemplate(count)
+    );
+  }
+
+  mockupApplyTemplate(
+    generatedTemplates[0]
+  );
+
+  mockupRenderTemplateStrip();
+
+  document.getElementById("mockupStatus").textContent =
+    "10 new layouts generated ✓";
+}
+
+
+/* =========================================================
+   SHUFFLE LAYOUT
+========================================================= */
+
+function mockupShuffleLayout() {
+  const count =
+    Number(document.getElementById("mockupBoxCount").value);
+
+  mockupApplyTemplate(
+    generateMosaicTemplate(count)
+  );
+}
+
+
+/* =========================================================
+   TEMPLATE PREVIEWS
+========================================================= */
+
+function mockupRenderTemplateStrip() {
+  const holder =
+    document.getElementById("templateStrip");
+
+  holder.innerHTML = "";
+
+  const count =
+    Number(document.getElementById("mockupBoxCount").value);
+
+  const templates = [];
+
+  if (count === 7) {
+    templates.push({
+      name: "Classic 7",
+      boxes: mockupClassicSeven()
+    });
+  }
+
+  generatedTemplates.forEach((template, index) => {
+    templates.push({
+      name: `Layout ${index + 1}`,
+      boxes: template
+    });
+  });
+
+  templates.forEach(item => {
+    const card =
+      document.createElement("div");
+
+    card.className =
+      "templateChoice";
+
+    const mini =
+      document.createElement("div");
+
+    mini.className =
+      "templateMini";
+
+    item.boxes.forEach(box => {
+      const shape =
+        document.createElement("div");
+
+      shape.style.left =
+        `${box.x * 100}%`;
+
+      shape.style.top =
+        `${box.y * 100}%`;
+
+      shape.style.width =
+        `${box.w * 100}%`;
+
+      shape.style.height =
+        `${box.h * 100}%`;
+
+      mini.appendChild(shape);
+    });
+
+    const label =
+      document.createElement("div");
+
+    label.className =
+      "smallText";
+
+    label.textContent =
+      item.name;
+
+    card.append(mini, label);
+
+    card.onclick = () => {
+      mockupApplyTemplate(item.boxes);
+    };
+
+    holder.appendChild(card);
+  });
+}
+
+
+/* =========================================================
+   DRAW COVER IMAGE
+========================================================= */
+
+function drawImageCover(
+  ctx,
+  image,
+  x,
+  y,
+  width,
+  height,
+  zoom,
+  offsetX,
+  offsetY
+) {
+  const imageRatio =
+    image.naturalWidth /
+    image.naturalHeight;
+
+  const boxRatio =
+    width / height;
+
+  let drawWidth;
+  let drawHeight;
+
+  if (imageRatio > boxRatio) {
+    drawHeight = height;
+    drawWidth = drawHeight * imageRatio;
+  } else {
+    drawWidth = width;
+    drawHeight = drawWidth / imageRatio;
+  }
+
+  drawWidth *= zoom;
+  drawHeight *= zoom;
+
+  const centerX =
+    x + width / 2 + offsetX;
+
+  const centerY =
+    y + height / 2 + offsetY;
+
+  ctx.drawImage(
+    image,
+    centerX - drawWidth / 2,
+    centerY - drawHeight / 2,
+    drawWidth,
+    drawHeight
+  );
+}
+
+
+/* =========================================================
+   RENDER MOCKUP
+========================================================= */
+
+function renderMockupToCanvas(canvas, showSelection) {
+  const ctx =
+    canvas.getContext("2d");
+
+  const preview =
+    getMockupDimensions();
+
+  const scale =
+    canvas.width / preview.width;
+
+  const gap =
+    Number(document.getElementById("mockupGap").value) *
+    scale;
+
+  const margin =
+    Number(document.getElementById("mockupMargin").value) *
+    scale;
+
+  ctx.clearRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+  ctx.fillStyle = "#ffffff";
+
+  ctx.fillRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+  const usableWidth =
+    canvas.width - margin * 2;
+
+  const usableHeight =
+    canvas.height - margin * 2;
+
+  mockupBoxes.forEach((box, index) => {
+
+    let x =
+      margin +
+      box.x * usableWidth +
+      gap / 2;
+
+    let y =
+      margin +
+      box.y * usableHeight +
+      gap / 2;
+
+    let width =
+      box.w * usableWidth -
+      gap;
+
+    let height =
+      box.h * usableHeight -
+      gap;
+
+    width = Math.max(1, width);
+    height = Math.max(1, height);
+
+    ctx.save();
+
+    ctx.beginPath();
+
+    ctx.rect(
+      x,
+      y,
+      width,
+      height
+    );
+
+    ctx.clip();
+
+    const pattern =
+      mockupImages[box.imageIndex];
+
+    if (pattern) {
+      drawImageCover(
+        ctx,
+        pattern.image,
+        x,
+        y,
+        width,
+        height,
+        box.zoom,
+        box.offsetX * scale,
+        box.offsetY * scale
+      );
+    } else {
+      ctx.fillStyle = "#ececf3";
+
+      ctx.fillRect(
+        x,
+        y,
+        width,
+        height
+      );
+    }
+
+    ctx.restore();
+
+    if (
+      showSelection &&
+      index === mockupSelectedBox
+    ) {
+      ctx.strokeStyle = "#ff62c7";
+      ctx.lineWidth = 4 * scale;
+
+      ctx.strokeRect(
+        x,
+        y,
+        width,
+        height
+      );
+    }
+  });
+}
+
+
+/* =========================================================
+   DRAW PREVIEW
+========================================================= */
+
+function drawMockup() {
+  const size =
+    getMockupDimensions();
+
+  mockupCanvas.width =
+    size.width;
+
+  mockupCanvas.height =
+    size.height;
+
+  renderMockupToCanvas(
+    mockupCanvas,
+    true
+  );
+}
+
+
+/* =========================================================
+   FIND BOX
+========================================================= */
+
+function mockupHitTest(x, y) {
+  const gap =
+    Number(document.getElementById("mockupGap").value);
+
+  const margin =
+    Number(document.getElementById("mockupMargin").value);
+
+  const usableWidth =
+    mockupCanvas.width -
+    margin * 2;
+
+  const usableHeight =
+    mockupCanvas.height -
+    margin * 2;
+
+  for (
+    let i = mockupBoxes.length - 1;
+    i >= 0;
+    i--
+  ) {
+    const box = mockupBoxes[i];
+
+    const bx =
+      margin +
+      box.x * usableWidth +
+      gap / 2;
+
+    const by =
+      margin +
+      box.y * usableHeight +
+      gap / 2;
+
+    const bw =
+      box.w * usableWidth -
+      gap;
+
+    const bh =
+      box.h * usableHeight -
+      gap;
+
+    if (
+      x >= bx &&
+      x <= bx + bw &&
+      y >= by &&
+      y <= by + bh
+    ) {
+      return i;
+    }
+  }
+
+  return -1;
+}
+
+
+/* =========================================================
+   POINTER LOCATION
+========================================================= */
+
+function mockupPointerPosition(event) {
+  const rect =
+    mockupCanvas.getBoundingClientRect();
+
+  return {
+    x:
+      (event.clientX - rect.left) *
+      (mockupCanvas.width / rect.width),
+
+    y:
+      (event.clientY - rect.top) *
+      (mockupCanvas.height / rect.height)
+  };
+}
+
+
+/* =========================================================
+   SELECT / DRAG
+========================================================= */
+
+mockupCanvas.addEventListener(
+  "pointerdown",
+  event => {
+
+    const point =
+      mockupPointerPosition(event);
+
+    const hit =
+      mockupHitTest(
+        point.x,
+        point.y
+      );
+
+    if (hit < 0) {
+      mockupSelectedBox = -1;
+      mockupSyncSelectedControls();
+      drawMockup();
+      return;
+    }
+
+    mockupSelectedBox = hit;
+
+    const box =
+      mockupBoxes[hit];
+
+    mockupDragStartX =
+      point.x;
+
+    mockupDragStartY =
+      point.y;
+
+    mockupStartOffsetX =
+      box.offsetX;
+
+    mockupStartOffsetY =
+      box.offsetY;
+
+    mockupDragging = true;
+
+    mockupCanvas.setPointerCapture(
+      event.pointerId
+    );
+
+    mockupSyncSelectedControls();
+    drawMockup();
+  }
+);
+
+
+mockupCanvas.addEventListener(
+  "pointermove",
+  event => {
+
+    if (
+      !mockupDragging ||
+      mockupSelectedBox < 0
+    ) return;
+
+    const point =
+      mockupPointerPosition(event);
+
+    const box =
+      mockupBoxes[
+        mockupSelectedBox
+      ];
+
+    box.offsetX =
+      mockupStartOffsetX +
+      point.x -
+      mockupDragStartX;
+
+    box.offsetY =
+      mockupStartOffsetY +
+      point.y -
+      mockupDragStartY;
+
+    drawMockup();
+  }
+);
+
+
+function mockupEndDrag(event) {
+  mockupDragging = false;
+
+  try {
+    mockupCanvas.releasePointerCapture(
+      event.pointerId
+    );
+  } catch {}
+}
+
+
+mockupCanvas.addEventListener(
+  "pointerup",
+  mockupEndDrag
+);
+
+mockupCanvas.addEventListener(
+  "pointercancel",
+  mockupEndDrag
+);
+
+
+/* =========================================================
+   ZOOM
+========================================================= */
+
+document.getElementById(
+  "mockupZoom"
+).addEventListener(
+  "input",
+  event => {
+
+    document.getElementById(
+      "mockupZoomValue"
+    ).textContent =
+      `${event.target.value}%`;
+
+    if (mockupSelectedBox < 0) return;
+
+    mockupBoxes[
+      mockupSelectedBox
+    ].zoom =
+      Number(event.target.value) /
+      100;
+
+    drawMockup();
+  }
+);
+
+
+function mockupSyncSelectedControls() {
+  const status =
+    document.getElementById(
+      "mockupSelectedStatus"
+    );
+
+  if (mockupSelectedBox < 0) {
+    status.textContent =
+      "No box selected.";
+    return;
+  }
+
+  const box =
+    mockupBoxes[
+      mockupSelectedBox
+    ];
+
+  const zoom =
+    Math.round(
+      box.zoom * 100
+    );
+
+  document.getElementById(
+    "mockupZoom"
+  ).value = zoom;
+
+  document.getElementById(
+    "mockupZoomValue"
+  ).textContent =
+    `${zoom}%`;
+
+  const pattern =
+    mockupImages[
+      box.imageIndex
+    ];
+
+  status.textContent =
+    pattern
+      ? `Box ${mockupSelectedBox + 1}: ${pattern.name}`
+      : `Box ${mockupSelectedBox + 1}: choose a pattern`;
+}
+
+
+/* =========================================================
+   GAP + MARGIN
+========================================================= */
+
+document.getElementById(
+  "mockupGap"
+).addEventListener(
+  "input",
+  event => {
+
+    document.getElementById(
+      "mockupGapValue"
+    ).textContent =
+      event.target.value;
+
+    drawMockup();
+  }
+);
+
+
+document.getElementById(
+  "mockupMargin"
+).addEventListener(
+  "input",
+  event => {
+
+    document.getElementById(
+      "mockupMarginValue"
+    ).textContent =
+      event.target.value;
+
+    drawMockup();
+  }
+);
+
+
+/* =========================================================
+   SAVE TEMPLATE
+========================================================= */
+
+function getSavedMockupTemplates() {
+  try {
+    return JSON.parse(
+      localStorage.getItem(
+        "moonlightMockupTemplates"
+      ) || "[]"
+    );
+  } catch {
+    return [];
+  }
+}
+
+
+function mockupSaveTemplate() {
+  if (!mockupBoxes.length) return;
+
+  const saved =
+    getSavedMockupTemplates();
+
+  saved.unshift({
+    orientation:
+      document.getElementById(
+        "mockupOrientation"
+      ).value,
+
+    boxes:
+      mockupBoxes.map(box => ({
+        x: box.x,
+        y: box.y,
+        w: box.w,
+        h: box.h
+      }))
+  });
+
+  localStorage.setItem(
+    "moonlightMockupTemplates",
+    JSON.stringify(
+      saved.slice(0, 50)
+    )
+  );
+
+  document.getElementById(
+    "mockupStatus"
+  ).textContent =
+    "Template saved ⭐";
+}
+
+
+/* =========================================================
+   MY TEMPLATES
+========================================================= */
+
+function mockupLoadSavedTemplates() {
+  const saved =
+    getSavedMockupTemplates();
+
+  if (!saved.length) {
+    document.getElementById(
+      "mockupStatus"
+    ).textContent =
+      "No saved templates yet.";
+    return;
+  }
+
+  generatedTemplates =
+    saved.map(item =>
+      item.boxes.map(box =>
+        makeMockupBox(
+          box.x,
+          box.y,
+          box.w,
+          box.h
+        )
+      )
+    );
+
+  mockupRenderTemplateStrip();
+
+  document.getElementById(
+    "mockupStatus"
+  ).textContent =
+    `${saved.length} saved templates loaded ✓`;
+}
+
+
+/* =========================================================
+   EXPORT
+========================================================= */
+
+function getMockupExportDimensions() {
+  const orientation =
+    document.getElementById(
+      "mockupOrientation"
+    ).value;
+
+  if (orientation === "square") {
+    return {
+      width: 5000,
+      height: 5000
+    };
+  }
+
+  if (orientation === "landscape") {
+    return {
+      width: 5000,
+      height: 3409
+    };
+  }
+
+  return {
+    width: 4000,
+    height: 5000
+  };
+}
+
+
+function downloadMockup() {
+  if (!mockupImages.length) {
+    document.getElementById(
+      "mockupStatus"
+    ).textContent =
+      "Upload patterns first.";
+    return;
+  }
+
+  const size =
+    getMockupExportDimensions();
+
+  const output =
+    document.createElement(
+      "canvas"
+    );
+
+  output.width =
+    size.width;
+
+  output.height =
+    size.height;
+
+  renderMockupToCanvas(
+    output,
+    false
+  );
+
+  downloadCanvas(
+    output,
+    "moonlight-seamless-mockup.png"
+  );
+
+  document.getElementById(
+    "mockupStatus"
+  ).textContent =
+    `${size.width} × ${size.height}px PNG ready ✓`;
+}
+
+
+/* =========================================================
+   START MOCKUP
+========================================================= */
+
+mockupBoxes =
+mockupClassicSeven();
+
+generatedTemplates = [
+  generateMosaicTemplate(7),
+  generateMosaicTemplate(7),
+  generateMosaicTemplate(7)
+];
+
+mockupRenderTemplateStrip();
+
+drawMockup();
+
+
+/* =========================================================
+   END PART 3
+   KEEP THE SCRIPT OPEN.
+   PART 4 GOES DIRECTLY UNDER THIS.
+========================================================= */
+  <!-- ======================================================
+     PART 4 — EXISTING WORKSHOP TOOLS
+     Upload • Brain Stuck • Product Lister
+     Seamless Checker • Idea Jar
+======================================================= -->
+
+<script>
+"use strict";
+
+/* ======================================================
+   🖼️ UNIVERSAL UPLOAD CENTER
+====================================================== */
+
+const universalFile = document.getElementById("universalFile");
+const universalPreview = document.getElementById("universalPreview");
+const uploadStatus = document.getElementById("uploadStatus");
+const fileInfo = document.getElementById("fileInfo");
+
+universalFile.addEventListener("change", async event => {
+
+  const file = event.target.files[0];
+
+  if (!file) return;
+
+  uploadStatus.textContent = "Loading image…";
+
+  try {
+
+    const image = await loadImageFile(file);
+
+    universalPreview.src = image.src;
+    universalPreview.style.display = "block";
+
+    fileInfo.innerHTML = `
+      <div class="infoBox">
+
+        <strong>File:</strong>
+        ${escapeHTML(file.name)}
+        <br>
+
+        <strong>Type:</strong>
+        ${escapeHTML(file.type || "Unknown")}
+        <br>
+
+        <strong>Dimensions:</strong>
+        ${image.naturalWidth.toLocaleString()}
+        ×
+        ${image.naturalHeight.toLocaleString()} px
+        <br>
+
+        <strong>File Size:</strong>
+        ${formatBytes(file.size)}
+        <br>
+
+        <strong>Aspect Ratio:</strong>
+        ${getAspectRatio(
+          image.naturalWidth,
+          image.naturalHeight
+        )}
+
+      </div>
+    `;
+
+    uploadStatus.textContent = "Image loaded ✓";
+
+  } catch (error) {
+
+    console.error(error);
+
+    uploadStatus.textContent =
+      "Could not load that image.";
+
+    universalPreview.removeAttribute("src");
+    fileInfo.innerHTML = "";
+  }
+});
+
+
+function getAspectRatio(width, height) {
+
+  function gcd(a, b) {
+
+    while (b) {
+      const temp = b;
+      b = a % b;
+      a = temp;
+    }
+
+    return a;
+  }
+
+  const divisor = gcd(width, height);
+
+  return `${width / divisor}:${height / divisor}`;
+}
+
+
+/* ======================================================
+   🧠 BRAIN STUCK
+====================================================== */
+
+const brainSubjects = [
+  "highland cow",
+  "cowgirl ghost",
+  "celestial mushroom",
+  "cute alien",
+  "armadillo",
+  "raccoon",
+  "opossum",
+  "western chicken",
+  "pig",
+  "duck",
+  "frog",
+  "moth",
+  "owl",
+  "black cat",
+  "raven",
+  "skeleton",
+  "witchy pumpkin",
+  "gingerbread character",
+  "snowman",
+  "reindeer",
+  "retro Santa",
+  "cowboy boot",
+  "western skull",
+  "moon",
+  "sunflower",
+  "wildflower bouquet",
+  "crystal cluster",
+  "heart-shaped balloon",
+  "cute monster",
+  "space cow",
+  "ghost",
+  "fairy",
+  "dragon",
+  "bee",
+  "butterfly"
+];
+
+const brainActions = [
+  "holding a tiny bouquet",
+  "wearing a western bandana",
+  "sitting inside a flower pot",
+  "wrapped in Christmas lights",
+  "holding a heart-shaped balloon",
+  "drinking from a cute coffee cup",
+  "wearing an oversized cowboy hat",
+  "surrounded by wildflowers",
+  "peeking through a crescent moon",
+  "carrying a tiny gift",
+  "sitting beside mushrooms",
+  "wearing heart-shaped glasses",
+  "holding a vintage sign",
+  "standing beneath hanging stars",
+  "wearing a floral crown",
+  "sleeping on a cloud",
+  "holding a sunflower",
+  "sitting inside a teacup",
+  "wearing a bow",
+  "surrounded by floating hearts"
+];
+
+const brainStyles = [
+  "cute whimsical",
+  "western boho",
+  "retro hand-drawn",
+  "moody botanical",
+  "gothic cute",
+  "minimal cute",
+  "vintage western",
+  "playful cartoon",
+  "cottagecore",
+  "celestial",
+  "witchy whimsical",
+  "bold sticker style",
+  "soft storybook",
+  "groovy retro",
+  "rustic hand-drawn"
+];
+
+const brainPalettes = [
+  "dusty rose, burgundy and cream",
+  "turquoise, coral and tan",
+  "pink, purple and blue",
+  "black, burgundy and dusty rose",
+  "orange, turquoise and pink",
+  "forest green, copper and cream",
+  "hot pink, teal and purple",
+  "red, pink and cream",
+  "navy, gold and ivory",
+  "sage, blush and warm brown",
+  "rust, mustard and turquoise",
+  "black, red and antique cream"
+];
+
+const brainExtras = [
+  "tiny stars",
+  "wildflowers",
+  "bows",
+  "berries",
+  "moons",
+  "clouds",
+  "mushrooms",
+  "hearts",
+  "sparkles",
+  "cowboy boots",
+  "cacti",
+  "roses",
+  "snowflakes",
+  "candy pieces",
+  "ladybugs",
+  "crystals",
+  "tiny ghosts",
+  "sunflowers",
+  "lightning bolts",
+  "tea cups"
+];
+
+const brainScenes = [
+  "a moon garden",
+  "a magical crystal cave",
+  "a western desert",
+  "a whimsical flower garden",
+  "a haunted garden",
+  "a retro motel scene",
+  "a cozy Christmas scene",
+  "a celestial night sky",
+  "a sunflower field",
+  "a dreamy cloudscape",
+  "a gothic greenhouse",
+  "a colorful roadside scene"
+];
+
+
+function getBrainTheme() {
+
+  const selected =
+    document.getElementById("brainTheme").value;
+
+  if (selected) return selected;
+
+  return rand([
+    "Halloween",
+    "Christmas",
+    "Valentine",
+    "Anti Valentine",
+    "Western",
+    "Celestial",
+    "Gothic",
+    "Cottagecore",
+    "Retro",
+    "Spring",
+    "Summer",
+    "Fall",
+    "Winter"
+  ]);
+}
+
+
+function createBrainIdea(weird = false) {
+
+  const type =
+    document.getElementById("brainType").value;
+
+  const theme = getBrainTheme();
+  const subject = rand(brainSubjects);
+  const action = rand(brainActions);
+  const style = rand(brainStyles);
+  const colors = rand(brainPalettes);
+
+  const extra1 = rand(brainExtras);
+
+  let extra2 = rand(brainExtras);
+
+  while (extra2 === extra1) {
+    extra2 = rand(brainExtras);
+  }
+
+  const scene = rand(brainScenes);
+
+  let prompt =
+    `Create a ${theme} ${type.toLowerCase()} featuring ${subject}, ${action}, in a ${style} style. ` +
+    `Use ${colors}. Add coordinating ${extra1} and ${extra2}. `;
+
+  if (type === "Seamless Pattern") {
+
+    prompt +=
+      "Create a true seamless repeating pattern tile. " +
+      "Keep the composition balanced with varied scale and rotation, " +
+      "avoid awkward empty areas, preserve edge continuity, " +
+      "and make sure elements crossing one edge continue naturally " +
+      "on the opposite edge. ";
+
+  } else if (type === "Coloring Page") {
+
+    prompt +=
+      "Use clean black outline line art only on a pure white background. " +
+      "No colors, grayscale, shading or filled black areas. " +
+      "Use crisp enclosed coloring spaces suitable for printing. ";
+
+  } else {
+
+    prompt +=
+      "Keep the composition balanced, clean and professional. ";
+  }
+
+  prompt +=
+    `Use ${scene} as inspiration for the supporting details.`;
+
+  if (weird) {
+
+    prompt += " " + rand([
+      "Give the subject an unexpectedly tiny cowboy hat.",
+      "Add a playful miniature UFO in the background.",
+      "Include one hilariously dramatic facial expression.",
+      "Add a tiny ghost acting like it belongs there.",
+      "Make one supporting object comically oversized.",
+      "Add a whimsical floating teacup.",
+      "Include a mischievous frog wearing boots.",
+      "Add an unexpected celestial portal.",
+      "Include a tiny raccoon stealing one of the props.",
+      "Add a strange but cute vintage roadside sign."
+    ]);
+  }
+
+  return prompt;
+}
+
+
+function brainOne() {
+
+  document.getElementById("brainOutput").value =
+    createBrainIdea(false);
+}
+
+
+function brainWeird() {
+
+  document.getElementById("brainOutput").value =
+    createBrainIdea(true);
+}
+
+
+function brain25() {
+
+  const ideas = [];
+
+  for (let i = 1; i <= 25; i++) {
+    ideas.push(`${i}. ${createBrainIdea(false)}`);
+  }
+
+  document.getElementById("brainOutput").value =
+    ideas.join("\n\n");
+}
+
+
+/* ======================================================
+   🛍️ PRODUCT LISTER
+====================================================== */
+
+function cleanListingText(value) {
+
+  return String(value || "")
+    .trim()
+    .replace(/\s+/g, " ");
+}
+
+
+function makeListing() {
+
+  const type =
+    cleanListingText(
+      document.getElementById("pType").value
+    );
+
+  const subject =
+    cleanListingText(
+      document.getElementById("pSubject").value
+    ) || "digital design";
+
+  const theme =
+    cleanListingText(
+      document.getElementById("pTheme").value
+    );
+
+  const style =
+    cleanListingText(
+      document.getElementById("pStyle").value
+    );
+
+  const colors =
+    cleanListingText(
+      document.getElementById("pColors").value
+    );
+
+  const details =
+    cleanListingText(
+      document.getElementById("pDetails").value
+    );
+
+
+  const title = [
+    subject,
+    theme,
+    style,
+    type
+  ]
+  .filter(Boolean)
+  .join(" • ");
+
+
+  document.getElementById("pTitle").value =
+    title;
+
+
+  document.getElementById("pShort").value =
+    `A ${style ? style + " " : ""}` +
+    `${theme ? theme + " " : ""}` +
+    `${type.toLowerCase()} featuring ${subject}. ` +
+    `Perfect for creative digital and printed projects.`;
+
+
+  let description =
+    `${title}\n\n` +
+    `This digital design features ${subject}`;
+
+
+  if (theme) {
+    description += ` with a ${theme} theme`;
+  }
+
+  if (style) {
+    description += ` in a ${style} style`;
+  }
+
+  description += ".";
+
+  if (colors) {
+    description += ` The color palette includes ${colors}.`;
+  }
+
+  if (details) {
+    description += ` Additional details include ${details}.`;
+  }
+
+  description +=
+    "\n\nDIGITAL PRODUCT\n" +
+    "No physical item will be shipped.\n\n" +
+    "IDEAL FOR\n" +
+    "• Sublimation projects\n" +
+    "• Digital crafting\n" +
+    "• Creative mockups\n" +
+    "• Personal design projects\n" +
+    "• Small-business creative projects";
+
+
+  document.getElementById("pDescription").value =
+    description;
+
+
+  document.getElementById("pKeywords").value =
+    [
+      subject,
+      theme,
+      style,
+      colors,
+      type,
+      `${subject} ${type}`,
+      `${theme} ${type}`,
+      `${style} ${subject}`,
+      "digital download",
+      "small business design"
+    ]
+    .filter(Boolean)
+    .join(", ");
+
+
+  makeTags();
+
+  document.getElementById("listingStatus").textContent =
+    "Listing generated ✓";
+}
+
+
+/* ======================================================
+   EXACTLY 13 TAGS
+====================================================== */
+
+function makeTags() {
+
+  const type =
+    cleanListingText(
+      document.getElementById("pType").value
+    );
+
+  const subject =
+    cleanListingText(
+      document.getElementById("pSubject").value
+    ) || "digital design";
+
+  const theme =
+    cleanListingText(
+      document.getElementById("pTheme").value
+    );
+
+  const style =
+    cleanListingText(
+      document.getElementById("pStyle").value
+    );
+
+
+  const candidates = [
+    subject,
+    `${subject} png`,
+    `${subject} design`,
+    theme,
+    `${theme} design`,
+    style,
+    `${style} art`,
+    type,
+    "digital download",
+    "sublimation design",
+    "small business",
+    "printable design",
+    "digital graphic",
+    "craft design",
+    "creative download",
+    `${subject} clipart`,
+    `${theme} png`,
+    `${subject} gift`,
+    "instant download"
+  ]
+  .map(cleanListingText)
+  .filter(Boolean);
+
+
+  const unique = [];
+
+
+  candidates.forEach(tag => {
+
+    const shortened =
+      tag.slice(0, 20);
+
+    if (
+      !unique.some(
+        item =>
+          item.toLowerCase() ===
+          shortened.toLowerCase()
+      )
+    ) {
+      unique.push(shortened);
+    }
+  });
+
+
+  const fillers = [
+    "digital art",
+    "creative design",
+    "printable art",
+    "craft graphic",
+    "design bundle",
+    "instant file",
+    "small biz graphic"
+  ];
+
+
+  for (const filler of fillers) {
+
+    if (unique.length >= 13) break;
+
+    if (!unique.includes(filler)) {
+      unique.push(filler);
+    }
+  }
+
+
+  const finalTags =
+    unique.slice(0, 13);
+
+
+  const holder =
+    document.getElementById("tagHolder");
+
+  holder.innerHTML = "";
+
+
+  finalTags.forEach((tag, index) => {
+
+    const row =
+      document.createElement("div");
+
+    row.className = "tagRow";
+
+
+    const number =
+      document.createElement("span");
+
+    number.className = "tagNum";
+    number.textContent = `${index + 1}.`;
+
+
+    const input =
+      document.createElement("input");
+
+    input.className = "listingTag";
+    input.value = tag;
+    input.maxLength = 20;
+
+
+    row.append(number, input);
+    holder.appendChild(row);
+  });
+
+
+  document.getElementById("tagCount").textContent =
+    `(${finalTags.length}/13)`;
+}
+
+
+/* ======================================================
    SURPRISE LISTING
-========================================= */
+====================================================== */
 
-function surpriseListing(){
+function surpriseListing() {
 
-  document.getElementById("pSubject").value=
-  rand(brainSubjects);
+  document.getElementById("pSubject").value =
+    rand(brainSubjects);
 
-  document.getElementById("pTheme").value=
-  rand(randomThemes);
+  document.getElementById("pTheme").value =
+    rand([
+      "Western",
+      "Christmas",
+      "Halloween",
+      "Valentine",
+      "Celestial",
+      "Cottagecore",
+      "Retro",
+      "Gothic"
+    ]);
 
-  document.getElementById("pStyle").value=
-  rand(brainStyles);
+  document.getElementById("pStyle").value =
+    rand(brainStyles);
 
-  document.getElementById("pColors").value=
-  rand(brainPalettes);
+  document.getElementById("pColors").value =
+    rand(brainPalettes);
 
-  document.getElementById("pDetails").value=
-  `${rand(brainActions)}, inspired by a ${rand(brainSettings)}`;
+  document.getElementById("pDetails").value =
+    `${rand(brainExtras)}, ${rand(brainExtras)}`;
 
   makeListing();
 }
 
 
-/* =========================================
-   TAG GENERATOR
-========================================= */
+/* ======================================================
+   COPY TAGS
+====================================================== */
 
-function generateTagArray(){
+async function copyTags() {
 
-  const value=
-  listingValues();
+  const tags =
+    [...document.querySelectorAll(".listingTag")]
+    .map(input => input.value.trim())
+    .filter(Boolean);
 
-  let tags=[
 
-    value.subject,
-
-    `${value.subject} ${value.type}`,
-
-    `${value.theme} ${value.subject}`,
-
-    `${value.theme} ${value.type}`,
-
-    `${value.style} ${value.subject}`,
-
-    `${value.subject} design`,
-
-    `${value.subject} download`,
-
-    `${value.theme} design`,
-
-    `${value.type} download`,
-
-    `digital ${value.type}`,
-
-    `${value.subject} clipart`,
-
-    `${value.subject} printable`,
-
-    `${value.subject} sublimation`,
-
-    `${value.theme} clipart`,
-
-    `${value.style} design`,
-
-    `${value.theme} download`,
-
-    `${value.theme} printable`,
-
-    `${value.style} digital art`,
-
-    `${value.subject} craft file`,
-
-    `${value.subject} digital art`,
-
-    `small business design`,
-
-    `digital craft file`
-
-  ];
-
-  tags=
-  uniqueList(tags);
-
-  /*
-   Fill until there are at least 13 unique tags.
-  */
-
-  const extras=[
-
-    `cute ${value.subject}`,
-
-    `unique ${value.subject}`,
-
-    `trendy ${value.subject}`,
-
-    `${value.theme} art`,
-
-    `${value.theme} graphic`,
-
-    `${value.subject} graphic`,
-
-    `${value.style} artwork`,
-
-    `${value.subject} png`,
-
-    `${value.theme} png`,
-
-    `${value.subject} file`,
-
-    `creative ${value.subject}`,
-
-    `${value.theme} craft`,
-
-    `${value.subject} artwork`
-
-  ];
-
-  for(const extra of extras){
-
-    if(tags.length>=13){
-      break;
-    }
-
-    if(
-      !tags.includes(extra)
-    ){
-      tags.push(extra);
-    }
-  }
-
-  return tags.slice(0,13);
-}
-
-
-function displayTags(tags){
-
-  const holder=
-  document.getElementById(
-    "tagHolder"
-  );
-
-  holder.innerHTML="";
-
-  tags.forEach(
-    (tag,index)=>{
-
-      const row=
-      document.createElement(
-        "div"
-      );
-
-      row.className=
-      "tagRow";
-
-
-      const number=
-      document.createElement(
-        "span"
-      );
-
-      number.className=
-      "tagNum";
-
-      number.textContent=
-      index+1;
-
-
-      const input=
-      document.createElement(
-        "input"
-      );
-
-      input.className=
-      "productTag";
-
-      input.value=
-      tag;
-
-      input.setAttribute(
-        "aria-label",
-        `Tag ${index+1}`
-      );
-
-      input.addEventListener(
-        "input",
-        updateTagCount
-      );
-
-
-      row.append(
-        number,
-        input
-      );
-
-      holder.appendChild(
-        row
-      );
-
-    }
-  );
-
-  updateTagCount();
-}
-
-
-function updateTagCount(){
-
-  const tagInputs=[
-    ...document.querySelectorAll(
-      ".productTag"
-    )
-  ];
-
-  const filled=
-  tagInputs.filter(
-    input=>input.value.trim()
-  ).length;
-
-  const values=
-  tagInputs
-  .map(input=>
-    input.value
-    .trim()
-    .toLowerCase()
-  )
-  .filter(Boolean);
-
-  const duplicateCount=
-  values.length -
-  new Set(values).size;
-
-  const count=
-  document.getElementById(
-    "tagCount"
-  );
-
-  count.textContent=
-  `${filled} / 13`;
-
-  if(
-    filled===13 &&
-    duplicateCount===0
-  ){
-
-    count.className=
-    "good";
-
-  }else{
-
-    count.className=
-    "bad";
-  }
-
-
-  const status=
-  document.getElementById(
-    "listingStatus"
-  );
-
-  if(duplicateCount>0){
-
-    status.textContent=
-    `⚠️ ${duplicateCount} duplicate tag${duplicateCount===1 ? "" : "s"} found.`;
-
-  }else if(filled===13){
-
-    status.textContent=
-    "13 unique tags ready ✓";
-
-  }else{
-
-    status.textContent=
-    `${13-filled} tag${13-filled===1 ? "" : "s"} still needed.`;
-  }
-}
-
-
-function makeTags(){
-
-  displayTags(
-    generateTagArray()
-  );
-}
-
-
-/* =========================================
-   GENERATE PRODUCT LISTING
-========================================= */
-
-function makeListing(){
-
-  const value=
-  listingValues();
-
-
-  const cleanType=
-  value.type
-  .replace(/\s+/g," ")
-  .trim();
-
-
-  document.getElementById(
-    "pTitle"
-  ).value=
-
-  `${value.theme} ${value.subject} ${cleanType} | ${value.style} Digital Design | Instant Download`;
-
-
-  document.getElementById(
-    "pShort"
-  ).value=
-
-  `${value.style} ${value.theme} ${value.subject} ${cleanType} featuring ${value.colors}. A fun digital design for creative projects, crafts and small-business use.`;
-
-
-  let detailLine="";
-
-  if(value.details){
-
-    detailLine=
-    `• Extra details: ${value.details}\n`;
-  }
-
-
-  document.getElementById(
-    "pDescription"
-  ).value=
-
-`✨ ${value.theme} ${value.subject} ${cleanType}
-
-Add a creative touch to your next project with this ${value.style} ${value.subject} design.
-
-🎨 DESIGN DETAILS
-• Product: ${cleanType}
-• Theme: ${value.theme}
-• Subject: ${value.subject}
-• Style: ${value.style}
-• Colors: ${value.colors}
-${detailLine}
-📦 DIGITAL PRODUCT
-This listing is for a digital product. No physical item will be shipped.
-
-💡 GREAT FOR
-• Sublimation projects
-• Shirts and apparel
-• Tumblers
-• Stickers
-• Scrapbooking
-• Custom gifts
-• Small-business craft projects
-• Personal creative projects
-
-🌙 PLEASE NOTE
-Colors may vary slightly between screens, printers and materials.
-
-Please follow the seller's license and usage terms for commercial or personal use.`;
-
-
-  const keywords=
-  uniqueList([
-
-    value.subject,
-
-    value.theme,
-
-    cleanType,
-
-    value.style,
-
-    `${value.theme} ${value.subject}`,
-
-    `${value.subject} ${cleanType}`,
-
-    `${value.subject} digital download`,
-
-    `${value.theme} digital design`,
-
-    `${value.style} ${value.subject}`,
-
-    `${value.subject} craft design`,
-
-    `${value.theme} craft file`,
-
-    `${value.subject} printable`
-
-  ]);
-
-
-  document.getElementById(
-    "pKeywords"
-  ).value=
-  keywords.join(", ");
-
-
-  makeTags();
-
-
-  document.getElementById(
-    "listingStatus"
-  ).textContent=
-  "Listing generated ✓";
-}
-
-
-/* =========================================
-   COPY PRODUCT TAGS
-========================================= */
-
-async function copyTags(){
-
-  const tags=[
-    ...document.querySelectorAll(
-      ".productTag"
-    )
-  ]
-  .map(input=>
-    input.value.trim()
-  )
-  .filter(Boolean);
-
-  if(!tags.length){
-
-    document.getElementById(
-      "listingStatus"
-    ).textContent=
-    "Generate your tags first.";
-
-    return;
-  }
-
-  try{
+  try {
 
     await navigator.clipboard.writeText(
       tags.join(", ")
     );
 
-    document.getElementById(
-      "listingStatus"
-    ).textContent=
-    "13 tags copied ✓";
+    document.getElementById("listingStatus").textContent =
+      "Tags copied ✓";
 
-  }catch(error){
+  } catch {
 
-    document.getElementById(
-      "listingStatus"
-    ).textContent=
-    "Copy failed. Press and hold the tags to copy.";
+    document.getElementById("listingStatus").textContent =
+      "Could not copy automatically.";
   }
 }
 
 
-/* =========================================
-   COPY ENTIRE LISTING
-========================================= */
+/* ======================================================
+   COPY FULL LISTING
+====================================================== */
 
-async function copyListing(){
+async function copyListing() {
 
-  const tags=[
-    ...document.querySelectorAll(
-      ".productTag"
-    )
-  ]
-  .map(input=>
-    input.value.trim()
-  )
-  .filter(Boolean);
+  const tags =
+    [...document.querySelectorAll(".listingTag")]
+    .map(input => input.value.trim())
+    .filter(Boolean)
+    .join(", ");
 
 
-  const text=
-
+  const output =
 `TITLE
 ${document.getElementById("pTitle").value}
 
@@ -2311,1647 +5672,432 @@ SEO KEYWORDS
 ${document.getElementById("pKeywords").value}
 
 13 TAGS
-${tags.join(", ")}`;
+${tags}`;
 
 
-  try{
+  try {
 
-    await navigator.clipboard.writeText(
-      text
-    );
+    await navigator.clipboard.writeText(output);
 
-    document.getElementById(
-      "listingStatus"
-    ).textContent=
-    "Entire listing copied ✓";
+    document.getElementById("listingStatus").textContent =
+      "Entire listing copied ✓";
 
-  }catch(error){
+  } catch {
 
-    document.getElementById(
-      "listingStatus"
-    ).textContent=
-    "Copy failed. Select the listing text manually.";
+    document.getElementById("listingStatus").textContent =
+      "Could not copy automatically.";
   }
 }
 
 
-/* =========================================
-   INITIALIZE 13 EMPTY TAG BOXES
-========================================= */
+/* ======================================================
+   🔍 SEAMLESS CHECKER
+====================================================== */
 
-displayTags(
-  Array(13).fill("")
-);
+var seamImage = null;
 
+const seamFile =
+  document.getElementById("seamFile");
 
-/* =========================================
-   SEAMLESS CHECKER
-========================================= */
+const repeatCanvas =
+  document.getElementById("repeatCanvas");
 
-let seamImage=null;
-
-
-const seamFile=
-document.getElementById(
-  "seamFile"
-);
+const repeatContext =
+  repeatCanvas.getContext("2d");
 
 
 seamFile.addEventListener(
   "change",
-  async event=>{
+  async event => {
 
-    const file=
-    event.target.files?.[0];
+    const file =
+      event.target.files[0];
 
-    const status=
-    document.getElementById(
-      "seamStatus"
-    );
+    if (!file) return;
 
-    if(!file){
-      return;
-    }
+    try {
 
-    status.textContent=
-    "Loading pattern…";
+      seamImage =
+        await loadImageFile(file);
 
-    try{
-
-      seamImage=
-      await loadImageFile(file);
-
-      status.textContent=
-      `Loaded ✓ ${seamImage.naturalWidth} × ${seamImage.naturalHeight}px`;
+      document.getElementById("seamStatus").textContent =
+        `${file.name} loaded ✓`;
 
       drawRepeat();
 
-    }catch(error){
+    } catch (error) {
 
-      seamImage=null;
+      console.error(error);
 
-      status.textContent=
-      "❌ " + error.message;
+      document.getElementById("seamStatus").textContent =
+        "Could not load this pattern.";
     }
   }
 );
 
 
-/* =========================================
-   LIVE SEAMLESS CONTROLS
-========================================= */
-
-document.getElementById(
-  "repeatCount"
-).addEventListener(
+document.getElementById("repeatCount")
+.addEventListener(
   "change",
   drawRepeat
 );
 
 
-document.getElementById(
-  "repeatScale"
-).addEventListener(
+document.getElementById("repeatScale")
+.addEventListener(
   "input",
   drawRepeat
 );
 
 
-/* =========================================
-   DRAW REPEATED PATTERN
-========================================= */
+function drawRepeat() {
 
-function drawRepeat(){
+  const size = 700;
 
-  const canvas=
-  document.getElementById(
-    "repeatCanvas"
-  );
+  repeatCanvas.width = size;
+  repeatCanvas.height = size;
 
-  const context=
-  canvas.getContext(
-    "2d"
-  );
-
-  canvas.width=700;
-  canvas.height=700;
-
-  context.clearRect(
+  repeatContext.clearRect(
     0,
     0,
-    canvas.width,
-    canvas.height
+    size,
+    size
+  );
+
+  repeatContext.fillStyle = "#ffffff";
+
+  repeatContext.fillRect(
+    0,
+    0,
+    size,
+    size
   );
 
 
-  if(!seamImage){
+  if (!seamImage) {
 
-    context.fillStyle=
-    "#11152d";
+    repeatContext.fillStyle =
+      "#777b99";
 
-    context.fillRect(
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
+    repeatContext.font =
+      "20px sans-serif";
 
-    context.fillStyle=
-    "#aaa9c7";
+    repeatContext.textAlign =
+      "center";
 
-    context.font=
-    "24px sans-serif";
+    repeatContext.textBaseline =
+      "middle";
 
-    context.textAlign=
-    "center";
-
-    context.textBaseline=
-    "middle";
-
-    context.fillText(
-      "Upload a pattern tile",
-      canvas.width/2,
-      canvas.height/2
+    repeatContext.fillText(
+      "Upload a seamless tile",
+      size / 2,
+      size / 2
     );
 
     return;
   }
 
 
-  const count=
-  Math.max(
-    2,
+  const repeat =
     Number(
-      document.getElementById(
-        "repeatCount"
-      ).value
-    )
-  );
+      document.getElementById("repeatCount").value
+    ) || 3;
 
 
-  const scale=
-  Number(
-    document.getElementById(
-      "repeatScale"
-    ).value
-  ) / 100;
+  const patternScale =
+    Number(
+      document.getElementById("repeatScale").value
+    ) / 100;
 
 
-  /*
-   Each tile occupies one cell.
-   At 100% scale the tiles touch perfectly.
-   Lower scale intentionally creates space
-   so the user can inspect each tile.
-  */
+  const baseCell =
+    size / repeat;
 
-  const cellWidth=
-  canvas.width / count;
-
-  const cellHeight=
-  canvas.height / count;
+  const tileSize =
+    baseCell * patternScale;
 
 
-  const tileWidth=
-  cellWidth * scale;
+  const cols =
+    Math.ceil(size / tileSize) + 1;
 
-  const tileHeight=
-  cellHeight * scale;
-
-
-  for(
-    let row=0;
-    row<count;
-    row++
-  ){
-
-    for(
-      let column=0;
-      column<count;
-      column++
-    ){
-
-      const x=
-      column * cellWidth +
-      (cellWidth-tileWidth)/2;
-
-      const y=
-      row * cellHeight +
-      (cellHeight-tileHeight)/2;
+  const rows =
+    Math.ceil(size / tileSize) + 1;
 
 
-      context.drawImage(
+  for (let row = 0; row < rows; row++) {
+
+    for (let col = 0; col < cols; col++) {
+
+      repeatContext.drawImage(
         seamImage,
-        x,
-        y,
-        tileWidth,
-        tileHeight
+        col * tileSize,
+        row * tileSize,
+        tileSize,
+        tileSize
       );
     }
   }
-
-
-  document.getElementById(
-    "seamStatus"
-  ).textContent=
-  `${count} × ${count} repeat preview ✓`;
 }
 
 
-/* =========================================
-   INITIAL SEAMLESS PLACEHOLDER
-========================================= */
+/* ======================================================
+   ❤️ IDEA JAR
+====================================================== */
 
-drawRepeat();
-
-
-/* =========================================
-   PART 4 CONTINUES DIRECTLY BELOW
-========================================= */
-    /* =========================================
-   PNG OBJECT SPLITTER
-========================================= */
-
-let splitImage=null;
-
-const splitFile=
-document.getElementById("splitFile");
-
-const splitCanvas=
-document.getElementById("splitCanvas");
-
-const splitContext=
-splitCanvas.getContext(
-  "2d",
-  {willReadFrequently:true}
-);
+const IDEA_STORAGE_KEY =
+  "moonlightWorkshopIdeas";
 
 
-splitFile.addEventListener(
-  "change",
-  async event=>{
+function getIdeas() {
 
-    const file=
-    event.target.files?.[0];
+  try {
 
-    const status=
-    document.getElementById(
-      "splitStatus"
-    );
-
-    if(!file){
-      return;
-    }
-
-    status.textContent=
-    "Loading PNG…";
-
-    document.getElementById(
-      "splitDownloads"
-    ).innerHTML="";
-
-    try{
-
-      splitImage=
-      await loadImageFile(file);
-
-      splitCanvas.width=
-      splitImage.naturalWidth;
-
-      splitCanvas.height=
-      splitImage.naturalHeight;
-
-      splitContext.clearRect(
-        0,
-        0,
-        splitCanvas.width,
-        splitCanvas.height
+    const data =
+      JSON.parse(
+        localStorage.getItem(
+          IDEA_STORAGE_KEY
+        ) || "[]"
       );
 
-      splitContext.drawImage(
-        splitImage,
-        0,
-        0
-      );
+    return Array.isArray(data)
+      ? data
+      : [];
 
-      status.textContent=
-      `Loaded ✓ ${splitCanvas.width} × ${splitCanvas.height}px`;
+  } catch {
 
-    }catch(error){
-
-      splitImage=null;
-
-      status.textContent=
-      "❌ " + error.message;
-    }
+    return [];
   }
-);
-
-
-/* =========================================
-   DETECT TRANSPARENT PNG OBJECTS
-========================================= */
-
-function detectObjects(){
-
-  const status=
-  document.getElementById(
-    "splitStatus"
-  );
-
-  const holder=
-  document.getElementById(
-    "splitDownloads"
-  );
-
-  holder.innerHTML="";
-
-  if(!splitImage){
-
-    status.textContent=
-    "Upload a transparent PNG first.";
-
-    return;
-  }
-
-  status.textContent=
-  "Detecting objects…";
-
-
-  /*
-   Analyze a smaller copy when the source is huge.
-   This makes 5000×5000 artwork much safer on phones.
-  */
-
-  const originalWidth=
-  splitCanvas.width;
-
-  const originalHeight=
-  splitCanvas.height;
-
-  const maxAnalysisSize=
-  1100;
-
-  const analysisScale=
-  Math.min(
-    1,
-    maxAnalysisSize /
-    Math.max(
-      originalWidth,
-      originalHeight
-    )
-  );
-
-  const analysisWidth=
-  Math.max(
-    1,
-    Math.round(
-      originalWidth *
-      analysisScale
-    )
-  );
-
-  const analysisHeight=
-  Math.max(
-    1,
-    Math.round(
-      originalHeight *
-      analysisScale
-    )
-  );
-
-
-  const analysisCanvas=
-  document.createElement(
-    "canvas"
-  );
-
-  analysisCanvas.width=
-  analysisWidth;
-
-  analysisCanvas.height=
-  analysisHeight;
-
-
-  const analysisContext=
-  analysisCanvas.getContext(
-    "2d",
-    {willReadFrequently:true}
-  );
-
-
-  analysisContext.drawImage(
-    splitCanvas,
-    0,
-    0,
-    analysisWidth,
-    analysisHeight
-  );
-
-
-  const pixels=
-  analysisContext.getImageData(
-    0,
-    0,
-    analysisWidth,
-    analysisHeight
-  ).data;
-
-
-  const pixelCount=
-  analysisWidth *
-  analysisHeight;
-
-
-  const visited=
-  new Uint8Array(
-    pixelCount
-  );
-
-
-  /*
-   User's minimum area is entered in original-image
-   pixels, so scale it for the analysis copy.
-  */
-
-  const enteredMinArea=
-  Math.max(
-    1,
-    Number(
-      document.getElementById(
-        "splitMin"
-      ).value
-    ) || 150
-  );
-
-
-  const minimumArea=
-  Math.max(
-    1,
-    enteredMinArea *
-    analysisScale *
-    analysisScale
-  );
-
-
-  const alphaThreshold=20;
-
-
-  function hasVisiblePixel(index){
-
-    return (
-      pixels[
-        index*4+3
-      ] >
-      alphaThreshold
-    );
-  }
-
-
-  const components=[];
-
-
-  /*
-   Four-way connected component search.
-  */
-
-  for(
-    let y=0;
-    y<analysisHeight;
-    y++
-  ){
-
-    for(
-      let x=0;
-      x<analysisWidth;
-      x++
-    ){
-
-      const startIndex=
-      y *
-      analysisWidth +
-      x;
-
-
-      if(
-        visited[startIndex] ||
-        !hasVisiblePixel(startIndex)
-      ){
-        continue;
-      }
-
-
-      const queue=[
-        startIndex
-      ];
-
-      visited[startIndex]=1;
-
-
-      let queuePosition=0;
-
-      let minX=x;
-      let maxX=x;
-
-      let minY=y;
-      let maxY=y;
-
-      let area=0;
-
-
-      while(
-        queuePosition <
-        queue.length
-      ){
-
-        const currentIndex=
-        queue[
-          queuePosition++
-        ];
-
-
-        const currentX=
-        currentIndex %
-        analysisWidth;
-
-
-        const currentY=
-        Math.floor(
-          currentIndex /
-          analysisWidth
-        );
-
-
-        area++;
-
-
-        if(currentX<minX){
-          minX=currentX;
-        }
-
-        if(currentX>maxX){
-          maxX=currentX;
-        }
-
-        if(currentY<minY){
-          minY=currentY;
-        }
-
-        if(currentY>maxY){
-          maxY=currentY;
-        }
-
-
-        /*
-         Right
-        */
-
-        if(
-          currentX+1 <
-          analysisWidth
-        ){
-
-          const rightIndex=
-          currentIndex+1;
-
-          if(
-            !visited[rightIndex] &&
-            hasVisiblePixel(rightIndex)
-          ){
-
-            visited[rightIndex]=1;
-            queue.push(rightIndex);
-          }
-        }
-
-
-        /*
-         Left
-        */
-
-        if(
-          currentX>0
-        ){
-
-          const leftIndex=
-          currentIndex-1;
-
-          if(
-            !visited[leftIndex] &&
-            hasVisiblePixel(leftIndex)
-          ){
-
-            visited[leftIndex]=1;
-            queue.push(leftIndex);
-          }
-        }
-
-
-        /*
-         Down
-        */
-
-        if(
-          currentY+1 <
-          analysisHeight
-        ){
-
-          const downIndex=
-          currentIndex +
-          analysisWidth;
-
-          if(
-            !visited[downIndex] &&
-            hasVisiblePixel(downIndex)
-          ){
-
-            visited[downIndex]=1;
-            queue.push(downIndex);
-          }
-        }
-
-
-        /*
-         Up
-        */
-
-        if(
-          currentY>0
-        ){
-
-          const upIndex=
-          currentIndex -
-          analysisWidth;
-
-          if(
-            !visited[upIndex] &&
-            hasVisiblePixel(upIndex)
-          ){
-
-            visited[upIndex]=1;
-            queue.push(upIndex);
-          }
-        }
-
-      }
-
-
-      if(
-        area >=
-        minimumArea
-      ){
-
-        components.push({
-          minX,
-          minY,
-          maxX,
-          maxY,
-          area
-        });
-      }
-
-    }
-  }
-
-
-  /*
-   Sort roughly top-to-bottom,
-   then left-to-right.
-  */
-
-  components.sort(
-    (a,b)=>{
-
-      const rowTolerance=
-      Math.max(
-        15,
-        analysisHeight *
-        .025
-      );
-
-      if(
-        Math.abs(
-          a.minY -
-          b.minY
-        ) >
-        rowTolerance
-      ){
-
-        return (
-          a.minY -
-          b.minY
-        );
-      }
-
-      return (
-        a.minX -
-        b.minX
-      );
-    }
-  );
-
-
-  showDetectedObjects(
-    components,
-    analysisScale
-  );
 }
 
 
-/* =========================================
-   CREATE INDIVIDUAL OBJECT PNGS
-========================================= */
+function saveIdea() {
 
-function showDetectedObjects(
-  components,
-  analysisScale
-){
-
-  const holder=
-  document.getElementById(
-    "splitDownloads"
-  );
-
-  const status=
-  document.getElementById(
-    "splitStatus"
-  );
+  const value =
+    document.getElementById("brainOutput")
+    .value
+    .trim();
 
 
-  holder.innerHTML="";
+  if (!value) {
 
-
-  if(
-    components.length===0
-  ){
-
-    status.textContent=
-    "No separate objects found. Try lowering Minimum Object Area.";
+    document.getElementById("brainOutput").value =
+      "Generate an idea first.";
 
     return;
   }
 
 
-  status.textContent=
-  `Found ${components.length} object${components.length===1 ? "" : "s"} ✓`;
+  const ideas = getIdeas();
 
 
-  components.forEach(
-    (component,index)=>{
+  ideas.unshift({
 
-      /*
-       Convert detection box back to
-       full-resolution coordinates.
-      */
+    id: Date.now(),
 
-      const padding=12;
+    text: value,
 
+    created:
+      new Date().toISOString()
 
-      let left=
-      Math.floor(
-        component.minX /
-        analysisScale
-      ) -
-      padding;
+  });
 
 
-      let top=
-      Math.floor(
-        component.minY /
-        analysisScale
-      ) -
-      padding;
+  localStorage.setItem(
+    IDEA_STORAGE_KEY,
+    JSON.stringify(
+      ideas.slice(0, 250)
+    )
+  );
 
 
-      let right=
-      Math.ceil(
-        (
-          component.maxX+1
-        ) /
-        analysisScale
-      ) +
-      padding;
+  renderIdeas();
+}
 
 
-      let bottom=
-      Math.ceil(
-        (
-          component.maxY+1
-        ) /
-        analysisScale
-      ) +
-      padding;
+function renderIdeas() {
+
+  const holder =
+    document.getElementById("ideaList");
+
+  if (!holder) return;
 
 
-      left=
-      Math.max(
-        0,
-        left
-      );
+  const ideas =
+    getIdeas();
 
-      top=
-      Math.max(
-        0,
-        top
-      );
-
-      right=
-      Math.min(
-        splitCanvas.width,
-        right
-      );
-
-      bottom=
-      Math.min(
-        splitCanvas.height,
-        bottom
-      );
+  holder.innerHTML = "";
 
 
-      const width=
-      Math.max(
-        1,
-        right-left
-      );
+  if (!ideas.length) {
 
-      const height=
-      Math.max(
-        1,
-        bottom-top
-      );
+    holder.innerHTML = `
+      <div class="idea muted">
+        Your saved ideas will appear here.
+      </div>
+    `;
 
-
-      const objectCanvas=
-      document.createElement(
-        "canvas"
-      );
-
-      objectCanvas.width=
-      width;
-
-      objectCanvas.height=
-      height;
+    return;
+  }
 
 
-      const objectContext=
-      objectCanvas.getContext(
-        "2d"
-      );
+  ideas.forEach((idea, index) => {
+
+    const card =
+      document.createElement("div");
+
+    card.className = "idea";
 
 
-      objectContext.drawImage(
-        splitCanvas,
+    const text =
+      document.createElement("div");
 
-        left,
-        top,
-        width,
-        height,
+    text.style.whiteSpace =
+      "pre-wrap";
 
-        0,
-        0,
-        width,
-        height
-      );
+    text.textContent =
+      idea.text;
 
 
-      const card=
-      document.createElement(
-        "div"
-      );
+    const controls =
+      document.createElement("div");
 
-      card.className=
-      "card";
+    controls.className = "row";
 
 
-      const heading=
-      document.createElement(
-        "h3"
-      );
+    const useButton =
+      document.createElement("button");
 
-      heading.textContent=
-      `Object ${index+1}`;
+    useButton.className = "btn";
+    useButton.textContent = "🧠 Use";
 
+    useButton.onclick = () => {
 
-      const dimensions=
-      document.createElement(
-        "div"
-      );
+      document.getElementById("brainOutput").value =
+        idea.text;
 
-      dimensions.className=
-      "muted";
-
-      dimensions.textContent=
-      `${width} × ${height}px`;
+      openTool("brain");
+    };
 
 
-      const preview=
-      document.createElement(
-        "img"
-      );
+    const copyButton =
+      document.createElement("button");
 
-      preview.className=
-      "preview";
+    copyButton.className =
+      "btn secondary";
 
-      preview.alt=
-      `Detected object ${index+1}`;
+    copyButton.textContent =
+      "📋 Copy";
 
-      preview.src=
-      objectCanvas.toDataURL(
-        "image/png"
-      );
+    copyButton.onclick =
+      async () => {
 
+        try {
 
-      const downloadButton=
-      document.createElement(
-        "button"
-      );
+          await navigator.clipboard.writeText(
+            idea.text
+          );
 
-      downloadButton.className=
-      "btn";
+          copyButton.textContent =
+            "✓ Copied";
 
-      downloadButton.textContent=
-      "⬇️ Download PNG";
+          setTimeout(
+            () => {
+              copyButton.textContent =
+                "📋 Copy";
+            },
+            1000
+          );
 
+        } catch {
 
-      downloadButton.addEventListener(
-        "click",
-        ()=>{
-
-          downloadCanvas(
-            objectCanvas,
-            `object-${index+1}.png`
+          alert(
+            "Could not copy automatically."
           );
         }
+      };
+
+
+    const deleteButton =
+      document.createElement("button");
+
+    deleteButton.className =
+      "btn danger";
+
+    deleteButton.textContent =
+      "🗑 Delete";
+
+    deleteButton.onclick = () => {
+
+      const current =
+        getIdeas();
+
+      current.splice(index, 1);
+
+      localStorage.setItem(
+        IDEA_STORAGE_KEY,
+        JSON.stringify(current)
       );
 
-
-      card.appendChild(
-        heading
-      );
-
-      card.appendChild(
-        dimensions
-      );
-
-      card.appendChild(
-        preview
-      );
-
-      card.appendChild(
-        downloadButton
-      );
+      renderIdeas();
+    };
 
 
-      holder.appendChild(
-        card
-      );
-
-    }
-  );
-}
-
-
-/* =========================================
-   IMAGE STUDIO
-========================================= */
-
-const studioCanvas=
-document.getElementById(
-  "studioCanvas"
-);
-
-
-const studioContext=
-studioCanvas.getContext(
-  "2d",
-  {willReadFrequently:true}
-);
-
-
-let studioHasImage=false;
-
-
-/* =========================================
-   IMAGE STUDIO UPLOAD
-========================================= */
-
-document.getElementById(
-  "studioFile"
-).addEventListener(
-  "change",
-  async event=>{
-
-    const file=
-    event.target.files?.[0];
-
-    const status=
-    document.getElementById(
-      "studioStatus"
+    controls.append(
+      useButton,
+      copyButton,
+      deleteButton
     );
 
+    card.append(
+      text,
+      controls
+    );
 
-    if(!file){
-      return;
-    }
-
-
-    status.textContent=
-    "Loading image…";
-
-
-    try{
-
-      const image=
-      await loadImageFile(file);
+    holder.appendChild(card);
+  });
+}
 
 
-      studioCanvas.width=
-      image.naturalWidth;
+function clearIdeas() {
 
-      studioCanvas.height=
-      image.naturalHeight;
+  const ideas =
+    getIdeas();
 
-
-      studioContext.clearRect(
-        0,
-        0,
-        studioCanvas.width,
-        studioCanvas.height
-      );
+  if (!ideas.length) return;
 
 
-      studioContext.drawImage(
-        image,
-        0,
-        0
-      );
-
-
-      studioHasImage=true;
-
-
-      document.getElementById(
-        "studioW"
-      ).value=
-      image.naturalWidth;
-
-
-      document.getElementById(
-        "studioH"
-      ).value=
-      image.naturalHeight;
-
-
-      status.textContent=
-      `Loaded ✓ ${image.naturalWidth} × ${image.naturalHeight}px`;
-
-
-    }catch(error){
-
-      studioHasImage=false;
-
-      status.textContent=
-      "❌ " + error.message;
-    }
-  }
-);
-
-
-/* =========================================
-   RESIZE IMAGE
-========================================= */
-
-function studioResize(){
-
-  if(!studioHasImage){
-
-    document.getElementById(
-      "studioStatus"
-    ).textContent=
-    "Upload an image first.";
-
-    return;
-  }
-
-
-  const width=
-  Math.max(
-    1,
-    Math.round(
-      Number(
-        document.getElementById(
-          "studioW"
-        ).value
-      )
+  if (
+    !confirm(
+      "Delete all saved ideas?"
     )
-  );
-
-
-  const height=
-  Math.max(
-    1,
-    Math.round(
-      Number(
-        document.getElementById(
-          "studioH"
-        ).value
-      )
-    )
-  );
-
-
-  if(
-    !Number.isFinite(width) ||
-    !Number.isFinite(height)
-  ){
-
-    document.getElementById(
-      "studioStatus"
-    ).textContent=
-    "Enter valid width and height values.";
-
+  ) {
     return;
   }
 
 
-  const temp=
-  document.createElement(
-    "canvas"
+  localStorage.removeItem(
+    IDEA_STORAGE_KEY
   );
 
-  temp.width=
-  studioCanvas.width;
-
-  temp.height=
-  studioCanvas.height;
-
-
-  temp.getContext(
-    "2d"
-  ).drawImage(
-    studioCanvas,
-    0,
-    0
-  );
-
-
-  studioCanvas.width=
-  width;
-
-  studioCanvas.height=
-  height;
-
-
-  const context=
-  studioCanvas.getContext(
-    "2d",
-    {willReadFrequently:true}
-  );
-
-
-  context.imageSmoothingEnabled=
-  true;
-
-  context.imageSmoothingQuality=
-  "high";
-
-
-  context.drawImage(
-    temp,
-    0,
-    0,
-    width,
-    height
-  );
-
-
-  document.getElementById(
-    "studioStatus"
-  ).textContent=
-  `Resized to ${width} × ${height}px ✓`;
+  renderIdeas();
 }
 
 
-/* =========================================
-   ROTATE IMAGE 90 DEGREES
-========================================= */
-
-function studioRotate(){
-
-  if(!studioHasImage){
-
-    document.getElementById(
-      "studioStatus"
-    ).textContent=
-    "Upload an image first.";
-
-    return;
-  }
-
-
-  const temp=
-  document.createElement(
-    "canvas"
-  );
-
-  temp.width=
-  studioCanvas.width;
-
-  temp.height=
-  studioCanvas.height;
-
-
-  temp.getContext(
-    "2d"
-  ).drawImage(
-    studioCanvas,
-    0,
-    0
-  );
-
-
-  const oldWidth=
-  temp.width;
-
-  const oldHeight=
-  temp.height;
-
-
-  studioCanvas.width=
-  oldHeight;
-
-  studioCanvas.height=
-  oldWidth;
-
-
-  const context=
-  studioCanvas.getContext(
-    "2d",
-    {willReadFrequently:true}
-  );
-
-
-  context.save();
-
-
-  context.translate(
-    studioCanvas.width/2,
-    studioCanvas.height/2
-  );
-
-
-  context.rotate(
-    Math.PI/2
-  );
-
-
-  context.drawImage(
-    temp,
-    -oldWidth/2,
-    -oldHeight/2
-  );
-
-
-  context.restore();
-
-
-  document.getElementById(
-    "studioW"
-  ).value=
-  studioCanvas.width;
-
-
-  document.getElementById(
-    "studioH"
-  ).value=
-  studioCanvas.height;
-
-
-  document.getElementById(
-    "studioStatus"
-  ).textContent=
-  `Rotated ✓ ${studioCanvas.width} × ${studioCanvas.height}px`;
-}
-
-
-/* =========================================
-   FLIP IMAGE HORIZONTALLY
-========================================= */
-
-function studioFlip(){
-
-  if(!studioHasImage){
-
-    document.getElementById(
-      "studioStatus"
-    ).textContent=
-    "Upload an image first.";
-
-    return;
-  }
-
-
-  const temp=
-  document.createElement(
-    "canvas"
-  );
-
-  temp.width=
-  studioCanvas.width;
-
-  temp.height=
-  studioCanvas.height;
-
-
-  temp.getContext(
-    "2d"
-  ).drawImage(
-    studioCanvas,
-    0,
-    0
-  );
-
-
-  const context=
-  studioCanvas.getContext(
-    "2d",
-    {willReadFrequently:true}
-  );
-
-
-  context.clearRect(
-    0,
-    0,
-    studioCanvas.width,
-    studioCanvas.height
-  );
-
-
-  context.save();
-
-
-  context.translate(
-    studioCanvas.width,
-    0
-  );
-
-
-  context.scale(
-    -1,
-    1
-  );
-
-
-  context.drawImage(
-    temp,
-    0,
-    0
-  );
-
-
-  context.restore();
-
-
-  document.getElementById(
-    "studioStatus"
-  ).textContent=
-  "Flipped horizontally ✓";
-}
-
-
-/* =========================================
-   CROP TRANSPARENT SPACE
-========================================= */
-
-function studioCrop(){
-
-  if(!studioHasImage){
-
-    document.getElementById(
-      "studioStatus"
-    ).textContent=
-    "Upload an image first.";
-
-    return;
-  }
-
-
-  const width=
-  studioCanvas.width;
-
-  const height=
-  studioCanvas.height;
-
-
-  const context=
-  studioCanvas.getContext(
-    "2d",
-    {willReadFrequently:true}
-  );
-
-
-  const pixels=
-  context.getImageData(
-    0,
-    0,
-    width,
-    height
-  ).data;
-
-
-  let minX=width;
-  let minY=height;
-
-  let maxX=-1;
-  let maxY=-1;
-
-
-  for(
-    let y=0;
-    y<height;
-    y++
-  ){
-
-    for(
-      let x=0;
-      x<width;
-      x++
-    ){
-
-      const alpha=
-      pixels[
-        (
-          y*width+x
-        )*4+3
-      ];
-
-
-      if(alpha>5){
-
-        if(x<minX){
-          minX=x;
-        }
-
-        if(x>maxX){
-          maxX=x;
-        }
-
-        if(y<minY){
-          minY=y;
-        }
-
-        if(y>maxY){
-          maxY=y;
-        }
-      }
-
-    }
-  }
-
-
-  if(maxX<0){
-
-    document.getElementById(
-      "studioStatus"
-    ).textContent=
-    "No visible pixels found.";
-
-    return;
-  }
-
-
-  /*
-   Already tight.
-  */
-
-  if(
-    minX===0 &&
-    minY===0 &&
-    maxX===width-1 &&
-    maxY===height-1
-  ){
-
-    document.getElementById(
-      "studioStatus"
-    ).textContent=
-    "Image is already tightly cropped ✓";
-
-    return;
-  }
-
-
-  const croppedWidth=
-  maxX-minX+1;
-
-  const croppedHeight=
-  maxY-minY+1;
-
-
-  const cropped=
-  document.createElement(
-    "canvas"
-  );
-
-  cropped.width=
-  croppedWidth;
-
-  cropped.height=
-  croppedHeight;
-
-
-  cropped.getContext(
-    "2d"
-  ).drawImage(
-    studioCanvas,
-
-    minX,
-    minY,
-    croppedWidth,
-    croppedHeight,
-
-    0,
-    0,
-    croppedWidth,
-    croppedHeight
-  );
-
-
-  studioCanvas.width=
-  croppedWidth;
-
-  studioCanvas.height=
-  croppedHeight;
-
-
-  studioCanvas.getContext(
-    "2d",
-    {willReadFrequently:true}
-  ).drawImage(
-    cropped,
-    0,
-    0
-  );
-
-
-  document.getElementById(
-    "studioW"
-  ).value=
-  croppedWidth;
-
-
-  document.getElementById(
-    "studioH"
-  ).value=
-  croppedHeight;
-
-
-  document.getElementById(
-    "studioStatus"
-  ).textContent=
-  `Transparent space cropped ✓ ${croppedWidth} × ${croppedHeight}px`;
-}
-
-
-/* =========================================
-   DOWNLOAD IMAGE STUDIO PNG
-========================================= */
-
-function downloadStudio(){
-
-  if(!studioHasImage){
-
-    document.getElementById(
-      "studioStatus"
-    ).textContent=
-    "Upload an image first.";
-
-    return;
-  }
-
-
-  downloadCanvas(
-    studioCanvas,
-    "moonlight-design.png"
-  );
-
-
-  document.getElementById(
-    "studioStatus"
-  ).textContent=
-  "PNG prepared for download ✓";
-}
-
-
-/* =========================================
-   FINAL STARTUP
-========================================= */
-
+/* ======================================================
+   INITIALIZE PART 4
+====================================================== */
+
+makeTags();
+drawRepeat();
 renderIdeas();
 
-console.log(
-  "Moonlight Designs Workshop loaded ✓"
-);
 
-</script>
+/* ======================================================
+   PART 5 GOES BELOW THIS LINE
+   DO NOT CLOSE SCRIPT YET.
 
-</body>
-</html>
+   ✂️ PNG SPLITTER
+   🎨 IMAGE STUDIO
+   FINAL STARTUP
+====================================================== */
+  
