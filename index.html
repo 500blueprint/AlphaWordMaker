@@ -6695,6 +6695,664 @@ console.log(
 );
 
 </script>
+<!-- ======================================================
+     MOONLIGHT DESIGNS WORKSHOP
+     COLORING PAGE / OUTLINE MAKER
+======================================================= -->
 
+<style>
+#moonlightColoringMaker{
+  max-width:1000px;
+  margin:30px auto;
+  padding:22px;
+  border:1px solid #343a68;
+  border-radius:24px;
+  background:
+    radial-gradient(circle at top left,#39227155,transparent 35%),
+    radial-gradient(circle at top right,#0c526d55,transparent 35%),
+    #11152d;
+  color:#f7f4ff;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  box-shadow:0 15px 45px #0008;
+}
+
+#moonlightColoringMaker *{
+  box-sizing:border-box;
+}
+
+#moonlightColoringMaker h2{
+  margin:0;
+  font-size:28px;
+}
+
+#moonlightColoringMaker .subtitle{
+  color:#aaa9c7;
+  margin:7px 0 22px;
+  line-height:1.5;
+}
+
+.cpm-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
+
+.cpm-field{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.cpm-field.full{
+  grid-column:1/-1;
+}
+
+.cpm-field label{
+  font-size:13px;
+  font-weight:700;
+  color:#d8d5ed;
+}
+
+.cpm-field input,
+.cpm-field select,
+.cpm-field textarea{
+  width:100%;
+  border:1px solid #343a68;
+  border-radius:13px;
+  padding:13px;
+  background:#090c20;
+  color:#fff;
+  outline:none;
+  font-size:15px;
+}
+
+.cpm-field textarea{
+  min-height:90px;
+  resize:vertical;
+}
+
+.cpm-field input:focus,
+.cpm-field select:focus,
+.cpm-field textarea:focus{
+  border-color:#9d78ff;
+  box-shadow:0 0 0 3px #9d78ff22;
+}
+
+.cpm-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+
+.cpm-btn{
+  border:0;
+  border-radius:14px;
+  padding:13px 18px;
+  font-weight:800;
+  font-size:14px;
+  cursor:pointer;
+}
+
+.cpm-generate{
+  color:#080817;
+  background:linear-gradient(135deg,#ff62c7,#9d78ff,#59cfff);
+}
+
+.cpm-copy{
+  background:#1b2144;
+  color:#fff;
+  border:1px solid #343a68;
+}
+
+.cpm-random{
+  background:#171b37;
+  color:#65e2b0;
+  border:1px solid #343a68;
+}
+
+#cpmOutputWrap{
+  margin-top:20px;
+  display:none;
+}
+
+#cpmOutput{
+  min-height:260px;
+  width:100%;
+  background:#070918;
+  border:1px solid #343a68;
+  border-radius:16px;
+  padding:16px;
+  color:#f7f4ff;
+  line-height:1.6;
+  resize:vertical;
+}
+
+.cpm-note{
+  margin-top:12px;
+  padding:12px 14px;
+  border-radius:13px;
+  background:#090c20;
+  border:1px solid #272c52;
+  color:#aaa9c7;
+  font-size:12px;
+  line-height:1.5;
+}
+
+.cpm-easy-note{
+  color:#65e2b0;
+}
+
+@media(max-width:650px){
+  .cpm-grid{
+    grid-template-columns:1fr;
+  }
+
+  .cpm-field.full{
+    grid-column:auto;
+  }
+
+  #moonlightColoringMaker{
+    margin:15px;
+    padding:17px;
+  }
+}
+</style>
+
+
+<section id="moonlightColoringMaker">
+
+  <h2>🖍️ Coloring Page Maker</h2>
+
+  <div class="subtitle">
+    Build clean printable coloring-page and outline prompts.
+  </div>
+
+  <div class="cpm-grid">
+
+    <div class="cpm-field">
+      <label>Main Subject</label>
+      <input
+        id="cpmSubject"
+        placeholder="Armadillo, duck, cow, ghost..."
+      >
+    </div>
+
+    <div class="cpm-field">
+      <label>Action</label>
+      <input
+        id="cpmAction"
+        placeholder="holding a flower, gardening..."
+      >
+    </div>
+
+    <div class="cpm-field">
+      <label>Style</label>
+      <select id="cpmStyle">
+        <option>Whimsical</option>
+        <option>Western</option>
+        <option>Cottagecore</option>
+        <option>Boho</option>
+        <option>Preppy</option>
+        <option>Retro</option>
+        <option>Gothic Cute</option>
+        <option>Farmhouse</option>
+        <option>Christmas</option>
+        <option>Halloween</option>
+        <option>Valentine</option>
+        <option>Fairy Tale</option>
+        <option>Simple Cartoon</option>
+      </select>
+    </div>
+
+    <div class="cpm-field">
+      <label>Detail Level</label>
+      <select id="cpmDetail" onchange="cpmUpdateHint()">
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="detailed">Detailed</option>
+      </select>
+    </div>
+
+    <div class="cpm-field">
+      <label>Audience</label>
+      <select id="cpmAudience">
+        <option>Kids</option>
+        <option>Teens</option>
+        <option>Adults</option>
+      </select>
+    </div>
+
+    <div class="cpm-field">
+      <label>Composition</label>
+      <select id="cpmComposition">
+        <option>Single Subject</option>
+        <option>Large Main Character</option>
+        <option>Centered Character</option>
+        <option>Character + One Prop</option>
+        <option>Simple Scene</option>
+        <option>Full Page Scene</option>
+      </select>
+    </div>
+
+    <div class="cpm-field">
+      <label>Page Size</label>
+      <select id="cpmSize">
+        <option>8×11 portrait</option>
+        <option>8.5×11 portrait</option>
+        <option>8×8 square</option>
+        <option>8.5×8.5 square</option>
+      </select>
+    </div>
+
+    <div class="cpm-field">
+      <label>Outline Weight</label>
+      <select id="cpmLines">
+        <option>Extra Bold</option>
+        <option>Bold</option>
+        <option>Medium</option>
+        <option>Bold + Thin Interior Details</option>
+      </select>
+    </div>
+
+    <div class="cpm-field full">
+      <label>Extra Element / Prop</label>
+      <input
+        id="cpmExtras"
+        placeholder="One sunflower, teacup, bow, mushroom..."
+      >
+    </div>
+
+    <div class="cpm-field full">
+      <label>Extra Instructions</label>
+      <textarea
+        id="cpmInstructions"
+        placeholder="Optional special instructions..."
+      ></textarea>
+    </div>
+
+  </div>
+
+  <div id="cpmHint" class="cpm-note cpm-easy-note">
+    ✨ EASY MODE: Focuses on the subject with little to no background.
+    Great for simple children's coloring pages.
+  </div>
+
+  <div class="cpm-actions">
+
+    <button
+      class="cpm-btn cpm-generate"
+      onclick="cpmGenerate()"
+    >
+      ✨ Create Prompt
+    </button>
+
+    <button
+      class="cpm-btn cpm-random"
+      onclick="cpmRandomIdea()"
+    >
+      🎲 Random Idea
+    </button>
+
+    <button
+      class="cpm-btn cpm-copy"
+      onclick="cpmClear()"
+    >
+      🗑 Clear
+    </button>
+
+  </div>
+
+
+  <div id="cpmOutputWrap">
+
+    <div class="cpm-field">
+      <label>Generated Coloring Page Prompt</label>
+
+      <textarea id="cpmOutput"></textarea>
+    </div>
+
+    <div class="cpm-actions">
+
+      <button
+        class="cpm-btn cpm-copy"
+        onclick="cpmCopy()"
+      >
+        📋 Copy Prompt
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<script>
+
+function cpmUpdateHint(){
+
+  const detail =
+    document.getElementById("cpmDetail").value;
+
+  const hint =
+    document.getElementById("cpmHint");
+
+  if(detail === "easy"){
+
+    hint.innerHTML =
+      "✨ <b>EASY MODE:</b> Main subject only or subject + one simple prop. Little to no background. Large enclosed coloring spaces and extra-bold outlines.";
+
+  }
+
+  if(detail === "medium"){
+
+    hint.innerHTML =
+      "🌙 <b>MEDIUM MODE:</b> Main subject with a few coordinating elements and a simple background. Moderate interior detail.";
+
+  }
+
+  if(detail === "detailed"){
+
+    hint.innerHTML =
+      "⭐ <b>DETAILED MODE:</b> Full composition with more background elements, smaller coloring spaces and additional line details.";
+
+  }
+
+}
+
+
+function cpmGenerate(){
+
+  const subject =
+    document.getElementById("cpmSubject").value.trim();
+
+  const action =
+    document.getElementById("cpmAction").value.trim();
+
+  const style =
+    document.getElementById("cpmStyle").value;
+
+  const detail =
+    document.getElementById("cpmDetail").value;
+
+  const audience =
+    document.getElementById("cpmAudience").value;
+
+  const composition =
+    document.getElementById("cpmComposition").value;
+
+  const size =
+    document.getElementById("cpmSize").value;
+
+  const lines =
+    document.getElementById("cpmLines").value;
+
+  const extras =
+    document.getElementById("cpmExtras").value.trim();
+
+  const instructions =
+    document.getElementById("cpmInstructions").value.trim();
+
+
+  if(!subject){
+
+    alert("Add a main subject first.");
+
+    return;
+  }
+
+
+  let detailInstructions = "";
+
+
+  if(detail === "easy"){
+
+    detailInstructions = `
+Keep this EASY and very simple.
+
+Show primarily the main subject.
+Do NOT create a full-page scene.
+
+Use little to no background.
+
+If an extra element is included, use only one simple coordinating prop beside or held by the subject.
+
+Use large simple shapes, minimal interior details, large enclosed coloring spaces and extra-bold easy-to-color outlines.
+
+Avoid clutter, tiny objects, patterns, complex scenery and excessive decorations.
+`;
+
+  }
+
+
+  if(detail === "medium"){
+
+    detailInstructions = `
+Use a moderate level of detail.
+
+Keep the main subject large and clearly dominant.
+
+Add only a few coordinating elements and a simple uncluttered background.
+
+Use clearly enclosed coloring spaces and avoid overly tiny details.
+`;
+
+  }
+
+
+  if(detail === "detailed"){
+
+    detailInstructions = `
+Create a detailed professional coloring-book composition.
+
+Include additional coordinating elements and environmental details while keeping the main subject clearly recognizable.
+
+Use varied enclosed coloring spaces and clean crisp line work.
+`;
+
+  }
+
+
+  let prompt = `
+Create a ${size} coloring book page featuring ${subject}`;
+
+  if(action){
+    prompt += ` ${action}`;
+  }
+
+  prompt += `.
+
+Style: ${style}.
+Composition: ${composition}.
+Detail level: ${detail.charAt(0).toUpperCase()+detail.slice(1)}.
+Audience: ${audience}.
+Outline weight: ${lines}.
+`;
+
+
+  if(extras){
+
+    prompt += `
+Include: ${extras}.
+`;
+
+  }
+
+
+  prompt += `
+
+${detailInstructions}
+
+Use clean black outline line art only on a pure white background.
+
+No colors.
+No grayscale.
+No gray shading.
+No filled black areas.
+No realistic shadows.
+No textured color.
+
+Use crisp printable outlines with clearly enclosed coloring spaces.
+
+Keep the entire subject fully inside the page with no awkward cut-offs.
+
+Keep important features separated enough to color easily.
+
+Create a balanced professional coloring-book illustration suitable for printing.
+`;
+
+
+  if(instructions){
+
+    prompt += `
+
+Additional instructions:
+${instructions}
+`;
+
+  }
+
+
+  const output =
+    document.getElementById("cpmOutput");
+
+  output.value =
+    prompt.trim();
+
+  document.getElementById("cpmOutputWrap").style.display =
+    "block";
+
+  output.scrollIntoView({
+    behavior:"smooth",
+    block:"center"
+  });
+
+}
+
+
+async function cpmCopy(){
+
+  const output =
+    document.getElementById("cpmOutput");
+
+  if(!output.value) return;
+
+  try{
+
+    await navigator.clipboard.writeText(
+      output.value
+    );
+
+    alert("Coloring page prompt copied! 🖍️");
+
+  }
+
+  catch(e){
+
+    output.select();
+
+    document.execCommand("copy");
+
+    alert("Prompt copied!");
+
+  }
+
+}
+
+
+function cpmClear(){
+
+  document.getElementById("cpmSubject").value = "";
+  document.getElementById("cpmAction").value = "";
+  document.getElementById("cpmExtras").value = "";
+  document.getElementById("cpmInstructions").value = "";
+  document.getElementById("cpmOutput").value = "";
+
+  document.getElementById("cpmDetail").value =
+    "easy";
+
+  document.getElementById("cpmComposition").value =
+    "Single Subject";
+
+  document.getElementById("cpmOutputWrap").style.display =
+    "none";
+
+  cpmUpdateHint();
+
+}
+
+
+function cpmRandomIdea(){
+
+  const subjects = [
+    "armadillo",
+    "highland cow",
+    "duck",
+    "pig",
+    "raccoon",
+    "opossum",
+    "frog",
+    "cowgirl ghost",
+    "cute alien",
+    "mushroom character",
+    "western chicken",
+    "baby dragon",
+    "black cat",
+    "owl",
+    "goat",
+    "bunny"
+  ];
+
+  const actions = [
+    "holding a sunflower",
+    "holding a teacup",
+    "wearing a western bandana",
+    "holding a heart-shaped balloon",
+    "planting one flower",
+    "wearing a cowboy hat",
+    "holding a mushroom",
+    "carrying a tiny basket",
+    "holding a star",
+    "wearing a large bow"
+  ];
+
+  const props = [
+    "one sunflower",
+    "one teacup",
+    "one mushroom",
+    "one heart",
+    "one cactus",
+    "one strawberry",
+    "one star",
+    "one flower",
+    "one tiny pumpkin",
+    "one butterfly"
+  ];
+
+
+  document.getElementById("cpmSubject").value =
+    subjects[
+      Math.floor(Math.random()*subjects.length)
+    ];
+
+  document.getElementById("cpmAction").value =
+    actions[
+      Math.floor(Math.random()*actions.length)
+    ];
+
+  document.getElementById("cpmExtras").value =
+    props[
+      Math.floor(Math.random()*props.length)
+    ];
+
+}
+
+
+cpmUpdateHint();
+
+</script>
+
+<!-- END COLORING PAGE / OUTLINE MAKER -->
 </body>
 </html>
