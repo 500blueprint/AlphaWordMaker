@@ -27,6 +27,14 @@ label{display:block;margin:13px 0 6px;font-size:13px;font-weight:800}input,selec
 .small{font-size:11px;color:var(--muted)}.rangeLine{display:grid;grid-template-columns:1fr 65px;gap:10px;align-items:center}.rangeValue{text-align:center;padding:7px;background:#090d22;border:1px solid var(--line);border-radius:9px;font-size:12px}.note{margin-top:12px;padding:12px 14px;border-radius:13px;background:#090c20;border:1px solid #272c52;color:var(--green);font-size:12px;line-height:1.5}
 .pill{display:inline-block;padding:5px 8px;border:1px solid var(--line);border-radius:999px;margin:3px;font-size:11px}.progress{height:10px;background:#080b1d;border-radius:999px;overflow:hidden;margin-top:10px}.progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--purple),var(--pink))}
 @media(max-width:700px){#app{width:94%}.two,.three{grid-template-columns:1fr}.btn{flex:1 1 auto}}
+</style><style>
+.studioButtons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.studioBtn{min-height:145px;border:1px solid rgba(210,174,255,.48);border-radius:22px;background:linear-gradient(145deg,rgba(111,61,190,.82),rgba(41,22,92,.96));color:#fff;font:800 17px inherit;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;box-shadow:0 10px 30px rgba(77,34,140,.28),inset 0 1px rgba(255,255,255,.10);cursor:pointer}
+.studioBtn:active{transform:scale(.98)}
+.studioIcon{font-size:44px;filter:drop-shadow(0 0 10px rgba(255,255,255,.28))}
+#smCanvas{touch-action:none!important;cursor:grab!important}
+#smCanvas.smDragging{cursor:grabbing!important}
+@media(max-width:620px){.studioButtons{grid-template-columns:repeat(2,1fr)}.studioBtn{min-height:120px;font-size:14px}.studioIcon{font-size:36px}}
 </style></head><body>
 <header><h1>☾✦ Moonlight Designs Maker Studio ✦☽</h1><div class="subtitle">A glittery moonlit creative studio for designing, planning, protecting & selling ✨</div></header>
 <div id="app">
@@ -67,7 +75,7 @@ label{display:block;margin:13px 0 6px;font-size:13px;font-weight:800}input,selec
 <h3>📚 Book Planner</h3><label>Book Concept</label><input id="bookConcept" placeholder="40 realistic cats doing cozy activities"><label>Pages</label><input id="bookPages" type="number" min="2" max="100" value="40"><div class="row"><button class="btn" onclick="buildBook()">📚 Build Page Plan</button><button class="btn secondary" onclick="coverPrompt()">📕 Cover Prompt</button><button class="btn secondary" onclick="duplicateCheck()">🔎 Duplicate Check</button></div><textarea id="bookOutput" rows="16"></textarea><div id="bookStatus" class="status"></div></div></div></section>
 
 <section id="seamless" class="tool"><div class="hero"><h2>🌀 Seamless Maker</h2></div><div class="two"><div class="card"><input id="smFiles" type="file" multiple accept="image/png,image/webp"><label>Layout</label><select id="smLayout"><option>Scattered</option><option>Half Drop</option><option>Grid</option></select><label>Density</label><input id="smDensity" type="range" min="4" max="60" value="24"><label>Scale Variation</label><input id="smScaleVar" type="range" min="0" max="80" value="35"><label>Rotation Variation</label><input id="smRotVar" type="range" min="0" max="180" value="35"><label>Background</label><input id="smBg" type="color" value="#ffffff"><div class="row"><button class="btn" onclick="smArrange()">✨ Auto Arrange</button><button class="btn secondary" onclick="smUndo()">↶ Undo</button><button class="btn secondary" onclick="smRedo()">↷ Redo</button><button class="btn" onclick="smExport()">⬇️ 5000px PNG</button></div><div id="smStatus" class="status">Upload transparent elements.</div>
-<div class="note"><b>Direct Edit:</b> tap/click an element on the tile to select it, then drag it anywhere. Works with mouse, Apple Pencil, and touch.</div>
+<div class="note"><b>CLICK + MOVE:</b> Tap/click directly on any image in the tile, hold it, and drag it anywhere. Pink outline = selected image. Works with mouse, finger, and Apple Pencil.</div>
 <div class="two">
 <div><label>Selected Size</label><input id="smSelectedSize" type="range" min="3" max="60" value="12"></div>
 <div><label>Selected Rotation</label><input id="smSelectedRot" type="range" min="-180" max="180" value="0"></div>
@@ -76,12 +84,12 @@ label{display:block;margin:13px 0 6px;font-size:13px;font-weight:800}input,selec
 </div><div class="card"><div class="canvasWrap"><canvas id="smCanvas" width="800" height="800" style="touch-action:none;cursor:grab"></canvas></div><div class="canvasWrap"><canvas id="smRepeat" width="800" height="800"></canvas></div></div></div></section>
 
 <section id="studioHub" class="tool">
-<div class="hero"><h2>✨ Studio</h2><p class="muted">Your seamless design and mockup workspace — everything together in one place.</p></div>
-<div class="grid" id="studioGrid">
-<div class="homeCard" onclick="openTool('seamless')"><b>🌀 Seamless Maker</b><span>Build and export repeating pattern tiles.</span></div>
-<div class="homeCard" onclick="openTool('checker')"><b>🔍 Seamless Checker</b><span>Preview your pattern repeat and check the edges.</span></div>
-<div class="homeCard" onclick="openTool('seamlessMockup')"><b>🧵 Seamless Mockups</b><span>Create collection cards with 10 layout choices.</span></div>
-<div class="homeCard" onclick="openTool('seller')"><b>📸 Mockup Studio</b><span>Place designs on product mockups, proofs and customer previews.</span></div>
+<div class="hero"><h2>✨ Studio</h2><p class="muted">Choose a studio tool.</p></div>
+<div class="studioButtons">
+<button class="studioBtn" onclick="openTool('seamless')"><span class="studioIcon">🌀</span><span>Seamless Maker</span></button>
+<button class="studioBtn" onclick="openTool('checker')"><span class="studioIcon">🔍</span><span>Seamless Checker</span></button>
+<button class="studioBtn" onclick="openTool('seamlessMockup')"><span class="studioIcon">🧵</span><span>Seamless Mockups</span></button>
+<button class="studioBtn" onclick="openTool('seller')"><span class="studioIcon">📸</span><span>Mockup Studio</span></button>
 </div></section>
 <section id="checker" class="tool"><div class="hero"><h2>🔍 Seamless Checker</h2></div><div class="card"><input id="checkFile" type="file" accept="image/*"><label>Repeat</label><select id="checkN"><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option></select><div class="canvasWrap"><canvas id="checkCanvas" width="700" height="700"></canvas></div></div></section>
 
@@ -190,9 +198,9 @@ function smPoint(e){let c=$("smCanvas"),r=c.getBoundingClientRect();return {x:(e
 function smHit(pt){for(let j=smObjs.length-1;j>=0;j--){let o=smObjs[j],box=smObjBox(o),cx=o.x*800,cy=o.y*800,ang=-o.r*Math.PI/180,dx=pt.x-cx,dy=pt.y-cy,rx=dx*Math.cos(ang)-dy*Math.sin(ang),ry=dx*Math.sin(ang)+dy*Math.cos(ang);if(Math.abs(rx)<=box.w/2+12&&Math.abs(ry)<=box.h/2+12)return j}return -1}
 function smSelect(j){smSelected=j;if(j>=0){let o=smObjs[j];$("smSelectedSize").value=Math.round(o.s*100);$("smSelectedRot").value=Math.round(o.r);$("smStatus").textContent=`Element ${j+1} selected — drag to move it.`}else $("smStatus").textContent="Nothing selected.";smDraw()}
 const smC=$("smCanvas");
-smC.addEventListener("pointerdown",e=>{if(!smObjs.length)return;let pt=smPoint(e),j=smHit(pt);smSelect(j);if(j<0)return;smSnapshot();smDragging=true;smDragMoved=false;let o=smObjs[j];smDragStart={px:pt.x,py:pt.y,x:o.x,y:o.y};smC.setPointerCapture(e.pointerId);smC.style.cursor="grabbing";e.preventDefault()});
+smC.addEventListener("pointerdown",e=>{if(!smObjs.length)return;let pt=smPoint(e),j=smHit(pt);smSelect(j);if(j<0)return;smSnapshot();smDragging=true;smDragMoved=false;let o=smObjs[j];smDragStart={px:pt.x,py:pt.y,x:o.x,y:o.y};smC.setPointerCapture(e.pointerId);smC.style.cursor="grabbing";smC.classList.add("smDragging");e.preventDefault()});
 smC.addEventListener("pointermove",e=>{if(!smDragging||smSelected<0)return;let pt=smPoint(e),o=smObjs[smSelected];let dx=(pt.x-smDragStart.px)/800,dy=(pt.y-smDragStart.py)/800;if(Math.abs(dx)+Math.abs(dy)>.002)smDragMoved=true;o.x=(smDragStart.x+dx)%1;if(o.x<0)o.x+=1;o.y=(smDragStart.y+dy)%1;if(o.y<0)o.y+=1;smDraw();e.preventDefault()});
-function smEndDrag(e){if(!smDragging)return;smDragging=false;smC.style.cursor="grab";try{smC.releasePointerCapture(e.pointerId)}catch(_){};$("smStatus").textContent=smDragMoved?"Element moved ✓ — seamless edge copies updated automatically.":"Element selected ✓"}
+function smEndDrag(e){if(!smDragging)return;smDragging=false;smC.style.cursor="grab";smC.classList.remove("smDragging");try{smC.releasePointerCapture(e.pointerId)}catch(_){};$("smStatus").textContent=smDragMoved?"Element moved ✓ — seamless edge copies updated automatically.":"Element selected ✓"}
 smC.addEventListener("pointerup",smEndDrag);smC.addEventListener("pointercancel",smEndDrag);
 $("smSelectedSize").oninput=e=>{if(smSelected<0)return;smObjs[smSelected].s=+e.target.value/100;smDraw()};
 $("smSelectedSize").onchange=()=>{if(smSelected>=0)$("smStatus").textContent="Size updated ✓"};
