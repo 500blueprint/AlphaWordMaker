@@ -477,7 +477,6 @@ async function spDownloadZip(){
 function spApproveAll(){if(!spObjs.length)return;spObjs.forEach((o,i)=>{o.approved=true;spRefreshPreview(i)});spUpdateCounter();$("spStatus").textContent="All current previews approved ✓"}
 function spSaveOne(i){let o=spObjs[i];if(!o)return;if(!o.approved)return $("spStatus").textContent=`Object ${i+1} must be approved before saving.`;downloadCanvas(spCropCanvas(o),cleanName(o.name||`object-${i+1}`)+".png")}
 function spDownloadSelected(){let approved=spObjs.map((o,i)=>[o,i]).filter(([o])=>o.approved);if(!approved.length)return $("spStatus").textContent="Approve at least one preview before saving.";approved.forEach(([o,i])=>downloadCanvas(spCropCanvas(o),cleanName(o.name||`object-${i+1}`)+".png"));$("spStatus").textContent=`Saving ${approved.length} approved PNG${approved.length===1?"":"s"} ✓`}
-}
 
 /* IDEA JAR */
 const IK="moonlightWorkshopIdeas";function ideas(){try{return JSON.parse(localStorage.getItem(IK)||"[]")}catch(e){return[]}}
