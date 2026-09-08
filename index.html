@@ -50,7 +50,7 @@ label{display:block;margin:13px 0 6px;font-size:13px;font-weight:800}input,selec
 <button class="active" data-tool="home">🏠 Home</button><button data-tool="upload">📤 Uploads</button><button data-tool="brain">🧠 Brain Stuck</button><button data-tool="listing">🛍️ Product Lister</button><button data-tool="coloring">🖍️ Coloring Page Maker</button><button data-tool="seamlessMaker">🌀 Seamless Maker</button><button data-tool="seamless">🔍 Seamless Checker</button><button data-tool="seamlessMockup">🧵 Seamless Mockups</button><button data-tool="seller">📸 Mockup Studio</button><button data-tool="splitter">✂️ Splitter</button><button data-tool="image">🎨 Image Lab</button><button data-tool="ideas">🧠 Brain Jar</button>
 </nav>
 <section id="home" class="tool active"><div class="hero"><h2>☾ Welcome to Your Moonlight Maker Studio ✦</h2><div class="muted">Brainstorm → create → mock up → protect → list → sell.</div></div><div class="grid" id="homeCards"></div></section>
-<section id="upload" class="tool"><div class="hero"><h2>📤 Uploads</h2></div><div class="card"><input type="file" id="universalFile" accept="image/*"><div id="uploadStatus" class="status">Choose an image.</div><img id="universalPreview" style="max-width:100%;max-height:420px;display:block;margin:12px auto;border-radius:12px"><div id="fileInfo"></div></div></section>
+
 
 <section id="brain" class="tool"><div class="hero"><h2>🧠 Brain Stuck</h2><p class="muted">Smarter ideas. Holidays only appear when you choose them.</p></div><div class="two"><div class="card">
 <div class="two"><div><label>Product Type</label><select id="brainType"><option>PNG Clipart</option><option>Seamless Pattern</option><option>Coloring Page</option><option>Digital Paper</option><option>Alpha</option><option>Shirt Design</option><option>Sticker</option><option>Clipart Bundle</option><option>Social Graphic</option></select></div><div><label>Theme</label><select id="brainTheme"><option value="">No Theme</option><option>Western</option><option>Celestial</option><option>Gothic</option><option>Cottagecore</option><option>Retro</option><option>Preppy</option><option>Boho</option><option>Farmhouse</option></select></div></div>
@@ -82,14 +82,20 @@ label{display:block;margin:13px 0 6px;font-size:13px;font-weight:800}input,selec
 <div class="card"><label>Generated Prompt</label><textarea id="cpmOutput" rows="18"></textarea><button class="btn" onclick="copyText('cpmOutput')">📋 Copy</button><hr style="border-color:var(--line);margin:20px 0">
 <h3>📚 Book Planner</h3><label>Book Concept</label><input id="bookConcept" placeholder="40 realistic cats doing cozy activities"><label>Pages</label><input id="bookPages" type="number" min="2" max="100" value="40"><div class="row"><button class="btn" onclick="buildBook()">📚 Build Page Plan</button><button class="btn secondary" onclick="coverPrompt()">📕 Cover Prompt</button><button class="btn secondary" onclick="duplicateCheck()">🔎 Duplicate Check</button></div><textarea id="bookOutput" rows="16"></textarea><div id="bookStatus" class="status"></div></div></div></section>
 
-<section id="seamless" class="tool"><div class="hero"><h2>🌀 Seamless Maker</h2></div><div class="two"><div class="card"><input id="smFiles" type="file" multiple accept="image/png,image/webp"><details class="bgRemoveBox"><summary>🪄 Remove Background From Selected Element</summary>
-<div class="small">Click/tap the background color in the preview or choose a color. Adjust tolerance, preview it, then apply.</div>
+<section id="seamless" class="tool"><div class="hero"><h2>🌀 Seamless Maker</h2></div><div class="two"><div class="card"><input id="smFiles" type="file" multiple accept="image/png,image/webp"><div class="bgRemoveBox">
+<h3 style="margin-top:0">🪄 Remove Background</h3>
+<div class="small">Select an image on the Seamless Maker canvas first. Pick its background color and adjust tolerance. This removes the background from that uploaded element before arranging/exporting.</div>
 <div class="bgRemoveControls">
 <div><label>Background Color</label><input id="smBgColor" type="color" value="#ffffff" class="bgSwatch"></div>
 <div><label>Tolerance</label><input id="smBgTol" type="range" min="0" max="160" value="35"></div>
 </div>
-<div class="row"><button class="btn secondary" onclick="bgPreview('smCanvas','sm')">👁 Preview Removal</button><button class="btn" onclick="bgApply('smCanvas','sm')">🪄 Apply Removal</button><button class="btn secondary" onclick="bgUndo('smCanvas','sm')">↶ Restore</button></div>
-<div id="smBgStatus" class="status">Choose the background color you want transparent.</div></details><label>Layout</label><select id="smLayout"><option>Scattered</option><option>Half Drop</option><option>Grid</option></select><label>Density</label><input id="smDensity" type="range" min="4" max="60" value="24"><label>Scale Variation</label><input id="smScaleVar" type="range" min="0" max="80" value="35"><label>Rotation Variation</label><input id="smRotVar" type="range" min="0" max="180" value="35"><label>Background</label><input id="smBg" type="color" value="#ffffff"><div class="row"><button class="btn" onclick="smArrange()">✨ Auto Arrange</button><button class="btn secondary" onclick="smUndo()">↶ Undo</button><button class="btn secondary" onclick="smRedo()">↷ Redo</button><button class="btn" onclick="smExport()">⬇️ 5000px PNG</button></div><div id="smStatus" class="status">Upload transparent elements.</div>
+<div class="row">
+<button class="btn secondary" type="button" onclick="smPreviewRemoveBg()">👁 Preview</button>
+<button class="btn" type="button" onclick="smApplyRemoveBg()">🪄 Remove Background</button>
+<button class="btn secondary" type="button" onclick="smRestoreBg()">↶ Restore</button>
+</div>
+<div id="smBgStatus" class="status">Select an element on the tile.</div>
+</div><label>Layout</label><select id="smLayout"><option>Scattered</option><option>Half Drop</option><option>Grid</option></select><label>Density</label><input id="smDensity" type="range" min="4" max="60" value="24"><label>Scale Variation</label><input id="smScaleVar" type="range" min="0" max="80" value="35"><label>Rotation Variation</label><input id="smRotVar" type="range" min="0" max="180" value="35"><label>Background</label><input id="smBg" type="color" value="#ffffff"><div class="row"><button class="btn" onclick="smArrange()">✨ Auto Arrange</button><button class="btn secondary" onclick="smUndo()">↶ Undo</button><button class="btn secondary" onclick="smRedo()">↷ Redo</button><button class="btn" onclick="smExport()">⬇️ 5000px PNG</button></div><div id="smStatus" class="status">Upload transparent elements.</div>
 <div class="note"><b>CLICK + MOVE:</b> Tap/click directly on any image in the tile, hold it, and drag it anywhere. Pink outline = selected image. Works with mouse, finger, and Apple Pencil.</div>
 <div class="two">
 <div><label>Selected Size</label><input id="smSelectedSize" type="range" min="3" max="60" value="12"></div>
@@ -101,10 +107,10 @@ label{display:block;margin:13px 0 6px;font-size:13px;font-weight:800}input,selec
 <section id="studioHub" class="tool">
 <div class="hero"><h2>✨ Studio</h2><p class="muted">Choose a studio tool.</p></div>
 <div class="studioButtons">
-<button class="studioBtn" onclick="openTool('seamless')"><span class="studioIcon">🌀</span><span>Seamless Maker</span></button>
-<button class="studioBtn" onclick="openTool('checker')"><span class="studioIcon">🔍</span><span>Seamless Checker</span></button>
-<button class="studioBtn" onclick="openTool('seamlessMockup')"><span class="studioIcon">🧵</span><span>Seamless Mockups</span></button>
-<button class="studioBtn" onclick="openTool('seller')"><span class="studioIcon">📸</span><span>Mockup Studio</span></button>
+<button class="studioBtn" type="button" onclick="openTool('seamless')"><span class="studioIcon">🌀</span><span>Seamless Maker</span></button>
+<button class="studioBtn" type="button" onclick="openTool('checker')"><span class="studioIcon">🔍</span><span>Seamless Checker</span></button>
+<button class="studioBtn" type="button" onclick="openTool('seamlessMockup')"><span class="studioIcon">🧵</span><span>Seamless Mockup</span></button>
+<button class="studioBtn" type="button" onclick="openTool('seller')"><span class="studioIcon">📸</span><span>Mockup Studio</span></button>
 </div></section>
 <section id="checker" class="tool"><div class="hero"><h2>🔍 Seamless Checker</h2></div><div class="card"><input id="checkFile" type="file" accept="image/*"><label>Repeat</label><select id="checkN"><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option></select><div class="canvasWrap"><canvas id="checkCanvas" width="700" height="700"></canvas></div></div></section>
 
@@ -257,6 +263,33 @@ $("smSelectedSize").oninput=e=>{if(smSelected<0)return;smObjs[smSelected].s=+e.t
 $("smSelectedSize").onchange=()=>{if(smSelected>=0)$("smStatus").textContent="Size updated ✓"};
 $("smSelectedRot").oninput=e=>{if(smSelected<0)return;smObjs[smSelected].r=+e.target.value;smDraw()};
 $("smSelectedRot").onchange=()=>{if(smSelected>=0)$("smStatus").textContent="Rotation updated ✓"};
+
+const smBgOriginals={};
+function smSelectedImageIndex(){return smSelected>=0&&smObjs[smSelected]?smObjs[smSelected].i:-1}
+function smImageToCanvas(im){
+ let c=document.createElement("canvas");c.width=im.naturalWidth||im.width;c.height=im.naturalHeight||im.height;c.getContext("2d").drawImage(im,0,0);return c;
+}
+async function smRemoveBgBuild(){
+ let ii=smSelectedImageIndex();if(ii<0){$("smBgStatus").textContent="Tap/click an image on the tile first.";return null}
+ let im=smImgs[ii];
+ if(!smBgOriginals[ii])smBgOriginals[ii]=im.src;
+ let c=smImageToCanvas(im),x=c.getContext("2d",{willReadFrequently:true}),data=x.getImageData(0,0,c.width,c.height),d=data.data;
+ let [rr,gg,bb]=bgHexRgb($("smBgColor").value),tol=+$("smBgTol").value;
+ for(let q=0;q<d.length;q+=4){let dr=d[q]-rr,dg=d[q+1]-gg,db=d[q+2]-bb,dist=Math.sqrt(dr*dr+dg*dg+db*db);if(dist<=tol){let soft=Math.max(0,Math.min(1,(dist-tol*.55)/(tol*.45||1)));d[q+3]=Math.round(d[q+3]*soft)}}
+ x.putImageData(data,0,0);return {ii,c};
+}
+async function smPreviewRemoveBg(){
+ let r=await smRemoveBgBuild();if(!r)return;
+ let im=await dataImage(r.c.toDataURL("image/png"));smImgs[r.ii]=im;smDraw();$("smBgStatus").textContent="Preview shown on selected element. Apply or Restore.";
+}
+async function smApplyRemoveBg(){
+ let r=await smRemoveBgBuild();if(!r)return;
+ let im=await dataImage(r.c.toDataURL("image/png"));smImgs[r.ii]=im;smDraw();$("smBgStatus").textContent="Background removed from selected element ✓";
+}
+async function smRestoreBg(){
+ let ii=smSelectedImageIndex();if(ii<0||!smBgOriginals[ii])return $("smBgStatus").textContent="No saved original for this element.";
+ smImgs[ii]=await dataImage(smBgOriginals[ii]);delete smBgOriginals[ii];smDraw();$("smBgStatus").textContent="Original background restored ✓";
+}
 function smDuplicateSelected(){if(smSelected<0)return;smSnapshot();let o={...smObjs[smSelected]};o.x=(o.x+.06)%1;o.y=(o.y+.06)%1;smObjs.push(o);smSelected=smObjs.length-1;smSelect(smSelected)}
 function smDeleteSelected(){if(smSelected<0)return;smSnapshot();smObjs.splice(smSelected,1);smSelected=-1;smDraw();$("smStatus").textContent="Element deleted ✓"}
 function smBringFront(){if(smSelected<0)return;smSnapshot();let o=smObjs.splice(smSelected,1)[0];smObjs.push(o);smSelected=smObjs.length-1;smDraw()}
