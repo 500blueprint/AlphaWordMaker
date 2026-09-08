@@ -61,11 +61,81 @@ radial-gradient(circle at 55% 90%,rgba(66,230,210,.22),transparent 32%),#040619}
     <p class="muted">Psst... the magic is behind this door. ✨</p>
     <label for="gatePassword">🔮 Secret Workshop Code</label>
     <input class="gateInput" id="gatePassword" type="password" placeholder="Enter the secret code" autocomplete="off">
-    <button class="btn gateBtn" id="gateUnlock">🌙 Unlock the Workshop ✨</button>
+    <button class="btn gateBtn" id="gateUnlock" type="button" onclick="unlockMoonlight()">🌙 Unlock the Workshop ✨</button>
     <div id="gateMessage">☾ ✦ ✧ ✦ ☽</div>
     <div class="gateMascot">🐈‍⬛ Luna: “Do you know the secret password?”</div>
   </div>
 </div>
+
+<script>
+(function () {
+  var SECRET = "moon";
+
+  function unlockMoonlight() {
+    var gate = document.getElementById("moonGate");
+    var card = document.getElementById("gateCard");
+    var input = document.getElementById("gatePassword");
+    var msg = document.getElementById("gateMessage");
+    var btn = document.getElementById("gateUnlock");
+    if (!gate || !input) return;
+
+    var entered = (input.value || "").replace(/^\s+|\s+$/g, "").toLowerCase();
+
+    if (entered === SECRET) {
+      if (msg) msg.textContent = "✨ Magic unlocked! Welcome to the Workshop! 💜";
+      if (btn) btn.textContent = "💫 Opening...";
+      try { sessionStorage.setItem("moonlightWorkshopUnlocked", "yes"); } catch(e) {}
+      gate.style.opacity = "0";
+      gate.style.pointerEvents = "none";
+      setTimeout(function () { gate.style.display = "none"; }, 450);
+    } else {
+      var messages = [
+        "🌙 The moon says nope. Try again!",
+        "🐈‍⬛ Luna says that's not the secret code!",
+        "✨ Almost! The Workshop is still locked.",
+        "☾ No moon magic yet — try again!"
+      ];
+      if (msg) msg.textContent = messages[Math.floor(Math.random() * messages.length)];
+      if (card) {
+        card.classList.remove("gateShake");
+        void card.offsetWidth;
+        card.classList.add("gateShake");
+      }
+      input.focus();
+      input.select();
+    }
+  }
+
+  window.unlockMoonlight = unlockMoonlight;
+
+  function setupGate() {
+    var gate = document.getElementById("moonGate");
+    var input = document.getElementById("gatePassword");
+    var btn = document.getElementById("gateUnlock");
+    if (!gate || !input || !btn) return;
+
+    btn.onclick = unlockMoonlight;
+    input.onkeydown = function (e) {
+      e = e || window.event;
+      if (e.key === "Enter" || e.keyCode === 13) unlockMoonlight();
+    };
+
+    try {
+      if (sessionStorage.getItem("moonlightWorkshopUnlocked") === "yes") {
+        gate.style.display = "none";
+      }
+    } catch(e) {}
+
+    setTimeout(function(){ try { input.focus(); } catch(e) {} }, 200);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupGate);
+  } else {
+    setupGate();
+  }
+})();
+</script>
 
 <header><h1>☾✦ Moonlight Designs Maker Studio ✦☽</h1><div class="subtitle">A glittery moonlit creative studio for designing, planning, protecting & selling ✨</div></header>
 <div id="app">
@@ -415,44 +485,5 @@ sellerInit().then(()=>{let p=JSON.parse(localStorage.getItem("mdSellerPlacement"
 console.log("Moonlight Designs Workshop Pro loaded ✓");
 function openStudioHub(){openTool("studioHub");}
 
-
-/* CUTE SIMPLE PASSWORD GATE — client-side convenience gate, not secure authentication */
-(function(){
-  const secret="Moon";
-  const gate=document.getElementById("moonGate");
-  const card=document.getElementById("gateCard");
-  const input=document.getElementById("gatePassword");
-  const msg=document.getElementById("gateMessage");
-  const btn=document.getElementById("gateUnlock");
-  const nope=[
-    "🌙 The moon says nope. Try again!",
-    "🐈‍⬛ Luna says that’s not the secret code!",
-    "✨ Almost! The Workshop is still locked.",
-    "☾ No moon magic yet — try again!"
-  ];
-  function unlock(){
-    if(input.value.trim().toLowerCase()===secret.toLowerCase()){
-      msg.textContent="✨ Magic unlocked! Welcome to the Workshop! 💜";
-      btn.textContent="💫 Opening...";
-      sessionStorage.setItem("moonlightWorkshopUnlocked","yes");
-      gate.classList.add("gateOpen");
-      setTimeout(()=>{ gate.style.display="none"; },680);
-    } else {
-      msg.textContent=nope[Math.floor(Math.random()*nope.length)];
-      card.classList.remove("gateShake");
-      void card.offsetWidth;
-      card.classList.add("gateShake");
-      input.focus();
-      input.select();
-    }
-  }
-  btn.addEventListener("click",unlock);
-  input.addEventListener("keydown",e=>{ if(e.key==="Enter") unlock(); });
-  if(sessionStorage.getItem("moonlightWorkshopUnlocked")==="yes"){
-    gate.style.display="none";
-  } else {
-    setTimeout(()=>input.focus(),250);
-  }
-})();
 
 </script></body></html>
