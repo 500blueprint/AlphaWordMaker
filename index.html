@@ -200,41 +200,7 @@ radial-gradient(circle at 55% 90%,rgba(66,230,210,.22),transparent 32%),#040619}
     <div class="two"><div><label>Search</label><input id="ideaSearch" placeholder="Search ideas..." oninput="renderIdeas()"></div><div><label>View</label><select id="ideaFilter" onchange="renderIdeas()"><option value="all">All Ideas</option><option value="fav">Favorites Only</option></select></div></div>
     <div class="row"><button class="btn secondary" onclick="ideaRandom()">🎲 Pick From Jar</button><button class="btn secondary" onclick="ideaExport()">⬇️ Export Ideas</button><button class="btn danger" onclick="clearIdeas()">🗑 Clear</button></div><div id="ideaList"></div></div></section>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js">
-/* CUTE SIMPLE PASSWORD GATE — client-side convenience gate, not secure authentication */
-(function(){
-  const secret="Moon";
-  const gate=document.getElementById("moonGate");
-  const card=document.getElementById("gateCard");
-  const input=document.getElementById("gatePassword");
-  const msg=document.getElementById("gateMessage");
-  const btn=document.getElementById("gateUnlock");
-  const nope=[
-    "🌙 The moon says nope. Try again!",
-    "🐈‍⬛ Luna says that’s not the secret code!",
-    "✨ Almost! The Workshop is still locked.",
-    "☾ No moon magic yet — try again!"
-  ];
-  function unlock(){
-    if(input.value===secret){
-      msg.textContent="✨ Magic unlocked! Welcome to the Workshop! 💜";
-      btn.textContent="💫 Opening...";
-      gate.classList.add("gateOpen");
-      sessionStorage.setItem("moonlightWorkshopUnlocked","yes");
-      setTimeout(()=>gate.style.display="none",680);
-    }else{
-      msg.textContent=nope[Math.floor(Math.random()*nope.length)];
-      card.classList.remove("gateShake"); void card.offsetWidth; card.classList.add("gateShake");
-      input.select();
-    }
-  }
-  btn.addEventListener("click",unlock);
-  input.addEventListener("keydown",e=>{if(e.key==="Enter")unlock()});
-  if(sessionStorage.getItem("moonlightWorkshopUnlocked")==="yes") gate.style.display="none";
-  else setTimeout(()=>input.focus(),250);
-})();
-
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 "use strict";
 const $=id=>document.getElementById(id), rand=a=>a[Math.floor(Math.random()*a.length)], clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
@@ -448,4 +414,45 @@ cpmUpdateHint();smDraw();checkDraw();pmBuild();palGenerate();renderIdeas();
 sellerInit().then(()=>{let p=JSON.parse(localStorage.getItem("mdSellerPlacement")||"null");if(p)p.forEach((v,i)=>{if(sellerTemplates[i])Object.assign(sellerTemplates[i],v)});sellerLoadControls();sellerRenderTemplates();sellerPreview()});
 console.log("Moonlight Designs Workshop Pro loaded ✓");
 function openStudioHub(){openTool("studioHub");}
+
+
+/* CUTE SIMPLE PASSWORD GATE — client-side convenience gate, not secure authentication */
+(function(){
+  const secret="Moon";
+  const gate=document.getElementById("moonGate");
+  const card=document.getElementById("gateCard");
+  const input=document.getElementById("gatePassword");
+  const msg=document.getElementById("gateMessage");
+  const btn=document.getElementById("gateUnlock");
+  const nope=[
+    "🌙 The moon says nope. Try again!",
+    "🐈‍⬛ Luna says that’s not the secret code!",
+    "✨ Almost! The Workshop is still locked.",
+    "☾ No moon magic yet — try again!"
+  ];
+  function unlock(){
+    if(input.value.trim().toLowerCase()===secret.toLowerCase()){
+      msg.textContent="✨ Magic unlocked! Welcome to the Workshop! 💜";
+      btn.textContent="💫 Opening...";
+      sessionStorage.setItem("moonlightWorkshopUnlocked","yes");
+      gate.classList.add("gateOpen");
+      setTimeout(()=>{ gate.style.display="none"; },680);
+    } else {
+      msg.textContent=nope[Math.floor(Math.random()*nope.length)];
+      card.classList.remove("gateShake");
+      void card.offsetWidth;
+      card.classList.add("gateShake");
+      input.focus();
+      input.select();
+    }
+  }
+  btn.addEventListener("click",unlock);
+  input.addEventListener("keydown",e=>{ if(e.key==="Enter") unlock(); });
+  if(sessionStorage.getItem("moonlightWorkshopUnlocked")==="yes"){
+    gate.style.display="none";
+  } else {
+    setTimeout(()=>input.focus(),250);
+  }
+})();
+
 </script></body></html>
