@@ -1,440 +1,376 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8">
+<html lang="en">
+<head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Moonlight Designs Moonlit Maker Studio</title>
+<title>Moonlight Designs Creative Workshop</title>
 <style>
-:root{--bg:#05071b;--panel:#11152d;--line:#4a4f86;--text:#f8f7ff;--muted:#b9b9d7;--pink:#ff79dc;--purple:#9b6cff;--blue:#55bfff;--teal:#42e6d2;--green:#9cf4df;--red:#ff79a9;--glitter:#f4dcff;--moon:#fff1bd}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-body{background:
-radial-gradient(circle at 12% 2%,#6333a8 0,transparent 27%),
-radial-gradient(circle at 92% 4%,#123f72 0,transparent 28%),
- radial-gradient(circle at 80% 70%,rgba(66,230,210,.12) 0,transparent 24%),
-radial-gradient(circle at 50% 45%,rgba(167,109,255,.10) 0,transparent 38%),
-var(--bg);position:relative}
-body:before{content:"✦  ✧  ☾  ✦  ⋆  ✧  ☽  ✦  ⋆  ✧  ☾";position:fixed;inset:0;pointer-events:none;overflow:hidden;white-space:pre-wrap;word-spacing:8vw;line-height:18vh;font-size:18px;color:rgba(244,220,255,.10);z-index:0}
-header,#app{position:relative;z-index:1}
-button,input,select,textarea{font:inherit}button{touch-action:manipulation;cursor:pointer}header{padding:28px 15px 18px;text-align:center}
-h1{margin:0;font-size:clamp(30px,7vw,50px);background:linear-gradient(90deg,#ff86df,#f7e8ff,#b88cff,#fff0b8,#ff86df);background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 14px rgba(185,149,255,.28));animation:moonGlow 7s linear infinite}
-@keyframes moonGlow{to{background-position:220% center}}
-.subtitle,.muted{color:var(--muted)}#app{width:min(1250px,96%);margin:auto;padding-bottom:80px}.nav{display:flex;overflow-x:auto;gap:8px;padding:10px 2px 18px;scrollbar-width:none}.nav::-webkit-scrollbar{display:none}
-.nav button{flex:0 0 auto;border:1px solid var(--line);background:#151936;color:#fff;padding:11px 14px;border-radius:12px;font-weight:700}.nav button.active{background:linear-gradient(135deg,#8f58ff,#d96cff,#ff79dc);border-color:transparent}
-.tool{display:none}.tool.active{display:block}.hero{background:linear-gradient(135deg,rgba(71,37,125,.78),rgba(20,16,55,.92));border:1px solid rgba(210,174,255,.42);border-radius:22px;padding:22px;margin-bottom:16px;box-shadow:0 0 30px rgba(167,109,255,.13)}.hero h2{margin:0 0 7px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.card{background:linear-gradient(145deg,rgba(27,22,61,.96),rgba(12,13,35,.96));border:1px solid rgba(167,109,255,.38);border-radius:18px;padding:18px;box-shadow:0 10px 35px rgba(35,14,72,.20),inset 0 1px rgba(255,255,255,.035)}.toolCard{cursor:pointer;min-height:145px;transition:.2s transform,.2s border-color,.2s box-shadow}.toolCard:hover{border-color:var(--teal);transform:translateY(-2px);box-shadow:0 14px 40px rgba(85,191,255,.12)}
-.funTitle{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.spark{animation:twinkle 1.8s ease-in-out infinite alternate}@keyframes twinkle{from{opacity:.35;transform:scale(.9)}to{opacity:1;transform:scale(1.15)}}
-.swatchGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:10px;margin-top:12px}.swatch{min-height:90px;border-radius:16px;border:2px solid rgba(255,255,255,.16);display:flex;align-items:end;padding:8px;font-weight:900;text-shadow:0 1px 3px #000;cursor:pointer;overflow:hidden}
-.miniBadge{display:inline-block;border:1px solid rgba(66,230,210,.35);background:rgba(66,230,210,.08);color:var(--green);padding:5px 9px;border-radius:999px;font-size:11px;font-weight:800;margin:3px}
-.colorToolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.colorToolbar input[type=color]{width:58px;height:44px;padding:3px}.moonDivider{text-align:center;color:var(--teal);letter-spacing:8px;margin:12px 0}
-label{display:block;margin:13px 0 6px;font-size:13px;font-weight:800}input,select,textarea{width:100%;border:1px solid var(--line);background:#080b1d;color:#fff;border-radius:11px;padding:11px}input[type=range]{padding:5px 0;accent-color:var(--pink)}textarea{resize:vertical}
-.btn{border:0;color:#fff;background:linear-gradient(135deg,#7653ff,#df4eae);border-radius:11px;padding:11px 14px;font-weight:800;margin:8px 5px 0 0}.secondary{background:#252a50}.danger{background:#61243c}
-.row{display:flex;flex-wrap:wrap;gap:8px}.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.status{min-height:22px;margin-top:8px;color:var(--green);font-size:13px}.canvasWrap{overflow:auto;background:#151515;border:1px solid var(--line);border-radius:14px;padding:8px;margin-top:12px}canvas{max-width:100%;height:auto;display:block;margin:auto;touch-action:none}
-.idea{padding:12px;margin-top:8px;background:#090d22;border:1px solid var(--line);border-radius:12px}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(115px,1fr));gap:9px;margin-top:12px}.thumb{border:1px solid var(--line);border-radius:12px;background:#090d22;padding:7px;text-align:center}.thumb img{width:100%;aspect-ratio:1;object-fit:contain;border-radius:8px}.thumb.selected{outline:2px solid var(--pink)}
-.small{font-size:11px;color:var(--muted)}.rangeLine{display:grid;grid-template-columns:1fr 65px;gap:10px;align-items:center}.rangeValue{text-align:center;padding:7px;background:#090d22;border:1px solid var(--line);border-radius:9px;font-size:12px}.note{margin-top:12px;padding:12px 14px;border-radius:13px;background:#090c20;border:1px solid #272c52;color:var(--green);font-size:12px;line-height:1.5}
-.pill{display:inline-block;padding:5px 8px;border:1px solid var(--line);border-radius:999px;margin:3px;font-size:11px}.progress{height:10px;background:#080b1d;border-radius:999px;overflow:hidden;margin-top:10px}.progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--purple),var(--pink))}
-@media(max-width:700px){#app{width:94%}.two,.three{grid-template-columns:1fr}.btn{flex:1 1 auto}}
-
-/* MOONLIGHT PASSWORD GATE */
-#moonGate{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;padding:22px;overflow:hidden;background:
-radial-gradient(circle at 18% 15%,rgba(155,108,255,.42),transparent 30%),
-radial-gradient(circle at 82% 20%,rgba(85,191,255,.32),transparent 30%),
-radial-gradient(circle at 55% 90%,rgba(66,230,210,.22),transparent 32%),#040619}
-#moonGate:before{content:"✦  ☾  ✧  ⋆  ☽  ✦  ✧  ☾  ⋆  ✦  ☽";position:absolute;inset:-5%;font-size:clamp(18px,4vw,34px);line-height:16vh;word-spacing:8vw;color:rgba(255,255,255,.16);animation:gateFloat 9s ease-in-out infinite alternate;pointer-events:none}
-@keyframes gateFloat{to{transform:translateY(-18px) rotate(1deg)}}
-.gateCard{position:relative;width:min(480px,94vw);padding:34px 26px;text-align:center;border-radius:30px;background:linear-gradient(145deg,rgba(25,22,65,.92),rgba(8,13,40,.94));border:1px solid rgba(100,225,238,.45);box-shadow:0 0 70px rgba(132,91,255,.28),inset 0 1px rgba(255,255,255,.08);backdrop-filter:blur(18px)}
-.gateMoon{font-size:58px;filter:drop-shadow(0 0 20px rgba(85,191,255,.5));animation:gateMoon 2.6s ease-in-out infinite alternate}
-@keyframes gateMoon{to{transform:translateY(-5px) rotate(-7deg);filter:drop-shadow(0 0 28px rgba(66,230,210,.7))}}
-.gateCard h2{margin:5px 0;font-size:clamp(27px,7vw,42px);background:linear-gradient(90deg,#bda5ff,#66d9ff,#54ead6,#f4eaff);-webkit-background-clip:text;background-clip:text;color:transparent}
-.gateInput{margin-top:12px!important;text-align:center!important;font-size:20px!important;letter-spacing:3px!important;border:1px solid rgba(85,191,255,.5)!important;background:rgba(3,7,26,.75)!important;box-shadow:inset 0 0 20px rgba(85,191,255,.06)}
-.gateBtn{width:100%;margin-top:14px!important;padding:14px!important;font-size:16px;background:linear-gradient(135deg,#7653ff,#3f9fff,#25cdb9)!important;box-shadow:0 8px 28px rgba(66,230,210,.18)}
-.gateMascot{margin-top:16px;padding:10px;border-radius:15px;background:rgba(85,191,255,.07);color:#d9faff;font-size:13px}
-#gateMessage{min-height:24px;margin-top:12px;font-weight:800;color:#9cf4df}
-.gateShake{animation:gateShake .35s linear}@keyframes gateShake{25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-5px)}}
-.gateOpen{animation:gateBye .65s ease forwards}@keyframes gateBye{to{opacity:0;transform:scale(1.08);visibility:hidden}}
-
-</style></head><body>
-
-<div id="moonGate">
-  <div class="gateCard" id="gateCard">
-    <div class="gateMoon">☾</div>
-    <div class="small">✦ MOONLIGHT DESIGNS ✦</div>
-    <h2>The Creative Workshop</h2>
-    <p class="muted">Psst... the magic is behind this door. ✨</p>
-    <label for="gatePassword">🔮 Secret Workshop Code</label>
-    <input class="gateInput" id="gatePassword" type="password" placeholder="Enter the secret code" autocomplete="off">
-    <button class="btn gateBtn" id="gateUnlock" type="button" onclick="unlockMoonlight()">🌙 Unlock the Workshop ✨</button>
-    <div id="gateMessage">☾ ✦ ✧ ✦ ☽</div>
-    <div class="gateMascot">🐈‍⬛ Luna: “Do you know the secret password?”</div>
-  </div>
+:root{
+ --bg:#050719;--panel:#11152f;--panel2:#0b0f25;--line:#3b4272;--text:#f8f7ff;--muted:#b8b7d5;
+ --pink:#ff72cb;--purple:#936cff;--blue:#55c3ff;--teal:#45e0d1;--green:#8cf0cb;--red:#ff7898;--gold:#ffe39a;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{background:radial-gradient(circle at 10% 0,#432071 0,transparent 26%),radial-gradient(circle at 95% 5%,#0e4866 0,transparent 25%),var(--bg)}
+button,input,select,textarea{font:inherit}button{cursor:pointer;touch-action:manipulation}
+header{padding:26px 16px 10px;text-align:center}
+h1{margin:0;font-size:clamp(29px,7vw,48px);background:linear-gradient(90deg,#ff83d8,#c7a7ff,#65d9ff,#62ead8,#ff83d8);background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 8s linear infinite}
+@keyframes shine{to{background-position:220% center}}
+.muted,.small{color:var(--muted)}.small{font-size:12px}
+#app{width:min(1250px,95%);margin:auto;padding-bottom:70px}
+.nav{display:flex;gap:8px;overflow-x:auto;padding:12px 0 18px;scrollbar-width:none}.nav::-webkit-scrollbar{display:none}
+.nav button{flex:0 0 auto;border:1px solid var(--line);background:#151936;color:#fff;border-radius:12px;padding:11px 13px;font-weight:800}
+.nav button.active{border-color:transparent;background:linear-gradient(135deg,var(--purple),var(--pink))}
+.tool{display:none}.tool.active{display:block}
+.hero,.card{border:1px solid rgba(147,108,255,.36);background:linear-gradient(145deg,rgba(25,23,58,.96),rgba(10,13,34,.96));border-radius:19px;padding:18px;margin-bottom:13px}
+.hero{background:linear-gradient(135deg,rgba(72,40,125,.75),rgba(15,17,48,.95))}
+.hero h2{margin:0 0 6px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.two{display:grid;grid-template-columns:1fr 1fr;gap:13px}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+label{display:block;margin:11px 0 5px;font-size:13px;font-weight:800}
+input,select,textarea{width:100%;padding:11px;border-radius:10px;border:1px solid var(--line);background:#070a1c;color:#fff}
+textarea{resize:vertical}.row{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.btn{border:0;border-radius:11px;padding:11px 13px;margin-top:8px;color:white;font-weight:850;background:linear-gradient(135deg,#7354ff,#d850ae)}
+.btn.secondary{background:#262b52}.btn.good{background:#176b59}.btn.danger{background:#6d2942}.btn.gold{background:#725d1f}
+.homeCard{min-height:130px;cursor:pointer;transition:.18s}.homeCard:hover{transform:translateY(-2px);border-color:var(--teal)}
+.badge{display:inline-block;padding:4px 8px;border-radius:999px;border:1px solid var(--line);font-size:11px;margin:2px;color:var(--green)}
+.status{min-height:20px;margin-top:8px;color:var(--green);font-size:13px}
+.preview{max-width:100%;max-height:430px;display:block;margin:12px auto;border-radius:12px}
+.canvasWrap{overflow:auto;border:1px solid var(--line);background:#171717;border-radius:14px;padding:8px;margin-top:10px}
+canvas{max-width:100%;height:auto;display:block;margin:auto;touch-action:none}
+.batchGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:10px;margin-top:12px}
+.batchCard{border:1px solid var(--line);background:#090c21;border-radius:14px;padding:9px;min-width:0}
+.batchCard img{width:100%;aspect-ratio:1;object-fit:contain;background:white;border-radius:9px}
+.batchCard textarea{font-size:11px;min-height:100px}
+.keep{outline:2px solid var(--green)}.bye{opacity:.52;outline:2px solid var(--red)}
+.counter{font-size:22px;font-weight:900;color:var(--gold)}
+.wheel{width:min(360px,88vw);aspect-ratio:1;border-radius:50%;margin:16px auto;display:grid;place-items:center;border:8px solid #ece8ff;background:conic-gradient(#7c5cff 0 12.5%,#e65bb7 12.5% 25%,#35bfc4 25% 37.5%,#4456b5 37.5% 50%,#ad63dc 50% 62.5%,#2c8cae 62.5% 75%,#d84e86 75% 87.5%,#5772d7 87.5%);transition:transform 3.2s cubic-bezier(.16,.75,.15,1)}
+.wheel span{background:#080b1c;border-radius:999px;padding:18px;font-weight:900;border:2px solid white;text-align:center;max-width:60%}
+.swatches{display:flex;flex-wrap:wrap;gap:8px}.swatch{width:72px;height:72px;border-radius:12px;border:2px solid rgba(255,255,255,.3);display:flex;align-items:end;padding:5px;font-size:10px;text-shadow:0 1px 2px #000}
+#gate{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 20% 10%,#4b287f,transparent 32%),radial-gradient(circle at 85% 15%,#0d4d69,transparent 30%),#040617}
+.gateCard{width:min(460px,94vw);padding:30px;border-radius:26px;text-align:center;border:1px solid #6ccbd4;background:rgba(14,16,48,.96);box-shadow:0 0 55px rgba(129,91,255,.25)}
+.gateCard .moon{font-size:58px}
+@media(max-width:720px){.two,.three{grid-template-columns:1fr}.btn{flex:1 1 auto}.batchGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:390px){.batchGrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="gate">
+ <div class="gateCard">
+  <div class="moon">☾</div><div class="small">✦ MOONLIGHT DESIGNS ✦</div>
+  <h2>The Creative Workshop</h2><p class="muted">Enter the workshop code.</p>
+  <input id="gatePass" type="password" placeholder="Secret code">
+  <button class="btn" id="unlockBtn">🌙 Unlock Workshop</button>
+  <div class="status" id="gateMsg"></div>
+ </div>
 </div>
 
-<script>
-(function () {
-  var SECRET = "moon";
-
-  function unlockMoonlight() {
-    var gate = document.getElementById("moonGate");
-    var card = document.getElementById("gateCard");
-    var input = document.getElementById("gatePassword");
-    var msg = document.getElementById("gateMessage");
-    var btn = document.getElementById("gateUnlock");
-    if (!gate || !input) return;
-
-    var entered = (input.value || "").replace(/^\s+|\s+$/g, "").toLowerCase();
-
-    if (entered === SECRET) {
-      if (msg) msg.textContent = "✨ Magic unlocked! Welcome to the Workshop! 💜";
-      if (btn) btn.textContent = "💫 Opening...";
-      try { sessionStorage.setItem("moonlightWorkshopUnlocked", "yes"); } catch(e) {}
-      gate.style.opacity = "0";
-      gate.style.pointerEvents = "none";
-      setTimeout(function () { gate.style.display = "none"; }, 450);
-    } else {
-      var messages = [
-        "🌙 The moon says nope. Try again!",
-        "🐈‍⬛ Luna says that's not the secret code!",
-        "✨ Almost! The Workshop is still locked.",
-        "☾ No moon magic yet — try again!"
-      ];
-      if (msg) msg.textContent = messages[Math.floor(Math.random() * messages.length)];
-      if (card) {
-        card.classList.remove("gateShake");
-        void card.offsetWidth;
-        card.classList.add("gateShake");
-      }
-      input.focus();
-      input.select();
-    }
-  }
-
-  window.unlockMoonlight = unlockMoonlight;
-
-  function setupGate() {
-    var gate = document.getElementById("moonGate");
-    var input = document.getElementById("gatePassword");
-    var btn = document.getElementById("gateUnlock");
-    if (!gate || !input || !btn) return;
-
-    btn.onclick = unlockMoonlight;
-    input.onkeydown = function (e) {
-      e = e || window.event;
-      if (e.key === "Enter" || e.keyCode === 13) unlockMoonlight();
-    };
-
-    try {
-      if (sessionStorage.getItem("moonlightWorkshopUnlocked") === "yes") {
-        gate.style.display = "none";
-      }
-    } catch(e) {}
-
-    setTimeout(function(){ try { input.focus(); } catch(e) {} }, 200);
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", setupGate);
-  } else {
-    setupGate();
-  }
-})();
-</script>
-
-<header><h1>☾✦ Moonlight Designs Maker Studio ✦☽</h1><div class="subtitle">A glittery moonlit creative studio for designing, planning, protecting & selling ✨</div></header>
+<header><h1>☾ Moonlight Designs Creative Workshop ✦</h1><div class="muted">Create • choose • collect • sell</div></header>
 <div id="app">
-<nav class="nav" id="nav">
-<button class="active" data-tool="home">🏠 Home</button><button data-tool="upload">📤 Uploads</button><button data-tool="brain">🧠 Brain Stuck</button><button data-tool="listing">🛍️ Product Lister</button><button data-tool="coloring">🖍️ Coloring Page Maker</button><button data-tool="seller">📸 Mockup Studio</button><button data-tool="splitter">✂️ Splitter</button><button data-tool="image">🎨 Image Lab</button><button data-tool="palette">🌈 Palette Maker</button><button data-tool="colorStudio">🪄 Color Studio</button><button data-tool="ideas">🧠 Brain Jar</button>
-</nav>
-<section id="home" class="tool active"><div class="hero"><h2>☾ Welcome to Your Moonlight Maker Studio ✦</h2><div class="muted">Brainstorm → create → mock up → protect → list → sell.</div></div><div class="grid" id="homeCards"></div></section>
-<section id="upload" class="tool"><div class="hero"><h2>📤 Uploads</h2></div><div class="card"><input type="file" id="universalFile" accept="image/*"><div id="uploadStatus" class="status">Choose an image.</div><img id="universalPreview" style="max-width:100%;max-height:420px;display:block;margin:12px auto;border-radius:12px"><div id="fileInfo"></div></div></section>
+<nav class="nav" id="nav"></nav>
 
-<section id="brain" class="tool"><div class="hero"><h2>🧠 Brain Stuck</h2><p class="muted">Smarter ideas. Holidays only appear when you choose them.</p></div><div class="two"><div class="card">
-<div class="two"><div><label>Product Type</label><select id="brainType"><option>PNG Clipart</option><option>Seamless Pattern</option><option>Coloring Page</option><option>Digital Paper</option><option>Alpha</option><option>Shirt Design</option><option>Sticker</option><option>Clipart Bundle</option><option>Social Graphic</option></select></div><div><label>Theme</label><select id="brainTheme"><option value="">No Theme</option><option>Western</option><option>Celestial</option><option>Gothic</option><option>Cottagecore</option><option>Retro</option><option>Preppy</option><option>Boho</option><option>Farmhouse</option></select></div></div>
-<div class="two"><div><label>Season</label><select id="brainSeason"><option value="">None</option><option>Spring</option><option>Summer</option><option>Fall</option><option>Winter</option><option>Valentine</option><option>Easter</option><option>Halloween</option><option>Christmas</option></select></div><div><label>Style</label><select id="brainStyle"><option value="">Surprise Me</option><option>cute whimsical</option><option>western boho</option><option>retro hand-drawn</option><option>moody botanical</option><option>gothic cute</option><option>preppy</option><option>minimal cute</option></select></div></div>
-<div class="two"><div><label>Audience</label><select id="brainAudience"><option>General</option><option>Kids</option><option>Teens</option><option>Adults</option><option>Small Business Buyers</option></select></div><div><label>Mood</label><select id="brainMood"><option value="">Any</option><option>Playful</option><option>Cozy</option><option>Moody</option><option>Bold</option><option>Sweet</option><option>Unhinged</option></select></div></div>
-<label>Color Palette</label><input id="brainPalette" placeholder="Optional — dusty rose, burgundy, cream">
-<label>Niche</label><input id="brainNiche" placeholder="Optional — teachers, western moms, spooky readers...">
-<label>Weirdness</label><select id="brainWeirdness"><option value="0">Normal</option><option value="1">Little Weird</option><option value="2">Weird</option><option value="3">Unhinged</option></select>
-<div class="row"><button class="btn" onclick="brainOne()">🎲 Give Me An Idea</button><button class="btn secondary" onclick="brain25()">🔥 Give Me 25</button><button class="btn secondary" onclick="brainTrending()">🔥 What's Selling</button><button class="btn secondary" onclick="brainSurprise()">✨ Surprise Me</button></div>
-</div><div class="card"><textarea id="brainOutput" rows="18" placeholder="Your idea appears here..."></textarea><div class="row"><button class="btn" onclick="saveIdea()">❤️ Save</button><button class="btn secondary" onclick="copyText('brainOutput')">📋 Copy</button><button class="btn secondary" onclick="brainRemix()">🧬 Remix This</button><button class="btn secondary" onclick="brainMoreLike()">💗 More Like This</button><button class="btn danger" onclick="brainNeverAgain()">🚫 Never Again</button><button class="btn" onclick="brainSellable()">💰 Make It Sellable</button><button class="btn" onclick="brainCollection()">📦 Make It a Collection</button></div>
-<div class="row"><button class="btn secondary" onclick="sendBrain('coloring')">→ Coloring</button><button class="btn secondary" onclick="sendBrain('listing')">→ Lister</button></div><div id="brainStatus" class="status"></div></div></div></section>
-
-<section id="listing" class="tool"><div class="hero"><h2>🛍️ Product Lister</h2></div><div class="two"><div class="card">
-<label>Platform</label><select id="pPlatform"><option>Etsy</option><option>Payhip</option><option>TikTok Shop</option><option>Facebook</option><option>General</option></select>
-<label>Product Type</label><select id="pType"><option>PNG Clipart</option><option>Seamless Pattern</option><option>Digital Paper</option><option>Alpha</option><option>Clipart Bundle</option><option>SVG</option><option>Coloring Page</option></select>
-<label>Main Subject</label><input id="pSubject"><label>Theme</label><input id="pTheme"><label>Style</label><input id="pStyle"><label>Colors</label><input id="pColors"><label>Extra Details</label><textarea id="pDetails"></textarea>
-<div class="row"><button class="btn" onclick="makeListing()">✨ Generate</button><button class="btn secondary" onclick="listingVariations()">🔄 5 Titles</button><button class="btn secondary" onclick="saveShopPreset()">⭐ Save Shop Details</button></div></div>
-<div class="card"><label>Title</label><textarea id="pTitle"></textarea><div id="titleCheck" class="small"></div><label>Short Description</label><textarea id="pShort"></textarea><label>Description</label><textarea id="pDescription" rows="8"></textarea><label>SEO Keywords</label><textarea id="pKeywords"></textarea><label>Exactly 13 Tags</label><textarea id="pTags" rows="5"></textarea><div class="row"><button class="btn" onclick="copyListing()">📋 Copy Listing</button><button class="btn secondary" onclick="copyText('pTags')">🏷️ Copy Tags</button></div><div id="listingStatus" class="status"></div></div></div></section>
-
-<section id="coloring" class="tool"><div class="hero"><h2>🖍️ Coloring Page Maker</h2><p class="muted">Your original Easy Mode is preserved, with book-building controls added around it.</p></div><div class="two"><div class="card">
-<label>Main Subject</label><input id="cpmSubject" placeholder="black cat, bunny, duck..."><label>Action</label><input id="cpmAction" placeholder="holding a teacup"><div class="two"><div><label>Style</label><select id="cpmStyle"><option>Whimsical</option><option>Western</option><option>Cottagecore</option><option>Boho</option><option>Preppy</option><option>Retro</option><option>Gothic Cute</option><option>Farmhouse</option><option>Fairy Tale</option><option>Simple Cartoon</option></select></div><div><label>Theme</label><select id="cpmTheme"><option value="">No Theme</option><option>Spring</option><option>Summer</option><option>Fall</option><option>Winter</option><option>Birthday</option><option>Easter</option><option>Valentine</option><option>Halloween</option><option>Christmas</option></select></div></div>
-<div class="two"><div><label>Detail</label><select id="cpmDetail" onchange="cpmUpdateHint()"><option value="easy">Easy</option><option value="medium">Medium</option><option value="detailed">Detailed</option></select></div><div><label>Audience</label><select id="cpmAudience"><option>Kids</option><option>Teens</option><option>Adults</option></select></div></div>
-<div class="two"><div><label>Composition</label><select id="cpmComposition"><option>Single Subject</option><option>Large Main Character</option><option>Centered Character</option><option>Character + One Prop</option><option>Simple Scene</option><option>Full Page Scene</option></select></div><div><label>Outline Weight</label><select id="cpmLines"><option>Extra Bold</option><option>Bold</option><option>Medium</option><option>Bold + Thin Interior Details</option></select></div></div>
-<div class="two"><div><label>Page Size</label><select id="cpmSize"><option>8×11 portrait</option><option>8.5×11 portrait</option><option>8×8 square</option><option>8.5×8.5 square</option></select></div><div><label>Prop Limit</label><select id="cpmPropLimit"><option value="1">1</option><option value="0">None</option><option value="2">2</option><option value="auto">Automatic</option></select></div></div>
-<label>Extra Element / Prop</label><input id="cpmExtras"><label>Background</label><select id="cpmBackground"><option>None</option><option>Minimal</option><option>Full Scene</option></select>
-<div class="three"><label><input type="checkbox" id="cpmSubjectLock" checked> Subject Lock</label><label><input type="checkbox" id="cpmMargin" checked> Print-Safe Margin</label><label><input type="checkbox" id="cpmConsistency"> Consistency Lock</label></div>
-<label>Extra Instructions</label><textarea id="cpmInstructions"></textarea><div id="cpmHint" class="note"></div>
-<div class="row"><button class="btn" onclick="cpmGenerate()">✨ Create Prompt</button><button class="btn secondary" onclick="cpmRandomIdea()">🎲 Random</button><button class="btn secondary" onclick="cpmSaveStyle()">⭐ Save This Style</button><button class="btn secondary" onclick="cpmLoadStyle()">💜 My Easy Mode</button><button class="btn danger" onclick="cpmClear()">🗑 Clear</button></div></div>
-<div class="card"><label>Generated Prompt</label><textarea id="cpmOutput" rows="18"></textarea><button class="btn" onclick="copyText('cpmOutput')">📋 Copy</button><hr style="border-color:var(--line);margin:20px 0">
-<h3>📚 Book Planner</h3><label>Book Concept</label><input id="bookConcept" placeholder="40 realistic cats doing cozy activities"><label>Pages</label><input id="bookPages" type="number" min="2" max="100" value="40"><div class="row"><button class="btn" onclick="buildBook()">📚 Build Page Plan</button><button class="btn secondary" onclick="coverPrompt()">📕 Cover Prompt</button><button class="btn secondary" onclick="duplicateCheck()">🔎 Duplicate Check</button></div><textarea id="bookOutput" rows="16"></textarea><div id="bookStatus" class="status"></div></div></div></section>
-
-
-
-
-
-
-
-<section id="seller" class="tool"><div class="hero"><h2>📸 Mockup Studio</h2><p class="muted">Up to 10 designs × your GitHub mockup library. Your uploaded originals are never altered.</p></div><div class="two"><div class="card">
-<h3>1. Upload Designs</h3><input id="sellerDesigns" type="file" multiple accept="image/png,image/jpeg,image/webp"><div id="sellerDesignStatus" class="status">Upload up to 10 designs.</div><div id="sellerDesignThumbs" class="thumbs"></div>
-<h3>2. Mockup Templates</h3><div class="small">Moonlight mockups load from assets/mockups/ in GitHub. Tap a template to edit its placement box.</div><div id="sellerTemplateThumbs" class="thumbs"></div>
-<label>Design Scale</label><div class="rangeLine"><input id="sellerScale" type="range" min="20" max="160" value="78"><div id="sellerScaleVal" class="rangeValue">78%</div></div>
-<label>Horizontal Position</label><input id="sellerX" type="range" min="5" max="95" value="50"><label>Vertical Position</label><input id="sellerY" type="range" min="5" max="95" value="48">
-<h3>3. Watermark / Proof</h3><label>Watermark Text</label><input id="sellerWMText" value="Moonlight Designs"><label>Logo Watermark (optional)</label><input id="sellerWMLogo" type="file" accept="image/*">
-<label>Watermark Style</label><select id="sellerWMStyle"><option value="tile">Full-Coverage Tiled</option><option value="diag">Diagonal Repeating</option><option value="center">Single Centered</option><option value="none">None</option></select>
-<label>Opacity</label><input id="sellerWMOpacity" type="range" min="5" max="80" value="24"><label>Spacing</label><input id="sellerWMSpacing" type="range" min="80" max="500" value="220"><label>Angle</label><input id="sellerWMAngle" type="range" min="-60" max="60" value="-28">
-<label><input id="sellerProof" type="checkbox"> Customer Proof Mode (smaller + stronger watermark)</label>
-<div class="row"><button class="btn" onclick="sellerPreview()">✨ Preview Selected</button><button class="btn secondary" onclick="sellerProofSheet()">📄 Proof Sheet</button><button class="btn" onclick="sellerDownloadSelected()">⬇️ Download Selected</button><button class="btn" onclick="sellerZipDesign()">📦 ZIP This Design</button><button class="btn" onclick="sellerZipAll()">💎 ZIP Everything</button></div>
-<div class="progress"><div id="sellerProgress"></div></div><div id="sellerStatus" class="status"></div></div>
-<div class="card"><h3>Preview</h3><div class="canvasWrap"><canvas id="sellerCanvas" width="900" height="900"></canvas></div><div class="note">Placement controls are saved separately for each mockup template. Tap another template, adjust it, and Seller Studio remembers that placement in this browser.</div></div></div></section>
-
-<section id="splitter" class="tool"><div class="hero"><h2>✂️ Splitter</h2></div><div class="card"><input id="spFile" type="file" accept="image/png"><label>Minimum Object Area</label><input id="spMin" type="number" value="150"><label>Padding</label><input id="spPad" type="number" value="12"><button class="btn" onclick="spDetect()">🔎 Detect</button><button class="btn secondary" onclick="spDownloadSelected()">⬇️ Download Selected</button><div id="spStatus" class="status"></div><div id="spResults" class="grid"></div><canvas id="spCanvas" style="display:none"></canvas></div></section>
-
-<section id="image" class="tool"><div class="hero"><h2>🎨 Image Lab</h2></div><div class="two"><div class="card"><input id="isFile" type="file" accept="image/*"><label>Width</label><input id="isW" type="number" value="5000"><label>Height</label><input id="isH" type="number" value="5000"><label><input type="checkbox" id="isLock" checked> Lock Aspect Ratio</label><label>Free Rotation</label><input id="isRot" type="number" value="0"><label>Padding</label><input id="isPad" type="number" value="0"><div class="row"><button class="btn" onclick="isResize()">📐 Resize</button><button class="btn secondary" onclick="isRotate()">↻ Rotate</button><button class="btn secondary" onclick="isFlip(false)">↔ Flip H</button><button class="btn secondary" onclick="isFlip(true)">↕ Flip V</button><button class="btn secondary" onclick="isSquare()">⬜ Square Canvas</button><button class="btn secondary" onclick="isCrop()">✂️ Crop Transparency</button><button class="btn secondary" onclick="isReset()">↶ Reset</button><button class="btn" onclick="downloadCanvas($('isCanvas'),'moonlight-image.png')">⬇️ PNG</button></div><div id="isStatus" class="status"></div></div><div class="card"><div class="canvasWrap"><canvas id="isCanvas"></canvas></div></div></div></section>
-
-
-<section id="palette" class="tool">
-  <div class="hero"><div class="funTitle"><h2>🌈 Palette Maker Pro</h2><span class="spark">✦</span><span class="miniBadge">Moonlight Magic</span></div>
-  <p class="muted">Build palettes from a starting color, create surprise combinations, copy HEX codes, and save favorites.</p></div>
-  <div class="two">
-    <div class="card">
-      <label>Starting Color</label><input id="palBase" type="color" value="#9b6cff">
-      <label>Palette Mood</label><select id="palMood"><option value="moonlight">Moonlight</option><option value="soft">Soft & Sweet</option><option value="bold">Bold Pop</option><option value="moody">Moody</option><option value="earthy">Earthy</option><option value="retro">Retro</option></select>
-      <label>Colors</label><select id="palCount"><option>4</option><option selected>5</option><option>6</option><option>8</option></select>
-      <div class="row"><button class="btn" onclick="palGenerate()">✨ Make Palette</button><button class="btn secondary" onclick="palSurprise()">🎲 Surprise Me</button><button class="btn secondary" onclick="palFromImage()">🖼️ Pull From Image</button></div>
-      <label>Optional Image</label><input id="palImage" type="file" accept="image/*">
-      <div id="palStatus" class="status">Pick a color or upload an image.</div>
-    </div>
-    <div class="card">
-      <div id="palSwatches" class="swatchGrid"></div>
-      <label>Palette Codes</label><textarea id="palCodes" rows="5" readonly></textarea>
-      <div class="row"><button class="btn" onclick="copyText('palCodes')">📋 Copy HEX</button><button class="btn secondary" onclick="palSave()">💜 Save Palette</button><button class="btn secondary" onclick="palSendBrain()">🧠 Send to Brain Stuck</button></div>
-      <div id="savedPalettes"></div>
-    </div>
-  </div>
+<section class="tool active" id="home">
+ <div class="hero"><h2>✨ Your Workshop</h2><p class="muted">A cleaner production studio built around the tools you chose.</p></div>
+ <div class="grid" id="homeGrid"></div>
 </section>
 
-<section id="colorStudio" class="tool">
-  <div class="hero"><div class="funTitle"><h2>🪄 Outline Color Studio</h2><span class="spark">☾</span></div>
-  <p class="muted">Upload one of your outline pages and color enclosed areas by tapping them. Your original file stays untouched.</p></div>
-  <div class="two">
-    <div class="card">
-      <label>Upload Outline</label><input id="csFile" type="file" accept="image/png,image/jpeg,image/webp">
-      <div class="colorToolbar">
-        <div><label>Color</label><input id="csColor" type="color" value="#b995ff"></div>
-        <div><label>Tolerance</label><input id="csTolerance" type="range" min="5" max="100" value="38"></div>
-      </div>
-      <div class="row"><button class="btn secondary" onclick="csUndo()">↶ Undo</button><button class="btn secondary" onclick="csRedo()">↷ Redo</button><button class="btn secondary" onclick="csClearColors()">🧼 Reset</button><button class="btn" onclick="downloadCanvas($('csCanvas'),'moonlight-colored-outline.png')">⬇️ PNG</button></div>
-      <div class="note">Tap inside a white enclosed space to fill it. Extra-bold closed outlines work best. Tolerance controls how similar neighboring pixels must be to the tapped area.</div>
-      <div id="csStatus" class="status">Upload an outline to start coloring ✨</div>
-    </div>
-    <div class="card"><div class="canvasWrap"><canvas id="csCanvas" width="800" height="1000"></canvas></div></div>
-  </div>
+<section class="tool" id="brain">
+ <div class="hero"><h2>🧠 Brain Stuck</h2><p class="muted">Fast product ideas without forcing holidays into everything.</p></div>
+ <div class="two"><div class="card">
+  <label>Product</label><select id="brainProduct"><option>PNG Clipart</option><option>Sticker</option><option>Digital Paper</option><option>Seamless Pattern</option><option>Coloring Page</option><option>Alpha</option><option>Shirt Design</option></select>
+  <label>Theme</label><input id="brainTheme" placeholder="western, celestial, coquette...">
+  <label>Subject</label><input id="brainSubject" placeholder="highland cow, mushrooms, bows...">
+  <label>Style</label><input id="brainStyle" placeholder="preppy, hand drawn, retro...">
+  <button class="btn" id="brainOne">🎲 Give Me An Idea</button><button class="btn secondary" id="brainTen">🔥 Give Me 10</button>
+ </div><div class="card"><label>Ideas</label><textarea id="brainOut" rows="18"></textarea><button class="btn" data-copy="brainOut">📋 Copy</button><button class="btn secondary" id="saveBrain">❤️ Save to Brain Jar</button></div></div>
 </section>
 
-<section id="ideas" class="tool"><div class="hero"><div class="funTitle"><h2>🧠 Brain Jar</h2><span class="spark">✦</span></div><p class="muted">Your saved creative vault — search, filter favorites, reuse, remix, or send ideas into another tool.</p></div><div class="card">
-    <div class="two"><div><label>Search</label><input id="ideaSearch" placeholder="Search ideas..." oninput="renderIdeas()"></div><div><label>View</label><select id="ideaFilter" onchange="renderIdeas()"><option value="all">All Ideas</option><option value="fav">Favorites Only</option></select></div></div>
-    <div class="row"><button class="btn secondary" onclick="ideaRandom()">🎲 Pick From Jar</button><button class="btn secondary" onclick="ideaExport()">⬇️ Export Ideas</button><button class="btn danger" onclick="clearIdeas()">🗑 Clear</button></div><div id="ideaList"></div></div></section>
+<section class="tool" id="prompt">
+ <div class="hero"><h2>✨ Prompt Maker</h2><p class="muted">Build the prompt live as you make selections.</p></div>
+ <div class="two"><div class="card">
+  <label>Subject</label><input id="pmSubject" placeholder="black cat holding a teacup">
+  <div class="two"><div><label>Design Type</label><select id="pmType"><option>PNG clipart</option><option>sticker design</option><option>digital paper</option><option>seamless repeating pattern</option><option>coloring page</option><option>shirt graphic</option></select></div><div><label>Theme</label><input id="pmTheme" placeholder="western"></div></div>
+  <div class="two"><div><label>Style</label><input id="pmStyle" placeholder="preppy hand drawn"></div><div><label>Mood</label><input id="pmMood" placeholder="playful"></div></div>
+  <label>Palette</label><input id="pmPalette" placeholder="dusty rose, cream, burgundy">
+  <label>Extra Elements</label><input id="pmExtra" placeholder="roses and stars">
+  <label>Background</label><input id="pmBg" placeholder="transparent / white / pale pink">
+  <label>Avoid</label><input id="pmAvoid" placeholder="cutoffs, clutter, text">
+  <div class="row"><button class="btn secondary" id="pmSurprise">🎲 Surprise</button><button class="btn secondary" id="pmWeird">🌀 Weirder</button><button class="btn secondary" id="pmCute">💗 Cuter</button><button class="btn secondary" id="pmSimple">✨ Simplify</button></div>
+ </div><div class="card"><label>Live Prompt Preview</label><textarea id="pmOut" rows="20"></textarea><button class="btn" data-copy="pmOut">📋 Copy Prompt</button><button class="btn secondary" id="pmSave">❤️ Save to Brain Jar</button></div></div>
+</section>
+
+<section class="tool" id="background">
+ <div class="hero"><h2>🪄 Background Remover</h2><p class="muted">Best for white or solid-color backgrounds. Tap the image to choose the background color, then adjust tolerance.</p></div>
+ <div class="two"><div class="card">
+  <input type="file" id="bgFile" accept="image/png,image/jpeg,image/webp">
+  <label>Tolerance <span id="bgTolVal">35</span></label><input type="range" id="bgTol" min="0" max="150" value="35">
+  <label><input type="checkbox" id="bgFeather"> Soften edge</label>
+  <div class="row"><button class="btn" id="bgRemove">🪄 Remove Background</button><button class="btn secondary" id="bgReset">↩ Reset</button><button class="btn good" id="bgDownload">⬇️ PNG</button></div><div class="status" id="bgStatus"></div>
+ </div><div class="card"><div class="canvasWrap"><canvas id="bgCanvas" width="900" height="900"></canvas></div></div></div>
+</section>
+
+<section class="tool" id="sticker">
+ <div class="hero"><h2>✂️ Sticker Studio</h2><p class="muted">Upload transparent art, add an adjustable sticker border, then export PNG.</p></div>
+ <div class="two"><div class="card">
+  <input type="file" id="stFile" accept="image/png,image/webp,image/jpeg">
+  <label>Border Size <span id="stBorderVal">18</span> px</label><input type="range" id="stBorder" min="0" max="70" value="18">
+  <label>Border Color</label><input type="color" id="stColor" value="#ffffff">
+  <label>Padding <span id="stPadVal">35</span> px</label><input type="range" id="stPad" min="0" max="150" value="35">
+  <button class="btn" id="stMake">✂️ Make Sticker</button><button class="btn good" id="stDownload">⬇️ PNG</button>
+  <div class="status" id="stStatus"></div>
+ </div><div class="card"><div class="canvasWrap"><canvas id="stCanvas" width="900" height="900"></canvas></div></div></div>
+</section>
+
+<section class="tool" id="batchOutline">
+ <div class="hero"><h2>🖍️ Batch Outline Maker</h2><p class="muted">Create 5/10/15/20 coordinated prompt slots, attach generated images, KEEP/BYE, and collect up to 100 for ZIP.</p></div>
+ <div class="card batchMaker" data-kind="outline">
+  <div class="three"><div><label>Subject / Book Theme</label><input class="bmSubject" placeholder="cozy cats"></div><div><label>Style</label><input class="bmStyle" value="Easy extra-bold coloring book"></div><div><label>Batch Size</label><select class="bmCount"><option>5</option><option>10</option><option>15</option><option>20</option></select></div></div>
+  <button class="btn bmGenerate">✨ Build Batch</button><button class="btn secondary bmReplace">🔄 Replace BYE</button>
+  <span class="counter bmCounter">0 / 100</span>
+  <div class="batchGrid bmGrid"></div>
+  <div class="row"><button class="btn good bmZip">📦 ZIP Keeps</button><button class="btn secondary bmView">👀 View Collection</button><button class="btn danger bmClear">🗑 Clear Collection</button></div>
+  <div class="status bmStatus"></div>
+ </div>
+</section>
+
+<section class="tool" id="batchPaper">
+ <div class="hero"><h2>📄 Batch Digital Paper Maker</h2><p class="muted">Theme or subject → 5/10/15/20 different paper concepts → KEEP/BYE → collect up to 100.</p></div>
+ <div class="card batchMaker" data-kind="digital-paper">
+  <div class="three"><div><label>Theme / Subject</label><input class="bmSubject" placeholder="coquette cherries"></div><div><label>Style / Palette</label><input class="bmStyle" placeholder="pink gingham, playful"></div><div><label>Batch Size</label><select class="bmCount"><option>5</option><option>10</option><option>15</option><option>20</option></select></div></div>
+  <button class="btn bmGenerate">✨ Build Batch</button><button class="btn secondary bmReplace">🔄 Replace BYE</button><span class="counter bmCounter">0 / 100</span>
+  <div class="batchGrid bmGrid"></div>
+  <div class="row"><button class="btn good bmZip">📦 ZIP Keeps</button><button class="btn secondary bmView">👀 View Collection</button><button class="btn danger bmClear">🗑 Clear Collection</button></div><div class="status bmStatus"></div>
+ </div>
+</section>
+
+<section class="tool" id="batchSeamless">
+ <div class="hero"><h2>🔁 Seamless Batch Maker</h2><p class="muted">Build coordinated true-seamless prompt batches, review visually, and collect up to 100.</p></div>
+ <div class="card batchMaker" data-kind="seamless">
+  <div class="three"><div><label>Theme / Subject</label><input class="bmSubject" placeholder="western valentine"></div><div><label>Style / Palette</label><input class="bmStyle" placeholder="dusty rose, burgundy, cream"></div><div><label>Batch Size</label><select class="bmCount"><option>5</option><option>10</option><option>15</option><option>20</option></select></div></div>
+  <button class="btn bmGenerate">✨ Build Batch</button><button class="btn secondary bmReplace">🔄 Replace BYE</button><span class="counter bmCounter">0 / 100</span>
+  <div class="batchGrid bmGrid"></div>
+  <div class="row"><button class="btn good bmZip">📦 ZIP Keeps</button><button class="btn secondary bmView">👀 View Collection</button><button class="btn danger bmClear">🗑 Clear Collection</button></div><div class="status bmStatus"></div>
+ </div>
+</section>
+
+<section class="tool" id="collab">
+ <div class="hero"><h2>🤝 Collab Idea Maker</h2><p class="muted">One coordinated collection, different assignments.</p></div>
+ <div class="two"><div class="card">
+  <label>Collab Theme</label><input id="coTheme" placeholder="western valentine">
+  <label>Shared Style</label><input id="coStyle" placeholder="retro hand drawn">
+  <label>Shared Palette</label><input id="coPalette" placeholder="pink, red, cream">
+  <label>Collaborators</label><select id="coCount"><option>2</option><option>3</option><option>4</option><option>5</option></select>
+  <button class="btn" id="coMake">🤝 Make Collab</button><button class="btn secondary" id="coShuffle">🎲 Shuffle Assignments</button>
+ </div><div class="card"><textarea id="coOut" rows="20"></textarea><button class="btn" data-copy="coOut">📋 Copy Board</button></div></div>
+</section>
+
+<section class="tool" id="wheelTool">
+ <div class="hero"><h2>🎡 Spin the Wheel</h2><p class="muted">Paste names, themes, subjects, products, or custom choices — one per line.</p></div>
+ <div class="two"><div class="card"><textarea id="wheelEntries" rows="14">Western
+Coquette
+Celestial
+Retro
+Preppy
+Cottagecore
+Gothic Cute
+Boho</textarea>
+  <label><input type="checkbox" id="wheelRemove"> Remove winner after spin</label>
+  <button class="btn" id="spinBtn">🎡 SPIN!</button><button class="btn secondary" id="wheelShuffle">🔀 Shuffle</button>
+ </div><div class="card"><div class="wheel" id="wheel"><span id="wheelWinner">Ready?</span></div><div class="status" id="wheelStatus"></div></div></div>
+</section>
+
+<section class="tool" id="price">
+ <div class="hero"><h2>💰 Price Calculator</h2><p class="muted">Use your time, quantity, costs, rights, and target profit to find a practical price.</p></div>
+ <div class="two"><div class="card">
+  <label>Product</label><select id="pcProduct"><option>Custom PNG</option><option>PNG Bundle</option><option>Seamless Pattern</option><option>Digital Paper</option><option>Alpha</option><option>Coloring Pages</option><option>Logo</option><option>Branding Kit</option><option>Sticker Design</option></select>
+  <div class="two"><div><label>Quantity</label><input id="pcQty" type="number" min="1" value="1"></div><div><label>Hours</label><input id="pcHours" type="number" min="0" step=".25" value="1"></div></div>
+  <div class="two"><div><label>Your Hourly Goal $</label><input id="pcHourly" type="number" min="0" step=".01" value="25"></div><div><label>Extra Costs $</label><input id="pcCosts" type="number" min="0" step=".01" value="0"></div></div>
+  <label>Commercial Rights</label><select id="pcRights"><option value="1">Standard</option><option value="1.25">Commercial +25%</option><option value="1.75">Extended +75%</option><option value="2.5">Exclusive ×2.5</option></select>
+  <label>Profit Cushion</label><select id="pcProfit"><option value="1">None</option><option value="1.15">15%</option><option value="1.25" selected>25%</option><option value="1.4">40%</option></select>
+  <button class="btn" id="pcCalc">💰 Calculate</button>
+ </div><div class="card"><h3>Suggested Price</h3><div class="counter" id="pcSuggested">$0.00</div><p id="pcBreakdown" class="muted"></p></div></div>
+</section>
+
+<section class="tool" id="imageLab">
+ <div class="hero"><h2>🎨 Image Lab</h2><p class="muted">Resize, rotate, flip, center, and export.</p></div>
+ <div class="two"><div class="card"><input type="file" id="ilFile" accept="image/*">
+  <div class="two"><div><label>Width</label><input id="ilW" type="number" value="5000"></div><div><label>Height</label><input id="ilH" type="number" value="5000"></div></div>
+  <button class="btn" id="ilResize">📐 Resize</button><button class="btn secondary" id="ilRotate">↻ Rotate 90°</button><button class="btn secondary" id="ilFlip">↔ Flip</button><button class="btn good" id="ilDownload">⬇️ PNG</button>
+ </div><div class="card"><div class="canvasWrap"><canvas id="ilCanvas" width="900" height="900"></canvas></div></div></div>
+</section>
+
+<section class="tool" id="palette">
+ <div class="hero"><h2>🌈 Palette Maker</h2></div><div class="two"><div class="card"><input type="file" id="palFile" accept="image/*"><button class="btn" id="palExtract">🎨 Extract Palette</button><button class="btn secondary" id="palRandom">🎲 Random Palette</button></div><div class="card"><div class="swatches" id="palSwatches"></div><textarea id="palText" rows="5"></textarea><button class="btn" data-copy="palText">📋 Copy HEX</button></div></div>
+</section>
+
+<section class="tool" id="listing">
+ <div class="hero"><h2>🛍️ Product Lister</h2><p class="muted">Build a listing draft and exactly 13 tags.</p></div>
+ <div class="two"><div class="card"><label>Product</label><input id="liProduct" placeholder="PNG clipart bundle"><label>Subject</label><input id="liSubject"><label>Theme / Style</label><input id="liTheme"><label>Colors</label><input id="liColors"><button class="btn" id="liMake">✨ Generate Listing</button></div><div class="card"><label>Title</label><textarea id="liTitle"></textarea><label>Description</label><textarea id="liDesc" rows="8"></textarea><label>13 Tags</label><textarea id="liTags" rows="5"></textarea><button class="btn" data-copy="liTitle">📋 Copy Title</button><button class="btn secondary" data-copy="liTags">🏷️ Copy Tags</button></div></div>
+</section>
+
+<section class="tool" id="brainJar">
+ <div class="hero"><h2>🧠 Brain Jar</h2><p class="muted">Saved ideas and prompts stay on this device.</p></div>
+ <div class="card"><div id="jarList"></div><button class="btn danger" id="jarClear">🗑 Clear Brain Jar</button></div>
+</section>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <script>
-"use strict";
-const $=id=>document.getElementById(id), rand=a=>a[Math.floor(Math.random()*a.length)], clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
-function openTool(id){document.querySelectorAll(".tool").forEach(x=>x.classList.toggle("active",x.id===id));document.querySelectorAll("#nav button").forEach(x=>x.classList.toggle("active",x.dataset.tool===id));scrollTo({top:0,behavior:"smooth"});if(id==="ideas")renderIdeas();if(id==="seller")sellerPreview()}
-document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>openTool(b.dataset.tool));
-const homeTools=[["upload","📤 Uploads","Inspect images."],["brain","🧠 Brain Stuck","Ideas, collections and tool handoff."],["listing","🛍️ Product Lister","Listings and exactly 13 tags."],["coloring","🖍️ Coloring Page Maker","Easy Mode plus book planning."],["splitter","✂️ Splitter","Detect and export objects."],["image","🎨 Image Lab","Resize, rotate, flip and crop."],["palette","🌈 Palette Maker","Build, copy and save color palettes."],["colorStudio","🪄 Color Studio","Tap-fill your outline coloring pages."],["ideas","🧠 Brain Jar","Search, favorite, remix and reuse ideas."]];
-$("homeCards").innerHTML=homeTools.map(t=>`<div class="card toolCard" onclick="openTool('${t[0]}')"><h3>${t[1]}</h3><p class="muted">${t[2]}</p><button class="btn">Open Tool →</button></div>`).join("");
-function fileImage(file){return new Promise((res,rej)=>{let u=URL.createObjectURL(file),i=new Image;i.onload=()=>{URL.revokeObjectURL(u);res(i)};i.onerror=rej;i.src=u})}
-function dataImage(src){return new Promise((res,rej)=>{let i=new Image;i.onload=()=>res(i);i.onerror=rej;i.src=src})}
-function downloadCanvas(c,n){c.toBlob(b=>{if(!b)return;let u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download=n;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)},"image/png")}
-async function copyText(id){try{await navigator.clipboard.writeText($(id).value||$(id).textContent||"")}catch(e){}}
-function canvasBlob(c){return new Promise(r=>c.toBlob(r,"image/png"))}
-function cleanName(n){return (n||"design").replace(/\.[^.]+$/,"").replace(/[^a-z0-9_-]+/gi,"-").replace(/^-+|-+$/g,"")||"design"}
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const store=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const load=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}};
+const escapeHTML=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+function downloadCanvas(c,name){const a=document.createElement("a");a.download=name;a.href=c.toDataURL("image/png");a.click()}
+function copyId(id){const el=document.getElementById(id); if(!el)return; navigator.clipboard?.writeText(el.value||el.textContent).catch(()=>{});}
+$$("[data-copy]").forEach(b=>b.addEventListener("click",()=>copyId(b.dataset.copy)));
 
-$("universalFile").onchange=async e=>{let f=e.target.files[0];if(!f)return;let i=await fileImage(f);$("universalPreview").src=i.src;$("fileInfo").innerHTML=`<div class="idea"><b>${f.name}</b><br>${i.naturalWidth} × ${i.naturalHeight}px<br>${(f.size/1048576).toFixed(2)} MB</div>`;$("uploadStatus").textContent="Image loaded ✓"};
-
-/* BRAIN */
-const groups=[
-{subjects:["black cat","raven","moth","moonlit mushroom"],styles:["gothic cute","moody botanical","celestial"],extras:["roses","crystals","crescent moons"]},
-{subjects:["highland cow","armadillo","cowgirl ghost","western chicken"],styles:["western boho","vintage western","retro hand-drawn"],extras:["wildflowers","boots","bandanas","cactus"]},
-{subjects:["duck","frog","bunny","opossum"],styles:["cute whimsical","preppy","playful cartoon"],extras:["bows","tea cups","berries","flowers"]},
-{subjects:["alien","skeleton","ghost","mushroom character"],styles:["retro hand-drawn","gothic cute","minimal cute"],extras:["stars","hearts","crystals","clouds"]}
+const tools=[
+ ["home","🏠 Home"],["brain","🧠 Brain Stuck"],["prompt","✨ Prompt Maker"],["background","🪄 Background Remover"],
+ ["sticker","✂️ Sticker Studio"],["batchOutline","🖍️ Batch Outlines"],["batchPaper","📄 Batch Paper"],
+ ["batchSeamless","🔁 Batch Seamless"],["collab","🤝 Collab"],["wheelTool","🎡 Wheel"],["price","💰 Price"],
+ ["imageLab","🎨 Image Lab"],["palette","🌈 Palette"],["listing","🛍️ Lister"],["brainJar","🧠 Brain Jar"]
 ];
-let banned=JSON.parse(localStorage.getItem("mdBanned")||"[]"), lastIdea="";
-function createBrainIdea(){let g=rand(groups),sub=rand(g.subjects.filter(x=>!banned.includes(x)).length?g.subjects.filter(x=>!banned.includes(x)):g.subjects),type=$("brainType").value,theme=$("brainTheme").value,season=$("brainSeason").value,style=$("brainStyle").value||rand(g.styles),mood=$("brainMood").value,pal=$("brainPalette").value.trim(),niche=$("brainNiche").value.trim(),w=+$("brainWeirdness").value;let s=`Create a ${type.toLowerCase()} featuring ${sub}`+(theme?` with a ${theme} theme`:"")+(season?` for ${season}`:"")+` in a ${style} style. Add coordinating ${rand(g.extras)} and ${rand(g.extras)}.`+(mood?` Mood: ${mood}.`:"")+(pal?` Palette: ${pal}.`:"")+(niche?` Target niche: ${niche}.`:"");if(type==="Seamless Pattern")s+=" Create a true seamless 4:4 square tile, 5000×5000 px, 500 DPI, balanced varied scale and rotation, with perfect edge continuity.";if(type==="Coloring Page")s+=" Use clean black outline line art on pure white, no color, grayscale, shading or filled black areas.";if(w)s+=" "+["","Add one quirky unexpected detail.","Combine two surprising but visually compatible ideas.","Make it delightfully unhinged while remaining commercially usable."][w];lastIdea=s;return s}
-function brainOne(){$("brainOutput").value=createBrainIdea()} function brain25(){$("brainOutput").value=Array.from({length:25},(_,i)=>`${i+1}. ${createBrainIdea()}`).join("\n\n")}
-function brainTrending(){$("brainOutput").value=["Preppy checkerboard + tiny icons","Western celestial animals","Cozy animal coloring pages","Retro hand-drawn food characters","Moody botanical moth collections","Coquette bows + fruit","Teacher-friendly seasonal PNG bundles","Gothic cute cats + crystals"].map((x,i)=>`${i+1}. ${x}`).join("\n");$("brainStatus").textContent="Manual trend board loaded — update this list whenever you want."}
-function brainSurprise(){$("brainType").selectedIndex=Math.floor(Math.random()*$("brainType").options.length);$("brainTheme").value="";$("brainSeason").value="";brainOne()}
-function brainRemix(){let base=$("brainOutput").value||createBrainIdea();$("brainOutput").value=Array.from({length:10},(_,i)=>`${i+1}. ${base}\nVariation: ${rand(["change the pose","swap the coordinating prop","use a new composition","shift the palette","make it more minimal","make it more boutique","make it more retro","make it moodier"])}.`).join("\n\n")}
-function brainMoreLike(){let base=$("brainOutput").value||createBrainIdea();$("brainOutput").value=Array.from({length:10},(_,i)=>`${i+1}. Related concept: ${base} Add ${rand(["a companion character","a matching pattern","a matching alpha","a coordinating digital paper","a sticker variation"])}.`).join("\n\n")}
-function brainNeverAgain(){let m=(lastIdea.match(/featuring ([^,.]+)/)||[])[1];if(m){banned.push(m);localStorage.setItem("mdBanned",JSON.stringify([...new Set(banned)]));$("brainStatus").textContent=`"${m}" temporarily excluded ✓`}else $("brainStatus").textContent="Generate one idea first."}
-function brainSellable(){let b=$("brainOutput").value||createBrainIdea();$("brainOutput").value=`SELLABLE PRODUCT CONCEPT\n${b}\n\nPackage it with a clear focal subject, cohesive palette, clean commercial composition, coordinated variations, thumbnail-friendly contrast, and a matching mini bundle for upsells.`}
-function brainCollection(){let b=$("brainOutput").value||createBrainIdea();$("brainOutput").value=`COLLECTION PLAN\nBase concept: ${b}\n\nPNG CLIPART\n1. Main character\n2. Alternate pose\n3. Coordinating icon\n4. Floral/prop accent\n5. Phrase-ready focal piece\n6. Mini companion\n\nSEAMLESS PATTERNS\n1. Main motif repeat\n2. Small icon repeat\n3. Checkerboard coordinate\n4. Minimal coordinate\n\nDIGITAL PAPERS\n1. Main palette\n2. Dark coordinate\n3. Light coordinate\n\nALPHA\n1. Matching decorative alphabet\n\nCOLORING PAGES\n1. Main subject\n2. Companion subject\n3. Prop variation`}
-function sendBrain(tool){let txt=$("brainOutput").value;if(tool==="listing"){$("pSubject").value=txt.slice(0,120);openTool("listing")}else if(tool==="coloring"){$("cpmInstructions").value=txt;openTool("coloring")}else if($(tool)){openTool(tool)}}
-
-/* LISTING */
-function makeListing(){let type=$("pType").value,s=$("pSubject").value.trim()||"digital design",th=$("pTheme").value.trim(),st=$("pStyle").value.trim(),co=$("pColors").value.trim(),d=$("pDetails").value.trim(),platform=$("pPlatform").value;let title=[s,th,st,type].filter(Boolean).join(" • ");$("pTitle").value=title;$("titleCheck").textContent=`${title.length} characters • ${platform}`;$("pShort").value=`A ${st?st+" ":""}${th?th+" ":""}${type.toLowerCase()} featuring ${s}. Digital download for creative projects.`;$("pDescription").value=`${title}\n\nThis digital product features ${s}${th?` with a ${th} theme`:""}${st?` in a ${st} style`:""}.${co?` Colors: ${co}.`:""}${d?` Details: ${d}.`:""}\n\nDIGITAL PRODUCT\nNo physical item will be shipped.\n\nGreat for sublimation, crafting, mockups and small-business creative projects.`;$("pKeywords").value=[s,th,st,co,type,"digital download","sublimation design","small business design"].filter(Boolean).join(", ");let c=[s,`${s} png`,`${s} design`,th,th?`${th} design`:"",st,st?`${st} art`:"",type,"digital download","sublimation","printable design","craft graphic","instant download","small business","digital art"].filter(Boolean).map(x=>x.slice(0,20));$("pTags").value=[...new Set(c)].slice(0,13).join(", ");$("listingStatus").textContent="Listing generated ✓"}
-function listingVariations(){makeListing();let b=$("pSubject").value||"Digital Design";$("pTitle").value=[`${b} PNG • Digital Download`,`${b} Sublimation Design`,`${b} Clipart • Instant Download`,`${b} Digital Graphic`,`${b} Small Business Design`].join("\n")}
-function saveShopPreset(){localStorage.setItem("mdShopPreset",JSON.stringify({platform:$("pPlatform").value}));$("listingStatus").textContent="Shop preset saved ✓"}
-async function copyListing(){await navigator.clipboard.writeText(`TITLE\n${$("pTitle").value}\n\nSHORT DESCRIPTION\n${$("pShort").value}\n\nDESCRIPTION\n${$("pDescription").value}\n\nSEO\n${$("pKeywords").value}\n\n13 TAGS\n${$("pTags").value}`);$("listingStatus").textContent="Copied ✓"}
-
-/* COLORING */
-function cpmUpdateHint(){let easy=$("cpmDetail").value==="easy";[...$("cpmComposition").options].forEach(o=>{if(["Simple Scene","Full Page Scene"].includes(o.value))o.disabled=easy});if(easy){if(["Simple Scene","Full Page Scene"].includes($("cpmComposition").value))$("cpmComposition").value="Single Subject";$("cpmLines").value="Extra Bold";$("cpmBackground").value="None";$("cpmHint").innerHTML="✨ <b>EASY MODE:</b> Main subject only or subject + one simple prop. Little to no background. Large enclosed spaces and extra-bold outlines."}else $("cpmHint").textContent=$("cpmDetail").value==="medium"?"🌙 MEDIUM MODE: a few coordinating details, still uncluttered.":"⭐ DETAILED MODE: additional coordinating elements and environmental detail."}
-function cpmGenerate(){cpmUpdateHint();let s=$("cpmSubject").value.trim();if(!s)return alert("Add a main subject first.");let easy=$("cpmDetail").value==="easy",a=$("cpmAction").value.trim(),ex=$("cpmExtras").value.trim(),prop=$("cpmPropLimit").value,bg=$("cpmBackground").value;let p=`Create a ${$("cpmSize").value} coloring book page featuring ${s}${a?" "+a:""}.\n\nTheme: ${$("cpmTheme").value||"None"}.\nStyle: ${$("cpmStyle").value}.\nComposition: ${$("cpmComposition").value}.\nDetail level: ${$("cpmDetail").value}.\nAudience: ${$("cpmAudience").value}.\nOutline weight: ${$("cpmLines").value}.\n`;if(ex)p+=`\nInclude ${easy?"only ONE simple extra element/prop":"coordinating element(s)"}: ${ex}.\n`;if(easy)p+=`\nKeep this EASY and very simple.\nShow primarily the main subject.\nDo NOT create a full-page scene.\nDo NOT create a detailed environment or scenery.\nUse little to no background.\nThe page should contain the main subject only, or the main subject with ONE simple coordinating prop.\nUse large simple shapes, minimal interior details, large enclosed coloring spaces and extra-bold easy-to-color outlines.\nAvoid clutter, tiny objects, repeating patterns, complex scenery and excessive decorations.\n`;else p+=`\nBackground level: ${bg}. Prop limit: ${prop}.\n`;if($("cpmSubjectLock").checked)p+=`\nSUBJECT LOCK: Do not replace, multiply, or change the requested main subject.\n`;if($("cpmMargin").checked)p+=`\nKeep a generous print-safe margin and all important line art away from page edges.\n`;if($("cpmConsistency").checked)p+=`\nCONSISTENCY LOCK: Keep character proportions, facial features, outline style and visual language consistent with the rest of this book.\n`;p+=`\nUse clean black outline line art only on a pure white background.\nNo colors. No grayscale. No gray shading. No filled black areas. No realistic shadows. No textured color.\nUse crisp printable outlines with clearly enclosed coloring spaces. Keep the entire subject fully inside the page with no awkward cut-offs. Create a balanced professional coloring-book illustration suitable for printing.`;if($("cpmInstructions").value.trim())p+=`\n\nAdditional instructions:\n${$("cpmInstructions").value.trim()}`;$("cpmOutput").value=p}
-function cpmRandomIdea(){let s=["armadillo","highland cow","duck","pig","raccoon","frog","black cat","owl","bunny"],a=["holding a sunflower","holding a teacup","wearing a western bandana","planting one flower","wearing a cowboy hat","holding a star"];$("cpmSubject").value=rand(s);$("cpmAction").value=rand(a);$("cpmTheme").value="";cpmGenerate()}
-function cpmSaveStyle(){let ids=["cpmStyle","cpmTheme","cpmDetail","cpmAudience","cpmComposition","cpmSize","cpmLines","cpmPropLimit","cpmBackground"];let o={};ids.forEach(id=>o[id]=$(id).value);o.subjectLock=$("cpmSubjectLock").checked;o.margin=$("cpmMargin").checked;o.consistency=$("cpmConsistency").checked;localStorage.setItem("mdColorStyle",JSON.stringify(o));alert("Style saved ⭐")}
-function cpmLoadStyle(){let o=JSON.parse(localStorage.getItem("mdColorStyle")||"null");if(!o)return alert("No saved style yet.");Object.keys(o).forEach(k=>{if($(k))$(k).value=o[k]});$("cpmSubjectLock").checked=o.subjectLock;$("cpmMargin").checked=o.margin;$("cpmConsistency").checked=o.consistency;cpmUpdateHint()}
-function cpmClear(){["cpmSubject","cpmAction","cpmExtras","cpmInstructions","cpmOutput"].forEach(id=>$(id).value="");$("cpmDetail").value="easy";cpmUpdateHint()}
-function buildBook(){let n=clamp(+$("bookPages").value||40,2,100),concept=$("bookConcept").value.trim()||$("cpmSubject").value||"coordinated coloring book",acts=["holding a teacup","reading a book","watering one flower","wearing a bow","holding one star","sitting with one mushroom","holding one sunflower","wearing a cowboy hat","carrying a tiny basket","holding one heart"];let out=[];for(let i=0;i<n;i++)out.push(`${i+1}. ${concept} — ${acts[i%acts.length]}${i>=acts.length?` — pose variation ${Math.floor(i/acts.length)+1}`:""}`);$("bookOutput").value=out.join("\n");$("bookStatus").textContent=`${n} page concepts built ✓`}
-function coverPrompt(){$("bookOutput").value=`Create a professional printable coloring-book cover for "${$("bookConcept").value||$("cpmSubject").value||"My Coloring Book"}". Match the saved interior style and audience. Keep the title area clear and readable, feature the main subject prominently, use a balanced cover composition, and keep all important elements inside print-safe margins.`}
-function duplicateCheck(){let lines=$("bookOutput").value.split("\n").map(x=>x.replace(/^\d+\.\s*/,"").trim()).filter(Boolean),seen=new Set(),dups=[];lines.forEach((x,i)=>{let k=x.toLowerCase();if(seen.has(k))dups.push(i+1);seen.add(k)});$("bookStatus").textContent=dups.length?`Possible duplicates: pages ${dups.join(", ")}`:"No exact duplicate concepts found ✓"}
-
-/* PATTERN CARD MAKER PRO */
-let pmImgs=[],pmSelected=0,pmLogo=null;
-function pmSlug(n){return (n||"Pattern").replace(/\.[^.]+$/,"").replace(/[-_]+/g," ").replace(/\b\w/g,m=>m.toUpperCase())}
-$("pmFiles").onchange=async e=>{pmImgs=[];for(let f of [...e.target.files].slice(0,12)){pmImgs.push({image:await fileImage(f),name:pmSlug(f.name),zoom:1,px:0,py:0})}pmSelected=0;pmList();pmSync();pmBuild()};
-$("pmLogoFile").onchange=async e=>{pmLogo=e.target.files[0]?await fileImage(e.target.files[0]):null;pmBuild()};
-["pmLayout","pmOrientation","pmLabels","pmProof"].forEach(id=>$(id).onchange=pmBuild);
-["pmMargin","pmGap","pmTitle","pmBrand","pmWatermark"].forEach(id=>$(id).oninput=pmBuild);
-["pmZoom","pmPX","pmPY"].forEach(id=>$(id).oninput=()=>{let p=pmImgs[pmSelected];if(!p)return;p.zoom=+$("pmZoom").value/100;p.px=+$("pmPX").value;p.py=+$("pmPY").value;pmBuild()});
-function pmList(){let h=$("pmPatternList");h.innerHTML="";pmImgs.forEach((p,i)=>{let d=document.createElement("div");d.className="thumb"+(i===pmSelected?" selected":"");d.innerHTML=`<img src="${p.image.src}"><div class="small">${i+1}. ${p.name}</div>`;d.onclick=()=>{pmSelected=i;pmList();pmSync()};h.appendChild(d)})}
-function pmSync(){let p=pmImgs[pmSelected];if(!p)return;$("pmZoom").value=p.zoom*100;$("pmPX").value=p.px;$("pmPY").value=p.py;$("pmName").value=p.name}
-function pmRename(){let p=pmImgs[pmSelected];if(!p)return;p.name=$("pmName").value.trim()||p.name;pmList();pmBuild()}
-function pmDims(){let o=$("pmOrientation").value;return o==="portrait"?[800,1000]:o==="landscape"?[1100,760]:[1000,1000]}
-function pmRects(k,X,Y,W,H,n,g){let r=[],A=(x,y,w,h)=>r.push({x:X+x*W,y:Y+y*H,w:w*W-g,h:h*H-g});
-if(k==="collection"){[[0,0,.68,.68],[.69,0,.31,.22],[.69,.23,.31,.22],[.69,.46,.31,.22],[.10,.70,.29,.30],[.40,.70,.29,.30],[.70,.70,.30,.30]].forEach(v=>A(...v))}
-else if(k==="heroTop"){A(0,0,1,.46);for(let i=0;i<6;i++)A((i%3)/3,.48+Math.floor(i/3)*.26,1/3,.25)}
-else if(k==="heroLeft"){A(0,0,.52,1);for(let i=0;i<6;i++)A(.54+(i%2)*.23,Math.floor(i/2)/3,.23,1/3)}
-else if(k==="heroRight"){A(.48,0,.52,1);for(let i=0;i<6;i++)A((i%2)*.23,Math.floor(i/2)/3,.23,1/3)}
-else if(k==="boutique"){let N=Math.min(n,9),rows=Math.ceil(N/3);for(let i=0;i<N;i++)A((i%3)/3,Math.floor(i/3)/rows,1/3,1/rows)}
-else if(k==="center"){A(.25,.22,.5,.56);[[0,0,.24,.32],[.76,0,.24,.32],[0,.34,.24,.32],[.76,.34,.24,.32],[0,.68,.24,.32],[.76,.68,.24,.32],[.25,0,.5,.20],[.25,.80,.5,.20]].forEach(v=>A(...v))}
-else if(k==="magazine"){[[0,0,.6,.42],[.61,0,.39,.42],[0,.43,.32,.57],[.33,.43,.34,.27],[.68,.43,.32,.57],[.33,.71,.34,.29]].forEach(v=>A(...v))}
-else if(k==="checker"){[[0,0,.66,.33],[.67,0,.33,.33],[0,.34,.33,.33],[.34,.34,.66,.33],[0,.68,.66,.32],[.67,.68,.33,.32]].forEach(v=>A(...v))}
-else if(k==="stacked"){let N=Math.min(n,7);for(let i=0;i<N;i++)A(0,i/N,1,1/N)}
-else{[[0,0,.5,.66],[.51,0,.245,.32],[.765,0,.235,.32],[.51,.33,.245,.33],[.765,.33,.235,.33],[0,.67,.245,.33],[.255,.67,.245,.33],[.51,.67,.245,.33],[.765,.67,.235,.33]].forEach(v=>A(...v))}
-return r.slice(0,n)}
-function pmCover(c,p,r){c.save();c.beginPath();c.rect(r.x,r.y,r.w,r.h);c.clip();let im=p.image,z=Math.max(r.w/im.naturalWidth,r.h/im.naturalHeight)*p.zoom,w=im.naturalWidth*z,h=im.naturalHeight*z;c.drawImage(im,r.x+r.w/2+p.px*r.w/200-w/2,r.y+r.h/2+p.py*r.h/200-h/2,w,h);c.restore()}
-function pmDraw(out,S=1){let [bw,bh]=pmDims(),W=bw*S,H=bh*S;out.width=W;out.height=H;let c=out.getContext("2d"),M=+$("pmMargin").value*S,G=+$("pmGap").value*S,T=90*S,B=48*S,L=$("pmLabels").value==="none"?0:34*S;c.fillStyle="#fff";c.fillRect(0,0,W,H);c.fillStyle="#111";c.textAlign="center";c.font=`bold ${44*S}px sans-serif`;c.fillText($("pmTitle").value||"Choose Your Design",W/2,58*S);let rs=pmRects($("pmLayout").value,M,T,W-M*2,H-T-B-M,pmImgs.length,G);rs.forEach((r,i)=>{let p=pmImgs[i];if(!p)return;let q={x:r.x,y:r.y,w:r.w,h:r.h-L};c.fillStyle="#eee";c.fillRect(q.x,q.y,q.w,q.h);pmCover(c,p,q);if(L){c.fillStyle="#fff";c.fillRect(r.x,r.y+r.h-L,r.w,L);c.fillStyle="#111";c.font=`bold ${17*S}px sans-serif`;let mode=$("pmLabels").value,label=mode==="numbers"?String(i+1):mode==="both"?`${i+1}. ${p.name}`:p.name;c.fillText(label,r.x+r.w/2,r.y+r.h-9*S)}});let brand=$("pmBrand").value.trim();if(pmLogo)drawContain(c,pmLogo,M+55*S,H-28*S,100*S,45*S,1);if(brand){c.textAlign="right";c.fillStyle="#111";c.font=`bold ${17*S}px sans-serif`;c.fillText(brand,W-M,H-18*S)}let proof=$("pmProof").value;if(proof!=="off"){let txt=$("pmWatermark").value.trim()||brand||"PROOF";c.save();c.globalAlpha=proof==="proof"?.22:.09;c.fillStyle="#777";c.font=`bold ${30*S}px sans-serif`;c.textAlign="center";c.translate(W/2,H/2);c.rotate(-.45);for(let y=-H;y<H;y+=110*S)for(let x=-W;x<W;x+=260*S)c.fillText(txt,x,y);c.restore()}}
-function pmBuild(){pmDraw($("pmCanvas"));$("pmStatus").textContent=pmImgs.length?`${pmImgs.length} patterns • Layout ${$("pmLayout").selectedIndex+1}/10 ✓`:"Upload patterns to begin."}
-function pmShuffle(){for(let i=pmImgs.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[pmImgs[i],pmImgs[j]]=[pmImgs[j],pmImgs[i]]}pmSelected=0;pmList();pmSync();pmBuild()}
-function pmSaveTemplate(){let ids=["pmLayout","pmOrientation","pmTitle","pmBrand","pmMargin","pmGap","pmLabels","pmProof","pmWatermark"],o={};ids.forEach(id=>o[id]=$(id).value);localStorage.setItem("mdPatternCardTemplate",JSON.stringify(o));$("pmStatus").textContent="Layout saved ⭐"}
-function pmLoadTemplate(){let o=JSON.parse(localStorage.getItem("mdPatternCardTemplate")||"null");if(!o)return $("pmStatus").textContent="No saved layout yet.";Object.entries(o).forEach(([id,v])=>{if($(id))$(id).value=v});pmBuild()}
-function pmExport(){if(!pmImgs.length)return;let c=document.createElement("canvas");pmDraw(c,5);downloadCanvas(c,"moonlight-pattern-card.png")}
-/* SELLER STUDIO */
-const BUILTIN_MOCKUPS=[
-  "assets/mockups/BlackTmockup.PNG",
-  "assets/mockups/Ipad1.PNG",
-  "assets/mockups/Ipad2.PNG",
-  "assets/mockups/WhiteTmockup.PNG"
-
-  // ADD MORE MOCKUPS HERE AS YOU UPLOAD THEM:
-  // ,"assets/mockups/ChristmasBlackFlatlay.PNG"
-  // ,"assets/mockups/ChristmasWhiteFlatlay.PNG"
-  // ,"assets/mockups/ChristmasBlackWorn.PNG"
-  // ,"assets/mockups/ChristmasWhiteWorn.PNG"
-  // ,"assets/mockups/DTFBlue.PNG"
-  // ,"assets/mockups/DTFOrange.PNG"
-  // ,"assets/mockups/GothicBlackShirt.PNG"
-];;
-let sellerTemplates=[],sellerDesigns=[],sellerSelDesign=0,sellerSelTemplate=0,sellerLogo=null;
-async function sellerInit(){
-sellerTemplates=[];
-for(let i=0;i<BUILTIN_MOCKUPS.length;i++){
-  try{
-    const image=await dataImage(BUILTIN_MOCKUPS[i]);
-    const label=BUILTIN_MOCKUPS[i].split("/").pop().replace(/\.[^.]+$/,"");
-    sellerTemplates.push({name:label,image,x:50,y:48,scale:70});
-  }catch(err){console.warn("Mockup could not load:",BUILTIN_MOCKUPS[i],err)}
+function openTool(id){
+ $$(".tool").forEach(x=>x.classList.toggle("active",x.id===id));
+ $$("#nav button").forEach(x=>x.classList.toggle("active",x.dataset.tool===id));
+ scrollTo({top:0,behavior:"smooth"});
 }
-sellerRenderTemplates();
-sellerLoadControls();
-sellerPreview();
-$("sellerStatus").textContent=sellerTemplates.length
-  ? `${sellerTemplates.length} GitHub mockups loaded ✓`
-  : "No mockups loaded. Check assets/mockups filenames and GitHub Pages paths.";
+tools.forEach(([id,name])=>{
+ const b=document.createElement("button");b.textContent=name;b.dataset.tool=id;b.addEventListener("click",()=>openTool(id));$("#nav").appendChild(b);
+ if(id!=="home"){const c=document.createElement("div");c.className="card homeCard";c.innerHTML="<h3>"+name+"</h3><div class='muted'>Open this workshop station →</div>";c.addEventListener("click",()=>openTool(id));$("#homeGrid").appendChild(c)}
+});
+$("#nav button").classList.add("active");
+
+// gate
+$("#unlockBtn").addEventListener("click",unlock);$("#gatePass").addEventListener("keydown",e=>{if(e.key==="Enter")unlock()});
+function unlock(){if($("#gatePass").value.trim().toLowerCase()==="moon"){sessionStorage.setItem("moonUnlocked","1");$("#gate").style.display="none"}else $("#gateMsg").textContent="🌙 That isn't the workshop code."}
+if(sessionStorage.getItem("moonUnlocked")==="1")$("#gate").style.display="none";
+
+// Brain Jar
+let jar=load("moonBrainJar",[]);
+function saveJar(text){if(!text.trim())return; jar.unshift({text:text.trim(),date:new Date().toLocaleString()});jar=jar.slice(0,200);store("moonBrainJar",jar);renderJar()}
+function renderJar(){$("#jarList").innerHTML=jar.length?jar.map((x,i)=>`<div class="card"><div>${escapeHTML(x.text)}</div><div class="small">${escapeHTML(x.date)}</div><button class="btn danger" data-jar="${i}">Remove</button></div>`).join(""):"<p class='muted'>Nothing saved yet.</p>";$$("[data-jar]").forEach(b=>b.onclick=()=>{jar.splice(+b.dataset.jar,1);store("moonBrainJar",jar);renderJar()})}
+$("#jarClear").onclick=()=>{if(confirm("Clear the Brain Jar?")){jar=[];store("moonBrainJar",jar);renderJar()}};renderJar();
+
+// Brain Stuck
+const subjects=["highland cow","black cat","mushroom","chicken","ghost","cowgirl boots","moth","otter","alien","sunflower","strawberries","bows","tarot cards","skeleton","duck"];
+const extras=["roses","tiny stars","ribbons","cherries","wildflowers","hearts","crystals","checkerboard accents","clouds","berries"];
+function brainIdea(){
+ const p=$("#brainProduct").value, th=$("#brainTheme").value.trim(), sub=$("#brainSubject").value.trim()||subjects[Math.floor(Math.random()*subjects.length)], st=$("#brainStyle").value.trim()||["preppy","retro hand-drawn","western boho","gothic cute","minimal cute"][Math.floor(Math.random()*5)];
+ return `${p}: ${sub} in a ${st} style${th?`, ${th} theme`:""}, with ${extras[Math.floor(Math.random()*extras.length)]}. Keep it distinctive, balanced, commercial-friendly, and avoid unnecessary clutter.`;
 }
-$("sellerDesigns").onchange=async e=>{sellerDesigns=[];for(let f of [...e.target.files].slice(0,10)){sellerDesigns.push({name:f.name,image:await fileImage(f)})}sellerSelDesign=0;sellerRenderDesigns();$("sellerDesignStatus").textContent=`${sellerDesigns.length}/10 designs ready ✓`;sellerPreview()};
-$("sellerWMLogo").onchange=async e=>{sellerLogo=e.target.files[0]?await fileImage(e.target.files[0]):null;sellerPreview()};
-function sellerRenderDesigns(){let h=$("sellerDesignThumbs");h.innerHTML="";sellerDesigns.forEach((d,i)=>{let el=document.createElement("div");el.className="thumb"+(i===sellerSelDesign?" selected":"");el.innerHTML=`<img src="${d.image.src}"><div class="small">${d.name}</div>`;el.onclick=()=>{sellerSelDesign=i;sellerRenderDesigns();sellerPreview()};h.appendChild(el)})}
-function sellerRenderTemplates(){let h=$("sellerTemplateThumbs");h.innerHTML="";sellerTemplates.forEach((t,i)=>{let el=document.createElement("div");el.className="thumb"+(i===sellerSelTemplate?" selected":"");el.innerHTML=`<img src="${t.image.src}"><div class="small">${t.name}</div>`;el.onclick=()=>{sellerSaveControls();sellerSelTemplate=i;sellerLoadControls();sellerRenderTemplates();sellerPreview()};h.appendChild(el)})}
-function sellerLoadControls(){let t=sellerTemplates[sellerSelTemplate];if(!t)return;$("sellerScale").value=t.scale;$("sellerScaleVal").textContent=t.scale+"%";$("sellerX").value=t.x;$("sellerY").value=t.y}
-function sellerSaveControls(){let t=sellerTemplates[sellerSelTemplate];if(!t)return;t.scale=+$("sellerScale").value;t.x=+$("sellerX").value;t.y=+$("sellerY").value;localStorage.setItem("mdSellerPlacement",JSON.stringify(sellerTemplates.map(x=>({x:x.x,y:x.y,scale:x.scale}))))}
-["sellerScale","sellerX","sellerY","sellerWMOpacity","sellerWMSpacing","sellerWMAngle"].forEach(id=>$(id).oninput=()=>{if(id==="sellerScale")$("sellerScaleVal").textContent=$(id).value+"%";sellerSaveControls();sellerPreview()});["sellerWMStyle","sellerProof"].forEach(id=>$(id).onchange=sellerPreview);$("sellerWMText").oninput=sellerPreview;
-function drawContain(ctx,im,cx,cy,maxW,maxH,scale=1){let r=Math.min(maxW/im.naturalWidth,maxH/im.naturalHeight)*scale,w=im.naturalWidth*r,h=im.naturalHeight*r;ctx.drawImage(im,cx-w/2,cy-h/2,w,h)}
-function sellerWatermark(ctx,w,h,strong=false){let style=$("sellerWMStyle").value;if(style==="none")return;let text=$("sellerWMText").value.trim(),op=(+$("sellerWMOpacity").value/100)*(strong?1.65:1),space=+$("sellerWMSpacing").value,ang=+$("sellerWMAngle").value*Math.PI/180;ctx.save();ctx.globalAlpha=Math.min(.85,op);ctx.fillStyle="#fff";ctx.strokeStyle="rgba(0,0,0,.35)";ctx.lineWidth=2;ctx.font=`bold ${Math.max(22,w/28)}px sans-serif`;ctx.textAlign="center";if(style==="center"){ctx.translate(w/2,h/2);ctx.rotate(ang);if(sellerLogo)drawContain(ctx,sellerLogo,0,0,w*.45,h*.25,1);else{ctx.strokeText(text,0,0);ctx.fillText(text,0,0)}}else{ctx.translate(w/2,h/2);ctx.rotate(ang);for(let y=-h*1.4;y<h*1.4;y+=space)for(let x=-w*1.4;x<w*1.4;x+=space*1.55){if(sellerLogo)drawContain(ctx,sellerLogo,x,y,space*.9,space*.45,1);else{ctx.strokeText(text,x,y);ctx.fillText(text,x,y)}}}ctx.restore()}
-function sellerRender(di=sellerSelDesign,ti=sellerSelTemplate,proof=$("sellerProof").checked){let d=sellerDesigns[di],t=sellerTemplates[ti];if(!t)return null;let c=document.createElement("canvas"),max=proof?1200:1800,r=Math.min(1,max/Math.max(t.image.naturalWidth,t.image.naturalHeight));c.width=Math.round(t.image.naturalWidth*r);c.height=Math.round(t.image.naturalHeight*r);let x=c.getContext("2d");x.drawImage(t.image,0,0,c.width,c.height);if(d){let cx=c.width*t.x/100,cy=c.height*t.y/100,maxW=c.width*.58,maxH=c.height*.48;drawContain(x,d.image,cx,cy,maxW,maxH,t.scale/100)}sellerWatermark(x,c.width,c.height,proof);return c}
-function sellerPreview(){let out=$("sellerCanvas"),c=sellerRender();if(!c){let x=out.getContext("2d");x.fillStyle="#111";x.fillRect(0,0,out.width,out.height);return}out.width=c.width;out.height=c.height;out.getContext("2d").drawImage(c,0,0)}
-function sellerDownloadSelected(){if(!sellerDesigns.length)return $("sellerStatus").textContent="Upload a design first.";downloadCanvas(sellerRender(),`${cleanName(sellerDesigns[sellerSelDesign].name)}-mockup-${sellerSelTemplate+1}.png`)}
-async function sellerZipDesign(){if(!window.JSZip)return alert("ZIP library needs internet the first time this page loads.");if(!sellerDesigns.length)return;let zip=new JSZip(),d=sellerDesigns[sellerSelDesign],folder=zip.folder(cleanName(d.name));for(let i=0;i<sellerTemplates.length;i++){let c=sellerRender(sellerSelDesign,i,$("sellerProof").checked);folder.file(`mockup-${String(i+1).padStart(2,"0")}.png`,await canvasBlob(c));$("sellerProgress").style.width=((i+1)/sellerTemplates.length*100)+"%";await new Promise(r=>setTimeout(r,20))}let blob=await zip.generateAsync({type:"blob"});saveBlob(blob,`${cleanName(d.name)}-mockups.zip`);$("sellerStatus").textContent="Design ZIP ready ✓"}
-async function sellerZipAll(){if(!window.JSZip)return alert("ZIP library needs internet the first time this page loads.");if(!sellerDesigns.length)return $("sellerStatus").textContent="Upload designs first.";let zip=new JSZip(),total=sellerDesigns.length*sellerTemplates.length,done=0;for(let di=0;di<sellerDesigns.length;di++){let folder=zip.folder(cleanName(sellerDesigns[di].name));for(let ti=0;ti<sellerTemplates.length;ti++){folder.file(`mockup-${String(ti+1).padStart(2,"0")}.png`,await canvasBlob(sellerRender(di,ti,$("sellerProof").checked)));done++;$("sellerProgress").style.width=(done/total*100)+"%";$("sellerStatus").textContent=`Rendering ${done}/${total}…`;await new Promise(r=>setTimeout(r,15))}}let blob=await zip.generateAsync({type:"blob"});saveBlob(blob,"moonlight-seller-studio-mockups.zip");$("sellerStatus").textContent=`${total} mockups zipped ✓`}
-function saveBlob(blob,name){let u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}
-function sellerProofSheet(){if(!sellerDesigns.length)return;let c=document.createElement("canvas");c.width=1600;c.height=2000;let x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.fillStyle="#111";x.font="bold 64px sans-serif";x.textAlign="center";x.fillText("Choose Your Design",800,90);let cols=2,w=700,h=330,gap=50; sellerDesigns.forEach((d,i)=>{let col=i%2,row=Math.floor(i/2),cx=100+col*(w+gap),cy=140+row*(h+gap);x.fillStyle="#f1f1f5";x.fillRect(cx,cy,w,h);drawContain(x,d.image,cx+w/2,cy+h/2,w*.85,h*.78,1);x.fillStyle="#111";x.font="bold 42px sans-serif";x.fillText(String(i+1),cx+40,cy+55)});sellerWatermark(x,c.width,c.height,true);let out=$("sellerCanvas");out.width=c.width;out.height=c.height;out.getContext("2d").drawImage(c,0,0);$("sellerStatus").textContent="Proof sheet preview ready ✓"}
+$("#brainOne").onclick=()=>$("#brainOut").value=brainIdea();
+$("#brainTen").onclick=()=>$("#brainOut").value=Array.from({length:10},(_,i)=>`${i+1}. ${brainIdea()}`).join("\n\n");
+$("#saveBrain").onclick=()=>saveJar($("#brainOut").value);
 
-/* SPLITTER */
-let spImg=null,spObjs=[];$("spFile").onchange=async e=>{spImg=await fileImage(e.target.files[0]);$("spStatus").textContent="Ready to detect."};
-function spDetect(){if(!spImg)return;let c=$("spCanvas"),max=1200,s=Math.min(1,max/Math.max(spImg.naturalWidth,spImg.naturalHeight));c.width=Math.round(spImg.naturalWidth*s);c.height=Math.round(spImg.naturalHeight*s);let x=c.getContext("2d",{willReadFrequently:true});x.clearRect(0,0,c.width,c.height);x.drawImage(spImg,0,0,c.width,c.height);let d=x.getImageData(0,0,c.width,c.height).data,v=new Uint8Array(c.width*c.height),min=+$("spMin").value||150,objs=[];for(let y=0;y<c.height;y++)for(let xx=0;xx<c.width;xx++){let st=y*c.width+xx;if(v[st]||d[st*4+3]<10)continue;v[st]=1;let q=[st],a=0,mx=xx,Mx=xx,my=y,My=y;while(q.length){let p=q.pop(),px=p%c.width,py=Math.floor(p/c.width);a++;mx=Math.min(mx,px);Mx=Math.max(Mx,px);my=Math.min(my,py);My=Math.max(My,py);for(let n of [p-1,p+1,p-c.width,p+c.width])if(n>=0&&n<v.length&&!v[n]&&d[n*4+3]>=10&&Math.abs((n%c.width)-px)<=1){v[n]=1;q.push(n)}}if(a>=min)objs.push({mx,Mx,my,My,selected:true})}spObjs=objs;spRender();$("spStatus").textContent=`${objs.length} objects detected ✓`}
-function spRender(){let h=$("spResults");h.innerHTML="";spObjs.forEach((o,i)=>{let el=document.createElement("div");el.className="card";el.innerHTML=`<label><input type="checkbox" ${o.selected?"checked":""}> Object ${i+1}</label><input value="object-${i+1}" id="spName${i}">`;el.querySelector("input[type=checkbox]").onchange=e=>o.selected=e.target.checked;h.appendChild(el)})}
-function spDownloadSelected(){if(!spImg)return;let c=$("spCanvas"),sx=spImg.naturalWidth/c.width,sy=spImg.naturalHeight/c.height,pad=+$("spPad").value||0;spObjs.forEach((o,i)=>{if(!o.selected)return;let x=Math.max(0,Math.floor((o.mx-pad)*sx)),y=Math.max(0,Math.floor((o.my-pad)*sy)),r=Math.min(spImg.naturalWidth,Math.ceil((o.Mx+pad)*sx)),b=Math.min(spImg.naturalHeight,Math.ceil((o.My+pad)*sy)),out=document.createElement("canvas");out.width=r-x;out.height=b-y;out.getContext("2d").drawImage(spImg,x,y,out.width,out.height,0,0,out.width,out.height);downloadCanvas(out,cleanName($(`spName${i}`).value)+".png")})}
+// Prompt Maker
+const pmIds=["pmSubject","pmType","pmTheme","pmStyle","pmMood","pmPalette","pmExtra","pmBg","pmAvoid"];
+function updatePrompt(){
+ let subject=$("#pmSubject").value.trim()||"[SUBJECT]",type=$("#pmType").value;
+ let p=`Create a professional ${type} featuring ${subject}.`;
+ const add=[["Theme",$("#pmTheme").value],["Style",$("#pmStyle").value],["Mood",$("#pmMood").value],["Color palette",$("#pmPalette").value],["Coordinating elements",$("#pmExtra").value],["Background",$("#pmBg").value]];
+ add.forEach(([k,v])=>{if(v.trim())p+=`\n${k}: ${v.trim()}.`});
+ if(type.includes("seamless"))p+="\nCreate a true seamless repeating tile with natural edge continuity and a balanced repeat.";
+ if(type.includes("coloring"))p+="\nUse clean black outline line art on pure white with enclosed coloring spaces and no grayscale or shading.";
+ if($("#pmAvoid").value.trim())p+=`\nAvoid: ${$("#pmAvoid").value.trim()}.`;
+ p+="\nKeep the complete design inside the canvas with no awkward cutoffs.";
+ $("#pmOut").value=p;
+}
+pmIds.forEach(id=>$("#"+id).addEventListener("input",updatePrompt));updatePrompt();
+$("#pmSurprise").onclick=()=>{$("#pmSubject").value=subjects[Math.floor(Math.random()*subjects.length)];$("#pmTheme").value=["western","celestial","coquette","cottagecore","retro"][Math.floor(Math.random()*5)];$("#pmStyle").value=["preppy","hand drawn","gothic cute","retro cartoon"][Math.floor(Math.random()*4)];updatePrompt()};
+$("#pmWeird").onclick=()=>{$("#pmExtra").value=($("#pmExtra").value?$("#pmExtra").value+", ":"")+"one unexpected playful surreal detail";updatePrompt()};
+$("#pmCute").onclick=()=>{$("#pmMood").value="cute, sweet, playful";updatePrompt()};
+$("#pmSimple").onclick=()=>{$("#pmExtra").value="one simple coordinating element only";$("#pmAvoid").value="clutter, tiny details, excessive decorations, awkward cutoffs";updatePrompt()};
+$("#pmSave").onclick=()=>saveJar($("#pmOut").value);
 
-/* IMAGE STUDIO */
-let isOriginal=null;$("isFile").onchange=async e=>{let im=await fileImage(e.target.files[0]);let c=$("isCanvas");c.width=im.naturalWidth;c.height=im.naturalHeight;c.getContext("2d").drawImage(im,0,0);isOriginal=c.toDataURL();$("isW").value=c.width;$("isH").value=c.height;$("isStatus").textContent="Loaded ✓"};
-function replaceIS(out){let c=$("isCanvas");c.width=out.width;c.height=out.height;c.getContext("2d").drawImage(out,0,0);$("isW").value=c.width;$("isH").value=c.height}
-function isResize(){let c=$("isCanvas"),w=+$("isW").value,h=+$("isH").value;if($("isLock").checked)h=Math.round(w*c.height/c.width);let o=document.createElement("canvas");o.width=w;o.height=h;o.getContext("2d").drawImage(c,0,0,w,h);replaceIS(o)}
-function isRotate(){let c=$("isCanvas"),a=+$("isRot").value*Math.PI/180,cos=Math.abs(Math.cos(a)),sin=Math.abs(Math.sin(a)),o=document.createElement("canvas");o.width=Math.ceil(c.width*cos+c.height*sin);o.height=Math.ceil(c.width*sin+c.height*cos);let x=o.getContext("2d");x.translate(o.width/2,o.height/2);x.rotate(a);x.drawImage(c,-c.width/2,-c.height/2);replaceIS(o)}
-function isFlip(v){let c=$("isCanvas"),o=document.createElement("canvas");o.width=c.width;o.height=c.height;let x=o.getContext("2d");if(v){x.translate(0,o.height);x.scale(1,-1)}else{x.translate(o.width,0);x.scale(-1,1)}x.drawImage(c,0,0);replaceIS(o)}
-function isSquare(){let c=$("isCanvas"),p=+$("isPad").value||0,s=Math.max(c.width,c.height)+p*2,o=document.createElement("canvas");o.width=o.height=s;o.getContext("2d").drawImage(c,(s-c.width)/2,(s-c.height)/2);replaceIS(o)}
-function isCrop(){let c=$("isCanvas"),x=c.getContext("2d",{willReadFrequently:true}),d=x.getImageData(0,0,c.width,c.height).data,mx=c.width,my=c.height,Mx=-1,My=-1;for(let y=0;y<c.height;y++)for(let z=0;z<c.width;z++)if(d[(y*c.width+z)*4+3]>5){mx=Math.min(mx,z);Mx=Math.max(Mx,z);my=Math.min(my,y);My=Math.max(My,y)}if(Mx<0)return;let o=document.createElement("canvas");o.width=Mx-mx+1;o.height=My-my+1;o.getContext("2d").drawImage(c,mx,my,o.width,o.height,0,0,o.width,o.height);replaceIS(o)}
-async function isReset(){if(!isOriginal)return;let im=await dataImage(isOriginal),c=$("isCanvas");c.width=im.naturalWidth;c.height=im.naturalHeight;c.getContext("2d").drawImage(im,0,0)}
+// image loader helper
+function loadImageFile(file,cb){if(!file)return;const u=URL.createObjectURL(file),im=new Image();im.onload=()=>{cb(im);URL.revokeObjectURL(u)};im.src=u}
 
-/* IDEA JAR */
-const IK="moonlightWorkshopIdeas";function ideas(){try{return JSON.parse(localStorage.getItem(IK)||"[]")}catch(e){return[]}}
-function saveIdea(){let t=$("brainOutput").value.trim();if(!t)return;let a=ideas();a.unshift({id:Date.now(),text:t,fav:false});localStorage.setItem(IK,JSON.stringify(a.slice(0,250)));$("brainStatus").textContent="Saved to Idea Jar ❤️"}
-function renderIdeas(){let q=$("ideaSearch").value.toLowerCase(),filter=$("ideaFilter")?$("ideaFilter").value:"all",a=ideas().filter(x=>x.text.toLowerCase().includes(q)).filter(x=>filter!=="fav"||x.fav);$("ideaList").innerHTML=a.map(x=>`<div class="idea"><div style="white-space:pre-wrap">${x.fav?"⭐ ":""}${x.text.replace(/</g,"&lt;")}</div><div class="row"><button class="btn secondary" onclick="ideaFav(${x.id})">⭐ Favorite</button><button class="btn" onclick="ideaUse(${x.id})">✨ Use</button><button class="btn secondary" onclick="ideaRemix(${x.id})">🧬 Remix</button><button class="btn secondary" onclick="ideaToLister(${x.id})">🛍️ Lister</button><button class="btn danger" onclick="ideaDelete(${x.id})">🗑</button></div></div>`).join("")||`<div class="idea muted">No matching ideas.</div>`}
-function ideaFav(id){let a=ideas(),x=a.find(v=>v.id===id);if(x)x.fav=!x.fav;localStorage.setItem(IK,JSON.stringify(a));renderIdeas()}function ideaUse(id){let x=ideas().find(v=>v.id===id);if(x){$("brainOutput").value=x.text;openTool("brain")}}function ideaDelete(id){localStorage.setItem(IK,JSON.stringify(ideas().filter(x=>x.id!==id)));renderIdeas()}function clearIdeas(){if(confirm("Clear Idea Jar?")){localStorage.removeItem(IK);renderIdeas()}}
+// Background remover
+let bgOriginal=null,bgPick=[255,255,255];
+$("#bgTol").oninput=()=>$("#bgTolVal").textContent=$("#bgTol").value;
+$("#bgFile").onchange=e=>loadImageFile(e.target.files[0],im=>{const c=$("#bgCanvas"),ctx=c.getContext("2d");const max=1400,scale=Math.min(1,max/im.width,max/im.height);c.width=Math.max(1,Math.round(im.width*scale));c.height=Math.max(1,Math.round(im.height*scale));ctx.clearRect(0,0,c.width,c.height);ctx.drawImage(im,0,0,c.width,c.height);bgOriginal=ctx.getImageData(0,0,c.width,c.height);$("#bgStatus").textContent="Image loaded. Tap background to sample a color, or remove white by default."});
+$("#bgCanvas").addEventListener("pointerdown",e=>{const c=e.currentTarget,r=c.getBoundingClientRect(),x=Math.floor((e.clientX-r.left)*c.width/r.width),y=Math.floor((e.clientY-r.top)*c.height/r.height),d=c.getContext("2d").getImageData(x,y,1,1).data;bgPick=[d[0],d[1],d[2]];$("#bgStatus").textContent=`Sampled RGB(${bgPick.join(", ")}).`});
+$("#bgRemove").onclick=()=>{if(!bgOriginal)return $("#bgStatus").textContent="Upload an image first.";const c=$("#bgCanvas"),ctx=c.getContext("2d"),img=new ImageData(new Uint8ClampedArray(bgOriginal.data),bgOriginal.width,bgOriginal.height),t=+$("#bgTol").value,soft=$("#bgFeather").checked;for(let i=0;i<img.data.length;i+=4){let d=Math.hypot(img.data[i]-bgPick[0],img.data[i+1]-bgPick[1],img.data[i+2]-bgPick[2]);if(d<=t)img.data[i+3]=0;else if(soft&&d<t+30)img.data[i+3]=Math.round(255*(d-t)/30)}ctx.putImageData(img,0,0);$("#bgStatus").textContent="Background removed."};
+$("#bgReset").onclick=()=>{if(bgOriginal)$("#bgCanvas").getContext("2d").putImageData(bgOriginal,0,0)};
+$("#bgDownload").onclick=()=>downloadCanvas($("#bgCanvas"),"background-removed.png");
 
+// Sticker studio
+let stImg=null;
+$("#stBorder").oninput=()=>{$("#stBorderVal").textContent=$("#stBorder").value;makeSticker()};
+$("#stPad").oninput=()=>{$("#stPadVal").textContent=$("#stPad").value;makeSticker()};
+$("#stColor").oninput=makeSticker;
+$("#stFile").onchange=e=>loadImageFile(e.target.files[0],im=>{stImg=im;makeSticker()});
+function makeSticker(){if(!stImg)return;const border=+$("#stBorder").value,pad=+$("#stPad").value,c=$("#stCanvas"),ctx=c.getContext("2d");let scale=Math.min(1,1200/stImg.width,1200/stImg.height),w=Math.round(stImg.width*scale),h=Math.round(stImg.height*scale);c.width=w+pad*2+border*2;c.height=h+pad*2+border*2;const x=pad+border,y=pad+border;ctx.clearRect(0,0,c.width,c.height);const tmp=document.createElement("canvas");tmp.width=c.width;tmp.height=c.height;tmp.getContext("2d").drawImage(stImg,x,y,w,h);if(border>0){ctx.save();ctx.fillStyle=$("#stColor").value;for(let a=0;a<Math.PI*2;a+=Math.PI/32){ctx.drawImage(tmp,Math.cos(a)*border,Math.sin(a)*border)}ctx.globalCompositeOperation="source-in";ctx.fillRect(0,0,c.width,c.height);ctx.restore()}ctx.drawImage(tmp,0,0);$("#stStatus").textContent="Sticker ready."}
+$("#stMake").onclick=makeSticker;$("#stDownload").onclick=()=>downloadCanvas($("#stCanvas"),"sticker.png");
 
-/* PALETTE MAKER PRO */
-let currentPalette=[];
-function hexRgb(h){h=h.replace("#","");return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]}
-function rgbHex(r,g,b){return "#"+[r,g,b].map(v=>clamp(Math.round(v),0,255).toString(16).padStart(2,"0")).join("").toUpperCase()}
-function mixHex(a,b,t){let A=hexRgb(a),B=hexRgb(b);return rgbHex(A[0]+(B[0]-A[0])*t,A[1]+(B[1]-A[1])*t,A[2]+(B[2]-A[2])*t)}
-function palGenerate(){let base=$("palBase").value,n=+$("palCount").value,m=$("palMood").value,anchors={moonlight:["#120D35","#5535A5","#42E6D2","#F2E9FF","#55BFFF"],soft:["#FFE1F4","#E8D9FF","#D7F7F2","#FFF1BD","#C9DFFF"],bold:["#FF4FCB","#7653FF","#00D8D0","#55BFFF","#FFD35A"],moody:["#160D2B","#38245F","#174A59","#6A335B","#A98CCF"],earthy:["#49382D","#7D6A50","#A98568","#CCD5AE","#E9DCC9"],retro:["#F26B5B","#F4B860","#63B0A7","#7067CF","#F7E3AF"]};let a=anchors[m]||anchors.moonlight;currentPalette=Array.from({length:n},(_,i)=>mixHex(base,a[i%a.length],.38+(i/(Math.max(1,n-1)))*.48));palRender()}
-function palSurprise(){$("palBase").value=rgbHex(Math.random()*255,Math.random()*255,Math.random()*255);$("palMood").selectedIndex=Math.floor(Math.random()*$("palMood").options.length);palGenerate()}
-function palRender(){let h=$("palSwatches");h.innerHTML=currentPalette.map(c=>`<div class="swatch" style="background:${c}" onclick="navigator.clipboard.writeText('${c}')" title="Tap to copy">${c}</div>`).join("");$("palCodes").value=currentPalette.join(", ");palRenderSaved()}
-async function palFromImage(){let f=$("palImage").files[0];if(!f)return $("palStatus").textContent="Upload an image first.";let im=await fileImage(f),c=document.createElement("canvas");c.width=c.height=80;let x=c.getContext("2d",{willReadFrequently:true});x.drawImage(im,0,0,80,80);let d=x.getImageData(0,0,80,80).data,bins={};for(let i=0;i<d.length;i+=16){if(d[i+3]<100)continue;let r=Math.round(d[i]/40)*40,g=Math.round(d[i+1]/40)*40,b=Math.round(d[i+2]/40)*40,k=rgbHex(r,g,b);bins[k]=(bins[k]||0)+1}currentPalette=Object.entries(bins).sort((a,b)=>b[1]-a[1]).slice(0,+$("palCount").value).map(x=>x[0]);palRender();$("palStatus").textContent="Palette pulled from image ✓"}
-function palSave(){if(!currentPalette.length)return;let a=JSON.parse(localStorage.getItem("mdPalettes")||"[]");a.unshift(currentPalette);localStorage.setItem("mdPalettes",JSON.stringify(a.slice(0,20)));palRenderSaved();$("palStatus").textContent="Palette saved 💜"}
-function palRenderSaved(){if(!$("savedPalettes"))return;let a=JSON.parse(localStorage.getItem("mdPalettes")||"[]");$("savedPalettes").innerHTML=a.slice(0,6).map((p,i)=>`<div class="idea"><b>Saved Palette ${i+1}</b><br>${p.map(c=>`<span class="pill">${c}</span>`).join("")}</div>`).join("")}
-function palSendBrain(){if(!currentPalette.length)palGenerate();$("brainPalette").value=currentPalette.join(", ");openTool("brain");$("brainStatus").textContent="Palette added from Palette Maker ✓"}
+// Batch builders. Static Workshop generates prompt slots; user can attach generated art to each slot.
+const collections={outline:[], "digital-paper":[], seamless:[]};
+function variation(kind,subject,style,i){
+ const e=extras[(i+Math.floor(Math.random()*extras.length))%extras.length], angle=["playful","clean","bold","whimsical","minimal","retro","cozy","preppy"][i%8];
+ if(kind==="outline") return `Create an 8×11 portrait coloring book page featuring ${subject}. Variation ${i+1}: ${angle} composition with ${e} as no more than one simple coordinating prop. Style: ${style||"Easy"}. Keep the main subject only, little to no background, large simple shapes, minimal interior details, extra-bold black outlines, large enclosed coloring spaces, pure white background, no color, no grayscale, no shading, no filled black areas, and no cutoffs.`;
+ if(kind==="digital-paper") return `Create a square digital paper design based on ${subject}. Variation ${i+1}: ${angle}, ${style||"coordinated palette"}, incorporating ${e}. Make this paper clearly different from the other collection pieces while keeping the collection cohesive. Balanced composition, clean edges, no text.`;
+ return `Create a true seamless repeating pattern tile based on ${subject}. Variation ${i+1}: ${angle}, ${style||"coordinated palette"}, with ${e}. Keep varied scale and rotation, balanced spacing, natural edge continuity, and ensure elements crossing one edge continue on the opposite edge. Make this design distinct from the rest of the collection.`;
+}
+$$(".batchMaker").forEach(box=>{
+ const kind=box.dataset.kind,grid=box.querySelector(".bmGrid"),counter=box.querySelector(".bmCounter"),status=box.querySelector(".bmStatus");
+ let cards=[];
+ function updateCounter(){counter.textContent=`${collections[kind].length} / 100`}
+ function addCards(n,replaceBye=false){
+  const subject=box.querySelector(".bmSubject").value.trim()||"surprise coordinated collection",style=box.querySelector(".bmStyle").value.trim();
+  if(replaceBye) cards=cards.filter(c=>c.state!=="bye");
+  const need=replaceBye? n: n;
+  const start=cards.length;
+  for(let i=0;i<need;i++)cards.push({id:crypto.randomUUID?crypto.randomUUID():Date.now()+"-"+Math.random(),prompt:variation(kind,subject,style,start+i),state:"",data:null,name:""});
+  render();
+ }
+ function render(){
+  grid.innerHTML="";
+  cards.forEach((c,idx)=>{
+   const el=document.createElement("div");el.className="batchCard "+(c.state==="keep"?"keep":c.state==="bye"?"bye":"");
+   el.innerHTML=`${c.data?`<img src="${c.data}" alt="Batch result">`:`<div style="aspect-ratio:1;background:#fff;color:#333;border-radius:9px;display:grid;place-items:center;padding:12px;text-align:center"><b>Image Slot ${idx+1}</b><span class="small" style="color:#555">Attach the generated image here</span></div>`}
+   <textarea readonly>${escapeHTML(c.prompt)}</textarea>
+   <input type="file" accept="image/png,image/jpeg,image/webp" data-upload="${c.id}">
+   <div class="row"><button class="btn good" data-keep="${c.id}">❤️ KEEP</button><button class="btn danger" data-bye="${c.id}">🗑 BYE</button><button class="btn secondary" data-copycard="${c.id}">📋 Prompt</button></div>`;
+   grid.appendChild(el);
+  });
+  $$("[data-upload]",grid).forEach(inp=>inp.onchange=e=>{let c=cards.find(x=>x.id===inp.dataset.upload);const f=e.target.files[0];if(!c||!f)return;const r=new FileReader();r.onload=()=>{c.data=r.result;c.name=f.name;render()};r.readAsDataURL(f)});
+  $$("[data-keep]",grid).forEach(b=>b.onclick=()=>{let c=cards.find(x=>x.id===b.dataset.keep);if(!c)return;if(!c.data){status.textContent="Attach the finished image before adding it to your collection.";return}if(collections[kind].length>=100){status.textContent="Collection is full at 100.";return}c.state="keep";if(!collections[kind].some(x=>x.id===c.id))collections[kind].push({...c});updateCounter();render()});
+  $$("[data-bye]",grid).forEach(b=>b.onclick=()=>{let c=cards.find(x=>x.id===b.dataset.bye);if(c){c.state="bye";render()}});
+  $$("[data-copycard]",grid).forEach(b=>b.onclick=()=>{let c=cards.find(x=>x.id===b.dataset.copycard);navigator.clipboard?.writeText(c.prompt)});
+ }
+ box.querySelector(".bmGenerate").onclick=()=>{cards=[];addCards(+box.querySelector(".bmCount").value)};
+ box.querySelector(".bmReplace").onclick=()=>{let n=cards.filter(c=>c.state==="bye").length;if(!n)return status.textContent="Mark at least one result BYE first.";addCards(n,true)};
+ box.querySelector(".bmClear").onclick=()=>{if(confirm("Clear this collection?")){collections[kind]=[];updateCounter();status.textContent="Collection cleared."}};
+ box.querySelector(".bmView").onclick=()=>{status.textContent=collections[kind].length?`Collection contains ${collections[kind].length} kept image(s). ZIP Keeps will package them.`:"Collection is empty."};
+ box.querySelector(".bmZip").onclick=async()=>{const items=collections[kind];if(!items.length)return status.textContent="Keep at least one attached image first.";if(!window.JSZip)return status.textContent="ZIP library could not load. Check internet connection.";const zip=new JSZip();items.forEach((x,i)=>{const parts=x.data.split(","),mime=(parts[0].match(/image\/(\w+)/)||[])[1]||"png",ext=mime==="jpeg"?"jpg":mime;zip.file(`${kind}-${String(i+1).padStart(3,"0")}.${ext}`,parts[1],{base64:true});zip.file(`${kind}-${String(i+1).padStart(3,"0")}-prompt.txt`,x.prompt)});status.textContent="Building ZIP...";const blob=await zip.generateAsync({type:"blob"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`moonlight-${kind}-collection.zip`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);status.textContent="ZIP ready."};
+ updateCounter();
+});
 
-/* OUTLINE COLOR STUDIO */
-let csOriginal=null,csHistory=[],csFuture=[];
-$("csFile").onchange=async e=>{let f=e.target.files[0];if(!f)return;let im=await fileImage(f),c=$("csCanvas"),max=1400,s=Math.min(1,max/Math.max(im.naturalWidth,im.naturalHeight));c.width=Math.max(1,Math.round(im.naturalWidth*s));c.height=Math.max(1,Math.round(im.naturalHeight*s));c.getContext("2d").drawImage(im,0,0,c.width,c.height);csOriginal=c.toDataURL("image/png");csHistory=[];csFuture=[];$("csStatus").textContent="Outline loaded — tap an enclosed white area ✨"};
-function csSnap(){csHistory.push($("csCanvas").toDataURL("image/png"));if(csHistory.length>25)csHistory.shift();csFuture=[]}
-async function csRestore(src){let im=await dataImage(src),c=$("csCanvas");c.width=im.naturalWidth;c.height=im.naturalHeight;c.getContext("2d").drawImage(im,0,0)}
-$("csCanvas").addEventListener("pointerdown",e=>{let c=$("csCanvas"),r=c.getBoundingClientRect(),px=Math.floor((e.clientX-r.left)*c.width/r.width),py=Math.floor((e.clientY-r.top)*c.height/r.height);csFill(px,py);e.preventDefault()});
-function csFill(sx,sy){let c=$("csCanvas"),x=c.getContext("2d",{willReadFrequently:true}),img=x.getImageData(0,0,c.width,c.height),d=img.data,w=c.width,h=c.height,start=(sy*w+sx)*4,sr=d[start],sg=d[start+1],sb=d[start+2],tol=+$("csTolerance").value,col=hexRgb($("csColor").value);if(sr<70&&sg<70&&sb<70)return $("csStatus").textContent="Tap inside a white/enclosed area, not on the outline.";csSnap();let seen=new Uint8Array(w*h),q=[sy*w+sx],filled=0;while(q.length){let p=q.pop();if(p<0||p>=w*h||seen[p])continue;seen[p]=1;let xx=p%w,yy=(p/w)|0,k=p*4,dist=Math.sqrt((d[k]-sr)**2+(d[k+1]-sg)**2+(d[k+2]-sb)**2);if(dist>tol||d[k+3]<20)continue;d[k]=col[0];d[k+1]=col[1];d[k+2]=col[2];d[k+3]=255;filled++;if(xx>0)q.push(p-1);if(xx<w-1)q.push(p+1);if(yy>0)q.push(p-w);if(yy<h-1)q.push(p+w)}x.putImageData(img,0,0);$("csStatus").textContent=filled?`Colored ${filled.toLocaleString()} pixels ✓`:"That area could not be filled."}
-function csUndo(){if(!csHistory.length)return;csFuture.push($("csCanvas").toDataURL("image/png"));csRestore(csHistory.pop())}
-function csRedo(){if(!csFuture.length)return;csHistory.push($("csCanvas").toDataURL("image/png"));csRestore(csFuture.pop())}
-function csClearColors(){if(csOriginal){csHistory=[];csFuture=[];csRestore(csOriginal);$("csStatus").textContent="Reset to original outline ✓"}}
+// Collab
+function makeCollab(){const n=+$("#coCount").value,theme=$("#coTheme").value.trim()||"surprise collection",style=$("#coStyle").value.trim()||"coordinated",pal=$("#coPalette").value.trim()||"shared palette";let pool=[...subjects].sort(()=>Math.random()-.5);$("#coOut").value=`COLLAB THEME: ${theme}\nSHARED STYLE: ${style}\nSHARED PALETTE: ${pal}\n\n`+Array.from({length:n},(_,i)=>`Designer ${i+1}: Create ${pool[i]} with ${extras[(i+2)%extras.length]}. Keep it ${style}, using ${pal}, coordinated to the ${theme} collection while remaining clearly different from the other assignments.`).join("\n\n")}
+$("#coMake").onclick=makeCollab;$("#coShuffle").onclick=makeCollab;
 
-/* BRAIN JAR PRO */
-function ideaRandom(){let a=ideas();if(!a.length)return;let x=rand(a);$("brainOutput").value=x.text;openTool("brain");$("brainStatus").textContent="Pulled a random idea from your Brain Jar 🎲"}
-function ideaRemix(id){let x=ideas().find(v=>v.id===id);if(!x)return;$("brainOutput").value=x.text;openTool("brain");brainRemix()}
-function ideaToLister(id){let x=ideas().find(v=>v.id===id);if(!x)return;$("pSubject").value=x.text.slice(0,120);$("pDetails").value=x.text;openTool("listing")}
-function ideaExport(){let a=ideas();if(!a.length)return;let blob=new Blob([a.map((x,i)=>`${i+1}. ${x.fav?"⭐ ":""}${x.text}`).join("\n\n")],{type:"text/plain"});saveBlob(blob,"moonlight-brain-jar.txt")}
+// Wheel
+let spins=0;
+$("#spinBtn").onclick=()=>{let arr=$("#wheelEntries").value.split(/\n+/).map(x=>x.trim()).filter(Boolean);if(!arr.length)return $("#wheelStatus").textContent="Add at least one entry.";let winner=arr[Math.floor(Math.random()*arr.length)];spins+=1440+Math.floor(Math.random()*720);$("#wheel").style.transform=`rotate(${spins}deg)`;setTimeout(()=>{$("#wheelWinner").textContent=winner;$("#wheelStatus").textContent=`Winner: ${winner}`;if($("#wheelRemove").checked){arr=arr.filter(x=>x!==winner);$("#wheelEntries").value=arr.join("\n")}},3000)};
+$("#wheelShuffle").onclick=()=>{let a=$("#wheelEntries").value.split(/\n+/).filter(Boolean).sort(()=>Math.random()-.5);$("#wheelEntries").value=a.join("\n")};
 
+// Price
+$("#pcCalc").onclick=()=>{let q=Math.max(1,+$("#pcQty").value||1),h=Math.max(0,+$("#pcHours").value||0),hr=Math.max(0,+$("#pcHourly").value||0),cost=Math.max(0,+$("#pcCosts").value||0),rights=+$("#pcRights").value,profit=+$("#pcProfit").value;base=h*hr+cost;let total=base*rights*profit;$("#pcSuggested").textContent="$"+total.toFixed(2);$("#pcBreakdown").textContent=`Labor $${(h*hr).toFixed(2)} + costs $${cost.toFixed(2)} → rights multiplier ×${rights} → profit multiplier ×${profit}. Approx. $${(total/q).toFixed(2)} per item across ${q} item(s).`};
 
-/* START */
-cpmUpdateHint();smDraw();checkDraw();pmBuild();palGenerate();renderIdeas();
-sellerInit().then(()=>{let p=JSON.parse(localStorage.getItem("mdSellerPlacement")||"null");if(p)p.forEach((v,i)=>{if(sellerTemplates[i])Object.assign(sellerTemplates[i],v)});sellerLoadControls();sellerRenderTemplates();sellerPreview()});
-console.log("Moonlight Designs Workshop Pro loaded ✓");
-function openStudioHub(){openTool("studioHub");}
+// Image Lab
+let ilImg=null,ilFlipX=false,ilRot=0;
+$("#ilFile").onchange=e=>loadImageFile(e.target.files[0],im=>{ilImg=im;$("#ilW").value=im.width;$("#ilH").value=im.height;drawIL()});
+function drawIL(){if(!ilImg)return;const c=$("#ilCanvas"),ctx=c.getContext("2d"),w=Math.max(1,Math.min(6000,+$("#ilW").value||ilImg.width)),h=Math.max(1,Math.min(6000,+$("#ilH").value||ilImg.height));c.width=w;c.height=h;ctx.clearRect(0,0,w,h);ctx.save();ctx.translate(w/2,h/2);ctx.rotate(ilRot*Math.PI/180);ctx.scale(ilFlipX?-1:1,1);ctx.drawImage(ilImg,-w/2,-h/2,w,h);ctx.restore()}
+$("#ilResize").onclick=drawIL;$("#ilRotate").onclick=()=>{ilRot=(ilRot+90)%360;drawIL()};$("#ilFlip").onclick=()=>{ilFlipX=!ilFlipX;drawIL()};$("#ilDownload").onclick=()=>downloadCanvas($("#ilCanvas"),"image-lab.png");
 
+// Palette
+let palImg=null;
+$("#palFile").onchange=e=>loadImageFile(e.target.files[0],im=>palImg=im);
+function showPalette(cols){$("#palSwatches").innerHTML=cols.map(c=>`<div class="swatch" style="background:${c}">${c}</div>`).join("");$("#palText").value=cols.join(", ")}
+$("#palRandom").onclick=()=>showPalette(Array.from({length:6},()=>"#"+Math.floor(Math.random()*0xffffff).toString(16).padStart(6,"0")));
+$("#palExtract").onclick=()=>{if(!palImg)return;const c=document.createElement("canvas"),ctx=c.getContext("2d");c.width=80;c.height=80;ctx.drawImage(palImg,0,0,80,80);const d=ctx.getImageData(0,0,80,80).data,bins={};for(let i=0;i<d.length;i+=40){let r=Math.round(d[i]/32)*32,g=Math.round(d[i+1]/32)*32,b=Math.round(d[i+2]/32)*32,k=[Math.min(r,255),Math.min(g,255),Math.min(b,255)].join(",");bins[k]=(bins[k]||0)+1}let cols=Object.entries(bins).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([k])=>"#"+k.split(",").map(x=>(+x).toString(16).padStart(2,"0")).join(""));showPalette(cols)};
 
-</script></body></html>
+// Lister
+$("#liMake").onclick=()=>{let p=$("#liProduct").value.trim()||"Digital Design",s=$("#liSubject").value.trim()||"Creative Design",t=$("#liTheme").value.trim(),c=$("#liColors").value.trim();$("#liTitle").value=`${s} ${p}${t?" | "+t:""} | Digital Download`;$("#liDesc").value=`Add a fresh creative touch to your projects with this ${s} ${p.toLowerCase()}${t?` in a ${t} style`:""}${c?`, featuring ${c}`:""}. Digital product only; no physical item will be shipped. Please review your license and product details before use.`;let raw=[s,p,t,c,"digital download","graphic design","small business","craft supply","printable","creative asset","instant download","designer resource","commercial use"].join(",").toLowerCase().split(/[\s,|]+/).filter(x=>x.length>2);let tags=[];raw.forEach(x=>{if(tags.length<13&&!tags.includes(x))tags.push(x)});while(tags.length<13)tags.push("digital design "+(tags.length+1));$("#liTags").value=tags.slice(0,13).join(", ")};
+</script>
+</body></html>
