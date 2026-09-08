@@ -35,7 +35,15 @@ label{display:block;margin:13px 0 6px;font-size:13px;font-weight:800}input,selec
 #smCanvas{touch-action:none!important;cursor:grab!important}
 #smCanvas.smDragging{cursor:grabbing!important}
 @media(max-width:620px){.studioButtons{grid-template-columns:repeat(2,1fr)}.studioBtn{min-height:120px;font-size:14px}.studioIcon{font-size:36px}}
-</style></head><body>
+</style>
+<style>
+.bgRemoveBox{margin-top:12px;padding:12px;border:1px solid rgba(210,174,255,.35);border-radius:16px;background:rgba(60,30,105,.28)}
+.bgRemoveBox summary{cursor:pointer;font-weight:800}
+.bgRemoveControls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.bgSwatch{width:34px;height:34px;border-radius:8px;border:2px solid rgba(255,255,255,.65);vertical-align:middle}
+@media(max-width:620px){.bgRemoveControls{grid-template-columns:1fr}}
+</style>
+</head><body>
 <header><h1>☾✦ Moonlight Designs Maker Studio ✦☽</h1><div class="subtitle">A glittery moonlit creative studio for designing, planning, protecting & selling ✨</div></header>
 <div id="app">
 <nav class="nav" id="nav">
@@ -74,7 +82,14 @@ label{display:block;margin:13px 0 6px;font-size:13px;font-weight:800}input,selec
 <div class="card"><label>Generated Prompt</label><textarea id="cpmOutput" rows="18"></textarea><button class="btn" onclick="copyText('cpmOutput')">📋 Copy</button><hr style="border-color:var(--line);margin:20px 0">
 <h3>📚 Book Planner</h3><label>Book Concept</label><input id="bookConcept" placeholder="40 realistic cats doing cozy activities"><label>Pages</label><input id="bookPages" type="number" min="2" max="100" value="40"><div class="row"><button class="btn" onclick="buildBook()">📚 Build Page Plan</button><button class="btn secondary" onclick="coverPrompt()">📕 Cover Prompt</button><button class="btn secondary" onclick="duplicateCheck()">🔎 Duplicate Check</button></div><textarea id="bookOutput" rows="16"></textarea><div id="bookStatus" class="status"></div></div></div></section>
 
-<section id="seamless" class="tool"><div class="hero"><h2>🌀 Seamless Maker</h2></div><div class="two"><div class="card"><input id="smFiles" type="file" multiple accept="image/png,image/webp"><label>Layout</label><select id="smLayout"><option>Scattered</option><option>Half Drop</option><option>Grid</option></select><label>Density</label><input id="smDensity" type="range" min="4" max="60" value="24"><label>Scale Variation</label><input id="smScaleVar" type="range" min="0" max="80" value="35"><label>Rotation Variation</label><input id="smRotVar" type="range" min="0" max="180" value="35"><label>Background</label><input id="smBg" type="color" value="#ffffff"><div class="row"><button class="btn" onclick="smArrange()">✨ Auto Arrange</button><button class="btn secondary" onclick="smUndo()">↶ Undo</button><button class="btn secondary" onclick="smRedo()">↷ Redo</button><button class="btn" onclick="smExport()">⬇️ 5000px PNG</button></div><div id="smStatus" class="status">Upload transparent elements.</div>
+<section id="seamless" class="tool"><div class="hero"><h2>🌀 Seamless Maker</h2></div><div class="two"><div class="card"><input id="smFiles" type="file" multiple accept="image/png,image/webp"><details class="bgRemoveBox"><summary>🪄 Remove Background From Selected Element</summary>
+<div class="small">Click/tap the background color in the preview or choose a color. Adjust tolerance, preview it, then apply.</div>
+<div class="bgRemoveControls">
+<div><label>Background Color</label><input id="smBgColor" type="color" value="#ffffff" class="bgSwatch"></div>
+<div><label>Tolerance</label><input id="smBgTol" type="range" min="0" max="160" value="35"></div>
+</div>
+<div class="row"><button class="btn secondary" onclick="bgPreview('smCanvas','sm')">👁 Preview Removal</button><button class="btn" onclick="bgApply('smCanvas','sm')">🪄 Apply Removal</button><button class="btn secondary" onclick="bgUndo('smCanvas','sm')">↶ Restore</button></div>
+<div id="smBgStatus" class="status">Choose the background color you want transparent.</div></details><label>Layout</label><select id="smLayout"><option>Scattered</option><option>Half Drop</option><option>Grid</option></select><label>Density</label><input id="smDensity" type="range" min="4" max="60" value="24"><label>Scale Variation</label><input id="smScaleVar" type="range" min="0" max="80" value="35"><label>Rotation Variation</label><input id="smRotVar" type="range" min="0" max="180" value="35"><label>Background</label><input id="smBg" type="color" value="#ffffff"><div class="row"><button class="btn" onclick="smArrange()">✨ Auto Arrange</button><button class="btn secondary" onclick="smUndo()">↶ Undo</button><button class="btn secondary" onclick="smRedo()">↷ Redo</button><button class="btn" onclick="smExport()">⬇️ 5000px PNG</button></div><div id="smStatus" class="status">Upload transparent elements.</div>
 <div class="note"><b>CLICK + MOVE:</b> Tap/click directly on any image in the tile, hold it, and drag it anywhere. Pink outline = selected image. Works with mouse, finger, and Apple Pencil.</div>
 <div class="two">
 <div><label>Selected Size</label><input id="smSelectedSize" type="range" min="3" max="60" value="12"></div>
@@ -95,7 +110,14 @@ label{display:block;margin:13px 0 6px;font-size:13px;font-weight:800}input,selec
 
 <section id="seamlessMockup" class="tool"><div class="hero"><h2>🧵 Seamless Mockups</h2><p class="muted">10 selectable collection layouts with names, logo, watermark, zoom and high-res export.</p></div>
 <div class="two"><div class="card">
-<label>Upload Patterns</label><input id="pmFiles" type="file" multiple accept="image/*">
+<label>Upload Patterns</label><input id="pmFiles" type="file" multiple accept="image/*"><details class="bgRemoveBox"><summary>🪄 Pattern Background Remover</summary>
+<div class="small">Click/tap the background color in the preview or choose a color. Adjust tolerance, preview it, then apply.</div>
+<div class="bgRemoveControls">
+<div><label>Background Color</label><input id="pmBgColor" type="color" value="#ffffff" class="bgSwatch"></div>
+<div><label>Tolerance</label><input id="pmBgTol" type="range" min="0" max="160" value="35"></div>
+</div>
+<div class="row"><button class="btn secondary" onclick="bgPreview('pmCanvas','pm')">👁 Preview Removal</button><button class="btn" onclick="bgApply('pmCanvas','pm')">🪄 Apply Removal</button><button class="btn secondary" onclick="bgUndo('pmCanvas','pm')">↶ Restore</button></div>
+<div id="pmBgStatus" class="status">Choose the background color you want transparent.</div></details>
 <label>Layout</label><select id="pmLayout">
 <option value="collection">1. Collection Showcase</option><option value="heroTop">2. Hero + 6</option><option value="heroLeft">3. Hero Left</option><option value="heroRight">4. Hero Right</option><option value="boutique">5. Boutique Grid</option><option value="center">6. Center Spotlight</option><option value="magazine">7. Magazine</option><option value="checker">8. Checker Showcase</option><option value="stacked">9. Stacked Collection</option><option value="mega">10. Mega Collection</option></select>
 <label>Orientation</label><select id="pmOrientation"><option value="square">Square</option><option value="portrait">Portrait</option><option value="landscape">Landscape</option></select>
@@ -116,7 +138,14 @@ label{display:block;margin:13px 0 6px;font-size:13px;font-weight:800}input,selec
 <div class="note">Layout 1 is the Cupcake Carnival-style showcase: one large hero, three stacked at right, and three coordinating patterns along the bottom.</div>
 </div></div></section>
 <section id="seller" class="tool"><div class="hero"><h2>📸 Mockup Studio</h2><p class="muted">Up to 10 designs × your GitHub mockup library. Your uploaded originals are never altered.</p></div><div class="two"><div class="card">
-<h3>1. Upload Designs</h3><input id="sellerDesigns" type="file" multiple accept="image/png,image/jpeg,image/webp"><div id="sellerDesignStatus" class="status">Upload up to 10 designs.</div><div id="sellerDesignThumbs" class="thumbs"></div>
+<h3>1. Upload Designs</h3><input id="sellerDesigns" type="file" multiple accept="image/png,image/jpeg,image/webp"><details class="bgRemoveBox"><summary>🪄 Design Background Remover</summary>
+<div class="small">Click/tap the background color in the preview or choose a color. Adjust tolerance, preview it, then apply.</div>
+<div class="bgRemoveControls">
+<div><label>Background Color</label><input id="sellerBgColor" type="color" value="#ffffff" class="bgSwatch"></div>
+<div><label>Tolerance</label><input id="sellerBgTol" type="range" min="0" max="160" value="35"></div>
+</div>
+<div class="row"><button class="btn secondary" onclick="bgPreview('sellerCanvas','seller')">👁 Preview Removal</button><button class="btn" onclick="bgApply('sellerCanvas','seller')">🪄 Apply Removal</button><button class="btn secondary" onclick="bgUndo('sellerCanvas','seller')">↶ Restore</button></div>
+<div id="sellerBgStatus" class="status">Choose the background color you want transparent.</div></details><div id="sellerDesignStatus" class="status">Upload up to 10 designs.</div><div id="sellerDesignThumbs" class="thumbs"></div>
 <h3>2. Mockup Templates</h3><div class="small">Moonlight mockups load from assets/mockups/ in GitHub. Tap a template to edit its placement box.</div><div id="sellerTemplateThumbs" class="thumbs"></div>
 <label>Design Scale</label><div class="rangeLine"><input id="sellerScale" type="range" min="20" max="160" value="78"><div id="sellerScaleVal" class="rangeValue">78%</div></div>
 <label>Horizontal Position</label><input id="sellerX" type="range" min="5" max="95" value="50"><label>Vertical Position</label><input id="sellerY" type="range" min="5" max="95" value="48">
@@ -128,9 +157,31 @@ label{display:block;margin:13px 0 6px;font-size:13px;font-weight:800}input,selec
 <div class="progress"><div id="sellerProgress"></div></div><div id="sellerStatus" class="status"></div></div>
 <div class="card"><h3>Preview</h3><div class="canvasWrap"><canvas id="sellerCanvas" width="900" height="900"></canvas></div><div class="note">Placement controls are saved separately for each mockup template. Tap another template, adjust it, and Seller Studio remembers that placement in this browser.</div></div></div></section>
 
-<section id="splitter" class="tool"><div class="hero"><h2>✂️ Splitter</h2></div><div class="card"><input id="spFile" type="file" accept="image/png"><label>Minimum Object Area</label><input id="spMin" type="number" value="150"><label>Padding</label><input id="spPad" type="number" value="12"><button class="btn" onclick="spDetect()">🔎 Detect</button><button class="btn secondary" onclick="spDownloadSelected()">⬇️ Download Selected</button><div id="spStatus" class="status"></div><div id="spResults" class="grid"></div><canvas id="spCanvas" style="display:none"></canvas></div></section>
+<section id="splitter" class="tool"><div class="hero"><h2>✂️ PNG Splitter</h2><p class="muted">Detect, preview, adjust, approve, then save each PNG.</p></div>
+<div class="card"><input id="spFile" type="file" accept="image/png,image/webp"><details class="bgRemoveBox"><summary>🪄 Source Background Remover</summary>
+<div class="small">Click/tap the background color in the preview or choose a color. Adjust tolerance, preview it, then apply.</div>
+<div class="bgRemoveControls">
+<div><label>Background Color</label><input id="spBgColor" type="color" value="#ffffff" class="bgSwatch"></div>
+<div><label>Tolerance</label><input id="spBgTol" type="range" min="0" max="160" value="35"></div>
+</div>
+<div class="row"><button class="btn secondary" onclick="bgPreview('spBigProof','sp')">👁 Preview Removal</button><button class="btn" onclick="bgApply('spBigProof','sp')">🪄 Apply Removal</button><button class="btn secondary" onclick="bgUndo('spBigProof','sp')">↶ Restore</button></div>
+<div id="spBgStatus" class="status">Choose the background color you want transparent.</div></details>
+<div class="two"><div><label>Minimum Object Area</label><input id="spMin" type="number" value="150"></div><div><label>Default Padding</label><input id="spPad" type="number" value="12"></div></div>
+<div class="row"><button class="btn" onclick="spDetect()">🔎 Detect + Preview</button><button class="btn secondary" onclick="spApproveAll()">✓ Approve All</button><button class="btn" onclick="spDownloadSelected()">⬇️ Save Approved PNGs</button><button class="btn" onclick="spDownloadZip()">📦 Approved ZIP</button></div>
+<div class="row"><button class="btn secondary" onclick="spApplyPaddingAll()">↔ Same Padding for All</button><button class="btn secondary" onclick="spCenterAll()">🎯 Auto Center All</button></div>
+<div id="spCounter" class="status">0 detected • 0 approved • 0 need review</div>
+<div id="spStatus" class="status">Upload a PNG to begin. Nothing saves until you approve the previews.</div>
+<div id="spProofPanel" class="card" style="display:none;margin-top:16px">
+  <h3>📸 Photo Proof</h3>
+  <p class="muted">This is exactly what the selected PNG will look like when saved. Adjust it below, then approve it.</p>
+  <div class="canvasWrap" style="min-height:320px;display:flex;align-items:center;justify-content:center;background:repeating-conic-gradient(#e8e8e8 0 25%,#fff 0 50%) 50%/22px 22px">
+    <canvas id="spBigProof" style="max-width:100%;max-height:420px"></canvas>
+  </div>
+  <div id="spProofName" class="status">Select a detected object.</div>
+</div>
+<div id="spResults" class="grid"></div><canvas id="spCanvas" style="display:none"></canvas></div></section>
 
-<section id="image" class="tool"><div class="hero"><h2>🎨 Image Lab</h2></div><div class="two"><div class="card"><input id="isFile" type="file" accept="image/*"><label>Width</label><input id="isW" type="number" value="5000"><label>Height</label><input id="isH" type="number" value="5000"><label><input type="checkbox" id="isLock" checked> Lock Aspect Ratio</label><label>Free Rotation</label><input id="isRot" type="number" value="0"><label>Padding</label><input id="isPad" type="number" value="0"><div class="row"><button class="btn" onclick="isResize()">📐 Resize</button><button class="btn secondary" onclick="isRotate()">↻ Rotate</button><button class="btn secondary" onclick="isFlip(false)">↔ Flip H</button><button class="btn secondary" onclick="isFlip(true)">↕ Flip V</button><button class="btn secondary" onclick="isSquare()">⬜ Square Canvas</button><button class="btn secondary" onclick="isCrop()">✂️ Crop Transparency</button><button class="btn secondary" onclick="isReset()">↶ Reset</button><button class="btn" onclick="downloadCanvas($('isCanvas'),'moonlight-image.png')">⬇️ PNG</button></div><div id="isStatus" class="status"></div></div><div class="card"><div class="canvasWrap"><canvas id="isCanvas"></canvas></div></div></div></section>
+
 
 <section id="ideas" class="tool"><div class="hero"><h2>🧠 Brain Jar</h2></div><div class="card"><input id="ideaSearch" placeholder="Search ideas..." oninput="renderIdeas()"><div class="row"><button class="btn danger" onclick="clearIdeas()">🗑 Clear</button></div><div id="ideaList"></div></div></section>
 </div>
@@ -140,7 +191,7 @@ label{display:block;margin:13px 0 6px;font-size:13px;font-weight:800}input,selec
 const $=id=>document.getElementById(id), rand=a=>a[Math.floor(Math.random()*a.length)], clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
 function openTool(id){document.querySelectorAll(".tool").forEach(x=>x.classList.toggle("active",x.id===id));document.querySelectorAll("#nav button").forEach(x=>x.classList.toggle("active",x.dataset.tool===id));scrollTo({top:0,behavior:"smooth"});if(id==="ideas")renderIdeas();if(id==="seller")sellerPreview()}
 document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>openTool(b.dataset.tool));
-const homeTools=[["upload","📤 Uploads","Inspect images."],["brain","🧠 Brain Stuck","Ideas, collections and tool handoff."],["listing","🛍️ Product Lister","Listings and exactly 13 tags."],["coloring","🖍️ Coloring Page Maker","Easy Mode plus book planning."],["seamlessMaker","🌀 Seamless Maker","True repeating tiles."],["studioHub","✨ Studio","Seamless maker, checker and mockups in one workspace."],["splitter","✂️ Splitter","Detect and export objects."],["image","🎨 Image Lab","Resize, rotate, flip and crop."],["ideas","🧠 Brain Jar","Search and reuse ideas."]];
+const homeTools=[["upload","📤 Uploads","Inspect images."],["brain","🧠 Brain Stuck","Ideas, collections and tool handoff."],["listing","🛍️ Product Lister","Listings and exactly 13 tags."],["coloring","🖍️ Coloring Page Maker","Easy Mode plus book planning."],["seamlessMaker","🌀 Seamless Maker","True repeating tiles."],["studioHub","✨ Studio","Seamless maker, checker and mockups in one workspace."],["splitter","✂️ Splitter","Detect and export objects."],["ideas","🧠 Brain Jar","Search and reuse ideas."]];
 $("homeCards").innerHTML=homeTools.map(t=>`<div class="card toolCard" onclick="openTool('${t[0]}')"><h3>${t[1]}</h3><p class="muted">${t[2]}</p><button class="btn">Open Tool →</button></div>`).join("");
 function fileImage(file){return new Promise((res,rej)=>{let u=URL.createObjectURL(file),i=new Image;i.onload=()=>{URL.revokeObjectURL(u);res(i)};i.onerror=rej;i.src=u})}
 function dataImage(src){return new Promise((res,rej)=>{let i=new Image;i.onload=()=>res(i);i.onerror=rej;i.src=src})}
@@ -295,21 +346,105 @@ async function sellerZipAll(){if(!window.JSZip)return alert("ZIP library needs i
 function saveBlob(blob,name){let u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}
 function sellerProofSheet(){if(!sellerDesigns.length)return;let c=document.createElement("canvas");c.width=1600;c.height=2000;let x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.fillStyle="#111";x.font="bold 64px sans-serif";x.textAlign="center";x.fillText("Choose Your Design",800,90);let cols=2,w=700,h=330,gap=50; sellerDesigns.forEach((d,i)=>{let col=i%2,row=Math.floor(i/2),cx=100+col*(w+gap),cy=140+row*(h+gap);x.fillStyle="#f1f1f5";x.fillRect(cx,cy,w,h);drawContain(x,d.image,cx+w/2,cy+h/2,w*.85,h*.78,1);x.fillStyle="#111";x.font="bold 42px sans-serif";x.fillText(String(i+1),cx+40,cy+55)});sellerWatermark(x,c.width,c.height,true);let out=$("sellerCanvas");out.width=c.width;out.height=c.height;out.getContext("2d").drawImage(c,0,0);$("sellerStatus").textContent="Proof sheet preview ready ✓"}
 
-/* SPLITTER */
-let spImg=null,spObjs=[];$("spFile").onchange=async e=>{spImg=await fileImage(e.target.files[0]);$("spStatus").textContent="Ready to detect."};
-function spDetect(){if(!spImg)return;let c=$("spCanvas"),max=1200,s=Math.min(1,max/Math.max(spImg.naturalWidth,spImg.naturalHeight));c.width=Math.round(spImg.naturalWidth*s);c.height=Math.round(spImg.naturalHeight*s);let x=c.getContext("2d",{willReadFrequently:true});x.clearRect(0,0,c.width,c.height);x.drawImage(spImg,0,0,c.width,c.height);let d=x.getImageData(0,0,c.width,c.height).data,v=new Uint8Array(c.width*c.height),min=+$("spMin").value||150,objs=[];for(let y=0;y<c.height;y++)for(let xx=0;xx<c.width;xx++){let st=y*c.width+xx;if(v[st]||d[st*4+3]<10)continue;v[st]=1;let q=[st],a=0,mx=xx,Mx=xx,my=y,My=y;while(q.length){let p=q.pop(),px=p%c.width,py=Math.floor(p/c.width);a++;mx=Math.min(mx,px);Mx=Math.max(Mx,px);my=Math.min(my,py);My=Math.max(My,py);for(let n of [p-1,p+1,p-c.width,p+c.width])if(n>=0&&n<v.length&&!v[n]&&d[n*4+3]>=10&&Math.abs((n%c.width)-px)<=1){v[n]=1;q.push(n)}}if(a>=min)objs.push({mx,Mx,my,My,selected:true})}spObjs=objs;spRender();$("spStatus").textContent=`${objs.length} objects detected ✓`}
-function spRender(){let h=$("spResults");h.innerHTML="";spObjs.forEach((o,i)=>{let el=document.createElement("div");el.className="card";el.innerHTML=`<label><input type="checkbox" ${o.selected?"checked":""}> Object ${i+1}</label><input value="object-${i+1}" id="spName${i}">`;el.querySelector("input[type=checkbox]").onchange=e=>o.selected=e.target.checked;h.appendChild(el)})}
-function spDownloadSelected(){if(!spImg)return;let c=$("spCanvas"),sx=spImg.naturalWidth/c.width,sy=spImg.naturalHeight/c.height,pad=+$("spPad").value||0;spObjs.forEach((o,i)=>{if(!o.selected)return;let x=Math.max(0,Math.floor((o.mx-pad)*sx)),y=Math.max(0,Math.floor((o.my-pad)*sy)),r=Math.min(spImg.naturalWidth,Math.ceil((o.Mx+pad)*sx)),b=Math.min(spImg.naturalHeight,Math.ceil((o.My+pad)*sy)),out=document.createElement("canvas");out.width=r-x;out.height=b-y;out.getContext("2d").drawImage(spImg,x,y,out.width,out.height,0,0,out.width,out.height);downloadCanvas(out,cleanName($(`spName${i}`).value)+".png")})}
+/* SPLITTER — PREVIEW + ADJUST + APPROVE BEFORE SAVE */
+let spImg=null,spObjs=[];
+$("spFile").onchange=async e=>{if(!e.target.files[0])return;spImg=await fileImage(e.target.files[0]);spObjs=[];$("spResults").innerHTML="";$("spStatus").textContent="Photo loaded ✓ — tap Detect + Preview.";};
 
-/* IMAGE STUDIO */
-let isOriginal=null;$("isFile").onchange=async e=>{let im=await fileImage(e.target.files[0]);let c=$("isCanvas");c.width=im.naturalWidth;c.height=im.naturalHeight;c.getContext("2d").drawImage(im,0,0);isOriginal=c.toDataURL();$("isW").value=c.width;$("isH").value=c.height;$("isStatus").textContent="Loaded ✓"};
-function replaceIS(out){let c=$("isCanvas");c.width=out.width;c.height=out.height;c.getContext("2d").drawImage(out,0,0);$("isW").value=c.width;$("isH").value=c.height}
-function isResize(){let c=$("isCanvas"),w=+$("isW").value,h=+$("isH").value;if($("isLock").checked)h=Math.round(w*c.height/c.width);let o=document.createElement("canvas");o.width=w;o.height=h;o.getContext("2d").drawImage(c,0,0,w,h);replaceIS(o)}
-function isRotate(){let c=$("isCanvas"),a=+$("isRot").value*Math.PI/180,cos=Math.abs(Math.cos(a)),sin=Math.abs(Math.sin(a)),o=document.createElement("canvas");o.width=Math.ceil(c.width*cos+c.height*sin);o.height=Math.ceil(c.width*sin+c.height*cos);let x=o.getContext("2d");x.translate(o.width/2,o.height/2);x.rotate(a);x.drawImage(c,-c.width/2,-c.height/2);replaceIS(o)}
-function isFlip(v){let c=$("isCanvas"),o=document.createElement("canvas");o.width=c.width;o.height=c.height;let x=o.getContext("2d");if(v){x.translate(0,o.height);x.scale(1,-1)}else{x.translate(o.width,0);x.scale(-1,1)}x.drawImage(c,0,0);replaceIS(o)}
-function isSquare(){let c=$("isCanvas"),p=+$("isPad").value||0,s=Math.max(c.width,c.height)+p*2,o=document.createElement("canvas");o.width=o.height=s;o.getContext("2d").drawImage(c,(s-c.width)/2,(s-c.height)/2);replaceIS(o)}
-function isCrop(){let c=$("isCanvas"),x=c.getContext("2d",{willReadFrequently:true}),d=x.getImageData(0,0,c.width,c.height).data,mx=c.width,my=c.height,Mx=-1,My=-1;for(let y=0;y<c.height;y++)for(let z=0;z<c.width;z++)if(d[(y*c.width+z)*4+3]>5){mx=Math.min(mx,z);Mx=Math.max(Mx,z);my=Math.min(my,y);My=Math.max(My,y)}if(Mx<0)return;let o=document.createElement("canvas");o.width=Mx-mx+1;o.height=My-my+1;o.getContext("2d").drawImage(c,mx,my,o.width,o.height,0,0,o.width,o.height);replaceIS(o)}
-async function isReset(){if(!isOriginal)return;let im=await dataImage(isOriginal),c=$("isCanvas");c.width=im.naturalWidth;c.height=im.naturalHeight;c.getContext("2d").drawImage(im,0,0)}
+function spDetect(){
+ if(!spImg)return $("spStatus").textContent="Upload a PNG first.";
+ let c=$("spCanvas"),max=1200,s=Math.min(1,max/Math.max(spImg.naturalWidth,spImg.naturalHeight));
+ c.width=Math.round(spImg.naturalWidth*s);c.height=Math.round(spImg.naturalHeight*s);
+ let x=c.getContext("2d",{willReadFrequently:true});x.clearRect(0,0,c.width,c.height);x.drawImage(spImg,0,0,c.width,c.height);
+ let d=x.getImageData(0,0,c.width,c.height).data,v=new Uint8Array(c.width*c.height),min=+$("spMin").value||150,objs=[];
+ for(let y=0;y<c.height;y++)for(let xx=0;xx<c.width;xx++){let st=y*c.width+xx;if(v[st]||d[st*4+3]<10)continue;v[st]=1;let q=[st],area=0,mx=xx,Mx=xx,my=y,My=y;
+  while(q.length){let p=q.pop(),px=p%c.width,py=Math.floor(p/c.width);area++;mx=Math.min(mx,px);Mx=Math.max(Mx,px);my=Math.min(my,py);My=Math.max(My,py);
+   for(let n of [p-1,p+1,p-c.width,p+c.width])if(n>=0&&n<v.length&&!v[n]&&d[n*4+3]>=10&&Math.abs((n%c.width)-px)<=1){v[n]=1;q.push(n)}
+  }
+  if(area>=min)objs.push({mx,Mx,my,My,selected:true,approved:false,pad:+$("spPad").value||0,dx:0,dy:0,scale:100,rot:0,name:`object-${objs.length+1}`})
+ }
+ spObjs=objs;spRender();spUpdateCounter();$("spStatus").textContent=`${objs.length} objects detected. Review each preview, adjust if needed, then approve before saving.`;
+}
+function spCropCanvas(o){
+ let c=$("spCanvas"),sx=spImg.naturalWidth/c.width,sy=spImg.naturalHeight/c.height,pad=o.pad||0;
+ let x=Math.max(0,Math.floor((o.mx-pad)*sx)),y=Math.max(0,Math.floor((o.my-pad)*sy)),r=Math.min(spImg.naturalWidth,Math.ceil((o.Mx+pad)*sx)),bt=Math.min(spImg.naturalHeight,Math.ceil((o.My+pad)*sy));
+ let raw=document.createElement("canvas");raw.width=Math.max(1,r-x);raw.height=Math.max(1,bt-y);raw.getContext("2d").drawImage(spImg,x,y,raw.width,raw.height,0,0,raw.width,raw.height);
+ let out=document.createElement("canvas"),scale=(o.scale||100)/100,ang=(o.rot||0)*Math.PI/180;
+ let w=raw.width*scale,h=raw.height*scale,cos=Math.abs(Math.cos(ang)),sin=Math.abs(Math.sin(ang));
+ out.width=Math.ceil(w*cos+h*sin+Math.abs(o.dx||0)*2);out.height=Math.ceil(w*sin+h*cos+Math.abs(o.dy||0)*2);
+ let z=out.getContext("2d");z.translate(out.width/2+(o.dx||0),out.height/2+(o.dy||0));z.rotate(ang);z.drawImage(raw,-w/2,-h/2,w,h);return out;
+}
+
+let spProofSelected=-1;
+function spShowProof(i){
+  let o=spObjs[i]; if(!o)return;
+  spProofSelected=i;
+  $("spProofPanel").style.display="block";
+  let src=spCropCanvas(o),cv=$("spBigProof"),maxW=620,maxH=420,sc=Math.min(maxW/src.width,maxH/src.height,1);
+  cv.width=Math.max(1,Math.round(src.width*sc));cv.height=Math.max(1,Math.round(src.height*sc));
+  let x=cv.getContext("2d");x.clearRect(0,0,cv.width,cv.height);x.drawImage(src,0,0,cv.width,cv.height);
+  let cut=spCutoff(o);$("spProofName").textContent=`Object ${i+1}: ${o.name} • ${o.approved?"APPROVED ✓":"NOT APPROVED — review before saving"}${cut?" • ⚠️ EDGE/CUTOFF WARNING":""}`;
+}
+function spRefreshPreview(i){let o=spObjs[i],cv=$(`spPrev${i}`);if(!o||!cv)return;let src=spCropCanvas(o),max=240,sc=Math.min(max/src.width,max/src.height,1);cv.width=Math.max(80,Math.round(src.width*sc));cv.height=Math.max(80,Math.round(src.height*sc));let x=cv.getContext("2d");x.clearRect(0,0,cv.width,cv.height);x.drawImage(src,0,0,cv.width,cv.height);let badge=$(`spApproval${i}`);badge.textContent=o.approved?"✓ APPROVED":"Needs approval";badge.style.fontWeight="800";
+let save=$(`spSave${i}`);if(save){save.disabled=!o.approved;save.style.opacity=o.approved?"1":".45";save.title=o.approved?"Save approved PNG":"Review and approve this photo proof first";}
+if(spProofSelected===i)spShowProof(i);}
+function spChanged(i){spObjs[i].approved=false;spRefreshPreview(i);spShowProof(i);spUpdateCounter();$("spStatus").textContent=`Object ${i+1} changed — review the updated photo proof and approve again.`}
+function spRender(){let h=$("spResults");h.innerHTML="";spObjs.forEach((o,i)=>{let el=document.createElement("div");el.className="card";el.innerHTML=`
+ <div class="canvasWrap" style="min-height:170px;display:flex;align-items:center;justify-content:center;background:repeating-conic-gradient(#eee 0 25%,#fff 0 50%) 50%/18px 18px"><canvas id="spPrev${i}"></canvas></div>
+ <div class="row"><b>Object ${i+1}</b><span id="spApproval${i}" class="status">Needs approval</span></div>
+ <label>File Name</label><input id="spName${i}" value="${o.name}">
+ <div class="two"><div><label>Padding</label><input id="spPad${i}" type="range" min="0" max="100" value="${o.pad}"></div><div><label>Scale</label><input id="spScale${i}" type="range" min="50" max="150" value="100"></div></div>
+ <div class="two"><div><label>Move X</label><input id="spX${i}" type="range" min="-100" max="100" value="0"></div><div><label>Move Y</label><input id="spY${i}" type="range" min="-100" max="100" value="0"></div></div>
+ <label>Rotate</label><input id="spRot${i}" type="range" min="-180" max="180" value="0">
+ <div class="row"><button class="btn" id="spApprove${i}">✓ Approve This PNG</button><button class="btn secondary" id="spSave${i}">⬇️ Save This PNG</button></div>`;
+ h.appendChild(el);
+ $(`spName${i}`).oninput=e=>{o.name=e.target.value;o.approved=false;spRefreshPreview(i)};
+ $(`spPad${i}`).oninput=e=>{o.pad=+e.target.value;spChanged(i)};
+ $(`spScale${i}`).oninput=e=>{o.scale=+e.target.value;spChanged(i)};
+ $(`spX${i}`).oninput=e=>{o.dx=+e.target.value;spChanged(i)};
+ $(`spY${i}`).oninput=e=>{o.dy=+e.target.value;spChanged(i)};
+ $(`spRot${i}`).oninput=e=>{o.rot=+e.target.value;spChanged(i)};
+ $(`spApprove${i}`).onclick=()=>{o.approved=true;spRefreshPreview(i);spShowProof(i);spUpdateCounter();$("spStatus").textContent=`Object ${i+1} photo proof approved ✓ — Save is now enabled.`};
+ $(`spSave${i}`).onclick=()=>spSaveOne(i);
+$(`spPrev${i}`).onclick=()=>spShowProof(i);
+spRefreshPreview(i);if(i===0)spShowProof(0);
+})}
+
+function spUpdateCounter(){
+ let approved=spObjs.filter(o=>o.approved).length,need=spObjs.length-approved;
+ let el=$("spCounter");if(el)el.textContent=`${spObjs.length} detected • ${approved} approved • ${need} need review`;
+}
+function spApplyPaddingAll(){
+ if(!spObjs.length)return;
+ let v=+$("spPad").value||0;spObjs.forEach((o,i)=>{o.pad=v;o.approved=false;let e=$(`spPad${i}`);if(e)e.value=v;spRefreshPreview(i)});
+ if(spProofSelected>=0)spShowProof(spProofSelected);spUpdateCounter();$("spStatus").textContent="Same padding applied to all — review proofs again.";
+}
+function spCenterAll(){
+ spObjs.forEach((o,i)=>{o.dx=0;o.dy=0;o.approved=false;let x=$(`spX${i}`),y=$(`spY${i}`);if(x)x.value=0;if(y)y.value=0;spRefreshPreview(i)});
+ if(spProofSelected>=0)spShowProof(spProofSelected);spUpdateCounter();$("spStatus").textContent="All PNGs centered — review proofs again.";
+}
+function spCutoff(o){
+ let c=spCropCanvas(o),x=c.getContext("2d",{willReadFrequently:true}),d=x.getImageData(0,0,c.width,c.height).data,w=c.width,h=c.height;
+ for(let xx=0;xx<w;xx++)if(d[xx*4+3]>10||d[((h-1)*w+xx)*4+3]>10)return true;
+ for(let yy=0;yy<h;yy++)if(d[(yy*w)*4+3]>10||d[(yy*w+w-1)*4+3]>10)return true;
+ return false;
+}
+async function spDownloadZip(){
+ let approved=spObjs.map((o,i)=>[o,i]).filter(([o])=>o.approved);
+ if(!approved.length)return $("spStatus").textContent="Approve at least one photo proof first.";
+ if(typeof JSZip==="undefined")return $("spStatus").textContent="ZIP library could not load. Use Save Approved PNGs instead.";
+ let zip=new JSZip();
+ for(let [o,i] of approved){
+   let cv=spCropCanvas(o),blob=await new Promise(r=>cv.toBlob(r,"image/png"));
+   zip.file(cleanName(o.name||`object-${i+1}`)+".png",blob);
+ }
+ let blob=await zip.generateAsync({type:"blob"});
+ let a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="moonlight-approved-pngs.zip";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500);
+ $("spStatus").textContent=`ZIP created with ${approved.length} approved PNG${approved.length===1?"":"s"} ✓`;
+}
+function spApproveAll(){if(!spObjs.length)return;spObjs.forEach((o,i)=>{o.approved=true;spRefreshPreview(i)});spUpdateCounter();$("spStatus").textContent="All current previews approved ✓"}
+function spSaveOne(i){let o=spObjs[i];if(!o)return;if(!o.approved)return $("spStatus").textContent=`Object ${i+1} must be approved before saving.`;downloadCanvas(spCropCanvas(o),cleanName(o.name||`object-${i+1}`)+".png")}
+function spDownloadSelected(){let approved=spObjs.map((o,i)=>[o,i]).filter(([o])=>o.approved);if(!approved.length)return $("spStatus").textContent="Approve at least one preview before saving.";approved.forEach(([o,i])=>downloadCanvas(spCropCanvas(o),cleanName(o.name||`object-${i+1}`)+".png"));$("spStatus").textContent=`Saving ${approved.length} approved PNG${approved.length===1?"":"s"} ✓`}
+}
 
 /* IDEA JAR */
 const IK="moonlightWorkshopIdeas";function ideas(){try{return JSON.parse(localStorage.getItem(IK)||"[]")}catch(e){return[]}}
@@ -322,4 +457,36 @@ cpmUpdateHint();smDraw();checkDraw();pmBuild();renderIdeas();
 sellerInit().then(()=>{let p=JSON.parse(localStorage.getItem("mdSellerPlacement")||"null");if(p)p.forEach((v,i)=>{if(sellerTemplates[i])Object.assign(sellerTemplates[i],v)});sellerLoadControls();sellerRenderTemplates();sellerPreview()});
 console.log("Moonlight Designs Workshop Pro loaded ✓");
 function openStudioHub(){openTool("studioHub");}
+
+/* SHARED BACKGROUND REMOVER */
+const bgBackups={};
+function bgHexRgb(h){h=h.replace("#","");return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]}
+function bgCanvasRemove(canvas,color,tol,commit=true){
+ if(!canvas||!canvas.width||!canvas.height)return false;
+ let x=canvas.getContext("2d",{willReadFrequently:true}),im=x.getImageData(0,0,canvas.width,canvas.height),d=im.data,[r,g,b]=bgHexRgb(color);
+ for(let i=0;i<d.length;i+=4){let dr=d[i]-r,dg=d[i+1]-g,db=d[i+2]-b,dist=Math.sqrt(dr*dr+dg*dg+db*db);if(dist<=tol){let soft=Math.max(0,Math.min(1,(dist-(tol*.55))/(tol*.45||1)));d[i+3]=Math.round(d[i+3]*soft)}}
+ x.putImageData(im,0,0);return true;
+}
+function bgBackupCanvas(id,prefix){
+ let c=$(id);if(c&&c.tagName==="CANVAS"&&c.width&&c.height&&!bgBackups[prefix])bgBackups[prefix]=c.toDataURL("image/png");
+}
+async function bgPreview(id,prefix){
+ let c=$(id),status=$(prefix+"BgStatus");if(!c||c.tagName!=="CANVAS"){if(status)status.textContent="Open an image preview first.";return}
+ bgBackupCanvas(id,prefix);
+ if(bgBackups[prefix]){let im=await dataImage(bgBackups[prefix]);c.getContext("2d").clearRect(0,0,c.width,c.height);c.getContext("2d").drawImage(im,0,0,c.width,c.height)}
+ bgCanvasRemove(c,$(prefix+"BgColor").value,+$(prefix+"BgTol").value);
+ if(status)status.textContent="Removal preview shown. Apply if it looks right.";
+}
+async function bgApply(id,prefix){
+ await bgPreview(id,prefix);let status=$(prefix+"BgStatus");if(status)status.textContent="Background removal applied ✓";
+ // Sync specialized tools where possible.
+ if(prefix==="sp"&&spImg){
+   let c=$(id);if(c&&c.width){let im=await dataImage(c.toDataURL("image/png"));spImg=im;spObjs=[];$("spResults").innerHTML="";$("spStatus").textContent="Background removed. Run Detect + Preview again."}
+ }
+}
+async function bgUndo(id,prefix){
+ let c=$(id),data=bgBackups[prefix],status=$(prefix+"BgStatus");if(!data||!c)return;
+ let im=await dataImage(data);c.width=im.naturalWidth;c.height=im.naturalHeight;c.getContext("2d").drawImage(im,0,0);delete bgBackups[prefix];
+ if(status)status.textContent="Original restored ✓";
+}
 </script></body></html>
